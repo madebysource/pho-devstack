@@ -1,0 +1,49 @@
+{
+  "name": "pho-dev-stack",
+  "version": "0.1.0",
+  "description": "",
+  "homepage": "https://github.com/madebysource/pho-dev-stack",
+  "bugs": "https://github.com/madebysource/pho-dev-stack/issues",
+  "keywords": [
+    "web",
+    "app",
+    "front-end",
+    "gulp",
+    "browserify",
+    "less",
+    "css",
+    "lesshat",
+    "minify"
+  ],
+  "futureKeywords": [
+    "tdd",
+    "testing",
+    "jasmine",
+    "lint"
+  ],
+  "contributors": [
+    "Pavel Gavlík <pavelgavlik@abdoc.net>",
+    "Petr Brzek <petrbrzek@abdoc.net>"
+  ],
+  "devDependencies": {
+    "browserify-ngmin": "~0.0.2",
+    "chalk": "~0.4.0",
+    "gulp": "~3.5.1",
+    "gulp-browserify": "~0.4.2",
+    "gulp-clean": "~0.2.4",
+    "gulp-htmlmin": "~0.1.1",
+    "gulp-inject": "~0.2.2",
+    "gulp-less": "~1.2.1",
+    "gulp-livereload": "~0.2.0",
+    "gulp-plumber": "~0.5.6",
+    "gulp-rev": "~0.2.1",
+    "node.extend": "~1.0.9",
+    "tiny-lr": "~0.0.5",
+    "uglifyify": "~1.2.1"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "MIT"
+}
