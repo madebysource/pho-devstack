@@ -17,6 +17,7 @@ module.exports = {
     markupMain: 'index.html',
     scriptMain: 'main.js',
     styleMain: 'main.less',
+    markupFiles: '**/*.html',
     scriptFiles: '**/*.js',
     styleFiles: '**/*.less'
   },

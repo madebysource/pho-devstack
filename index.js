@@ -61,7 +61,7 @@ module.exports = function(gulp, userConfig) {
 
   gulp.task('default', ['index', 'lrServer'], function() {
     gulp.watch([
-      config.src.markupDir + config.src.markupMain,
+      config.src.markupDir + config.src.markupFiles,
       config.src.scriptDir + config.src.scriptFiles,
       config.src.styleDir + config.src.styleFiles
     ], ['index']);
