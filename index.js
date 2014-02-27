@@ -9,6 +9,7 @@ var lrServer = require('tiny-lr')();
 var plumber = require('gulp-plumber');
 var refresh = require('gulp-livereload');
 var rev = require('gulp-rev');
+var jasmine = require('gulp-jasmine');
 
 var extend = require('node.extend');
 var defaultConfig = require('./config');
@@ -65,5 +66,9 @@ module.exports = function(gulp, userConfig) {
       config.src.scriptDir + config.src.scriptFiles,
       config.src.styleDir + config.src.styleFiles
     ], ['index']);
+  });
+
+  gulp.task('test', function() {
+    gulp.src(config.src.specDir + config.src.specFiles).pipe(jasmine());
   });
 };
