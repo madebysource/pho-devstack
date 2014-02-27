@@ -14,12 +14,14 @@ module.exports = {
     markupDir: 'src/',
     scriptDir: 'src/scripts/',
     styleDir: 'src/styles/',
+    specDir: 'spec/',
     markupMain: 'index.html',
     scriptMain: 'main.js',
     styleMain: 'main.less',
     markupFiles: '**/*.html',
     scriptFiles: '**/*.js',
-    styleFiles: '**/*.less'
+    styleFiles: '**/*.less',
+    specFiles: '*.js'
   },
   browserify: {
     debug: true,
