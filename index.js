@@ -67,6 +67,8 @@ module.exports = function(gulp, userConfig) {
       path.join(config.src.scriptDir, config.src.scriptFiles),
       path.join(config.src.styleDir, config.src.styleFiles)
     ], ['index']);
+
+    gulp.watch(path.join(config.src.specDir, config.src.specFiles), ['test']);
   });
 
   gulp.task('test', function() {
