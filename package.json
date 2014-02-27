@@ -39,7 +39,8 @@
     "gulp-rev": "~0.2.1",
     "node.extend": "~1.0.9",
     "tiny-lr": "~0.0.5",
-    "uglifyify": "~1.2.1"
+    "uglifyify": "~1.2.1",
+    "gulp-jasmine": "~0.1.4"
   },
   "main": "index.js",
   "scripts": {
