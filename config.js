@@ -21,7 +21,7 @@ module.exports = {
     markupFiles: '**/*.html',
     scriptFiles: '**/*.js',
     styleFiles: '**/*.less',
-    specFiles: '*.js'
+    specFiles: '**/*Spec.js'
   },
   browserify: {
     debug: true,
