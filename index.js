@@ -65,10 +65,9 @@ module.exports = function(gulp, userConfig) {
     gulp.watch([
       path.join(config.src.markupDir, config.src.markupFiles),
       path.join(config.src.scriptDir, config.src.scriptFiles),
-      path.join(config.src.styleDir, config.src.styleFiles)
-    ], ['index']);
-
-    gulp.watch(path.join(config.src.specDir, config.src.specFiles), ['test']);
+      path.join(config.src.styleDir, config.src.styleFiles),
+      path.join(config.src.specDir, config.src.specFiles)
+    ], ['index', 'test']);
   });
 
   gulp.task('test', function() {
