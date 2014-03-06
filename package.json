@@ -40,7 +40,7 @@
     "node.extend": "~1.0.9",
     "tiny-lr": "~0.0.5",
     "uglifyify": "~1.2.1",
-    "gulp-jasmine": "~0.1.4"
+    "karma": "^0.10.9"
   },
   "main": "index.js",
   "scripts": {

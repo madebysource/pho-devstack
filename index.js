@@ -9,7 +9,7 @@ var lrServer = require('tiny-lr')();
 var plumber = require('gulp-plumber');
 var refresh = require('gulp-livereload');
 var rev = require('gulp-rev');
-var jasmine = require('gulp-jasmine');
+var karma = require('karma');
 var path = require('path');
 
 var extend = require('node.extend');
@@ -61,16 +61,18 @@ module.exports = function(gulp, userConfig) {
       .on('end', cb);
   });
 
-  gulp.task('default', ['index', 'lrServer', 'test'], function() {
+  gulp.task('default', ['index', 'lrServer'], function() {
     gulp.watch([
       path.join(config.src.markupDir, config.src.markupFiles),
       path.join(config.src.scriptDir, config.src.scriptFiles),
       path.join(config.src.styleDir, config.src.styleFiles),
       path.join(config.src.specDir, config.src.specFiles)
-    ], ['index', 'test']);
+    ], ['index']);
+
+    karma.server.start({ configFile: path.join(process.cwd(), 'karma.conf.js'), singleRun: false, autoWatch: true }, process.exit);
   });
 
-  gulp.task('test', function() {
-    gulp.src(path.join(config.src.specDir, config.src.specFiles)).pipe(jasmine());
+  gulp.task('test', ['index'], function() {
+    karma.server.start({ configFile: path.join(process.cwd(), 'karma.conf.js'), singleRun: true, autoWatch: false }, process.exit);
   });
 };
