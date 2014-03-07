@@ -11,6 +11,7 @@ var refresh = require('gulp-livereload');
 var rev = require('gulp-rev');
 var karma = require('karma');
 var path = require('path');
+var spawn = require('child_process').spawn;
 
 var extend = require('node.extend');
 var defaultConfig = require('./config');
@@ -80,8 +81,6 @@ module.exports = function(gulp, userConfig) {
   gulp.task('test', ['index'], function() {
     karma.server.start({ configFile: path.join(process.cwd(), 'karma.conf.js'), singleRun: true, autoWatch: false }, process.exit);
   });
-
-  var spawn = require('child_process').spawn;
 
   gulp.task('integration', ['index'], function() {
     var integrationPath = path.join(config.src.specDir, config.src.integrationDir);
