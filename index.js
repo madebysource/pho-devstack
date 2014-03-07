@@ -14,6 +14,11 @@ var path = require('path');
 
 var extend = require('node.extend');
 var defaultConfig = require('./config');
+
+var gulpLog = function(text) {
+  console.log('[\x1B[32m' + 'gulp' + '\x1B[39m] ' + text);
+};
+
 module.exports = function(gulp, userConfig) {
   var config = extend(true, {}, defaultConfig, userConfig);
 
@@ -84,7 +89,7 @@ module.exports = function(gulp, userConfig) {
     var casper = spawn(path.join(__dirname, 'node_modules/casperjs/bin/casperjs'), ['test', integrationPath]);
 
     casper.stdout.on('data', function(data) {
-      console.log('[gulp] CasperJS:', data.toString().slice(0, -1));
+      gulpLog('CasperJS:' + data.toString().slice(0, -1));
     });
 
     casper.stdout.on('close', process.exit);
