@@ -89,7 +89,7 @@ module.exports = function(gulp, userConfig) {
     var casper = spawn(path.join(__dirname, 'node_modules/casperjs/bin/casperjs'), ['test', integrationPath]);
 
     casper.stdout.on('data', function(data) {
-      gulpLog('CasperJS:' + data.toString().slice(0, -1));
+      gulpLog('CasperJS: ' + data.toString().slice(0, -1));
     });
 
     casper.stdout.on('close', process.exit);
