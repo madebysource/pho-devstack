@@ -75,4 +75,18 @@ module.exports = function(gulp, userConfig) {
   gulp.task('test', ['index'], function() {
     karma.server.start({ configFile: path.join(process.cwd(), 'karma.conf.js'), singleRun: true, autoWatch: false }, process.exit);
   });
+
+  var spawn = require('child_process').spawn;
+
+  gulp.task('integration', ['index'], function() {
+    var integrationPath = path.join(config.src.specDir, config.src.integrationDir);
+
+    var casper = spawn(path.join(__dirname, 'node_modules/casperjs/bin/casperjs'), ['test', integrationPath]);
+
+    casper.stdout.on('data', function(data) {
+      console.log('[gulp] CasperJS:', data.toString().slice(0, -1));
+    });
+
+    casper.stdout.on('close', process.exit);
+  });
 };
