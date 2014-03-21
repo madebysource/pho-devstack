@@ -42,7 +42,8 @@
     "tiny-lr": "~0.0.5",
     "uglifyify": "~1.2.1",
     "karma": "^0.10.9",
-    "casperjs": "^1.1.0-beta3"
+    "casperjs": "^1.1.0-beta3",
+    "gulp-imagemin": "^0.1.5"
   },
   "main": "index.js",
   "scripts": {

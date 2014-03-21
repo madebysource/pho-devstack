@@ -15,6 +15,7 @@ module.exports = {
     scriptDir: 'src/scripts/',
     styleDir: 'src/styles/',
     specDir: 'spec/',
+    imageDir: 'src/images/',
     e2eDir: 'e2e/',
     markupMain: 'index.html',
     scriptMain: 'main.js',
@@ -22,7 +23,8 @@ module.exports = {
     markupFiles: '**/*.html',
     scriptFiles: '**/*.js',
     styleFiles: '**/*.less',
-    specFiles: '**/*Spec.js'
+    specFiles: '**/*Spec.js',
+    imageFiles: '**/*.{png,jpg,jpeg}'
   },
   browserify: {
     debug: true,

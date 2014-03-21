@@ -12,6 +12,7 @@ var rev = require('gulp-rev');
 var karma = require('karma');
 var path = require('path');
 var spawn = require('child_process').spawn;
+var imagemin = require('gulp-imagemin');
 
 var extend = require('node.extend');
 var defaultConfig = require('./config');
@@ -76,6 +77,12 @@ module.exports = function(gulp, userConfig) {
     ], ['index']);
 
     karma.server.start({ configFile: path.join(process.cwd(), 'karma.conf.js'), singleRun: false, autoWatch: true }, process.exit);
+  });
+
+  gulp.task('images', ['dist-clean'], function() {
+    gulp.src(path.join(config.src.imageDir, config.src.imageFiles))
+      .pipe(imagemin())
+      .pipe(gulp.dest('dist/images'));
   });
 
   gulp.task('test', ['index'], function() {
