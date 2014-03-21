@@ -15,7 +15,7 @@ module.exports = {
     scriptDir: 'src/scripts/',
     styleDir: 'src/styles/',
     specDir: 'spec/',
-    integrationDir: 'integration/',
+    e2eDir: 'e2e/',
     markupMain: 'index.html',
     scriptMain: 'main.js',
     styleMain: 'main.less',

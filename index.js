@@ -82,10 +82,10 @@ module.exports = function(gulp, userConfig) {
     karma.server.start({ configFile: path.join(process.cwd(), 'karma.conf.js'), singleRun: true, autoWatch: false }, process.exit);
   });
 
-  gulp.task('integration', ['index'], function() {
-    var integrationPath = path.join(config.src.specDir, config.src.integrationDir);
+  gulp.task('e2e', ['index'], function() {
+    var testPath = path.join(config.src.specDir, config.src.integrationDir);
 
-    var casper = spawn(path.join(__dirname, 'node_modules/casperjs/bin/casperjs'), ['test', integrationPath]);
+    var casper = spawn(path.join(__dirname, 'node_modules/casperjs/bin/casperjs'), ['test', testPath]);
 
     casper.stdout.on('data', function(data) {
       gulpLog('CasperJS: ' + data.toString().slice(0, -1));
