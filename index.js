@@ -55,7 +55,7 @@ module.exports = function(gulp, userConfig) {
       .on('end', cb);
   });
 
-  gulp.task('index', ['scripts', 'styles'], function(cb) {
+  gulp.task('index', ['scripts', 'styles', 'images'], function(cb) {
     gulp.src([
       path.join(config.dist.scriptDir, config.dist.scriptFiles),
       path.join(config.dist.styleDir, config.dist.styleFiles)
@@ -73,7 +73,8 @@ module.exports = function(gulp, userConfig) {
       path.join(config.src.markupDir, config.src.markupFiles),
       path.join(config.src.scriptDir, config.src.scriptFiles),
       path.join(config.src.styleDir, config.src.styleFiles),
-      path.join(config.src.specDir, config.src.specFiles)
+      path.join(config.src.specDir, config.src.specFiles),
+      path.join(config.src.imageDir, config.src.imageFiles)
     ], ['index']);
 
     karma.server.start({ configFile: path.join(process.cwd(), 'karma.conf.js'), singleRun: false, autoWatch: true }, process.exit);
