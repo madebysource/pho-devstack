@@ -7,8 +7,10 @@ module.exports = {
     markupDir: 'dist/',
     scriptDir: 'dist/scripts/',
     styleDir: 'dist/styles/',
+    imageDir: 'dist/images/',
     scriptFiles: '*.js',
-    styleFiles: '*.css'
+    styleFiles: '*.css',
+    imageFiles: '**/*.{png,jpg,jpeg}'
   },
   src: {
     markupDir: 'src/',

@@ -31,7 +31,8 @@ module.exports = function(gulp, userConfig) {
   gulp.task('dist-clean', function(cb) {
     gulp.src([
       path.join(config.dist.scriptDir, config.dist.scriptFiles),
-      path.join(config.dist.styleDir, config.dist.styleFiles)
+      path.join(config.dist.styleDir, config.dist.styleFiles),
+      path.join(config.dist.imageDir, config.src.imageFiles)
     ], { read: false })
       .pipe(clean())
       .on('end', cb);
