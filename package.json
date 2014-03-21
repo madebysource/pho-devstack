@@ -26,7 +26,7 @@
     "Petr Brzek <petrbrzek@abdoc.net>",
     "Jan Šedivý <jansedivy@abdoc.net>"
   ],
-  "devDependencies": {
+  "dependencies": {
     "browserify-ngmin": "~0.0.2",
     "chalk": "~0.4.0",
     "gulp": "~3.5.1",
