@@ -5,17 +5,17 @@ var clean = require('gulp-clean');
 var htmlmin = require('gulp-htmlmin');
 var inject = require('gulp-inject');
 var less = require('gulp-less');
-var lrServer = require('tiny-lr')();
 var plumber = require('gulp-plumber');
 var refresh = require('gulp-livereload');
 var rev = require('gulp-rev');
-var karma = require('karma');
-var path = require('path');
-var spawn = require('child_process').spawn;
 var imagemin = require('gulp-imagemin');
 
-var extend = require('node.extend');
 var defaultConfig = require('./config');
+var extend = require('node.extend');
+var karma = require('karma');
+var lrServer = require('tiny-lr')();
+var path = require('path');
+var spawn = require('child_process').spawn;
 
 var gulpLog = function(text) {
   console.log('[\x1B[32m' + 'gulp' + '\x1B[39m] ' + text);
@@ -69,10 +69,11 @@ module.exports = function(gulp, userConfig) {
       .on('end', cb);
   });
 
-  gulp.task('images', ['distClean'], function() {
+  gulp.task('images', ['distClean'], function(cb) {
     gulp.src(path.join(config.src.imageDir, config.src.imageFiles))
       .pipe(imagemin())
-      .pipe(gulp.dest('dist/images'));
+      .pipe(gulp.dest(config.dist.imageDir))
+      .on('end', cb);
   });
 
   gulp.task('test', ['index'], function() {
