@@ -28,7 +28,7 @@ module.exports = function(gulp, userConfig) {
     lrServer.listen(35729, cb);
   });
 
-  gulp.task('dist-clean', function(cb) {
+  gulp.task('distClean', function(cb) {
     gulp.src([
       path.join(config.dist.scriptDir, config.dist.scriptFiles),
       path.join(config.dist.styleDir, config.dist.styleFiles),
@@ -38,7 +38,7 @@ module.exports = function(gulp, userConfig) {
       .on('end', cb);
   });
 
-  gulp.task('scripts', ['dist-clean'], function(cb) {
+  gulp.task('scripts', ['distClean'], function(cb) {
     gulp.src(path.join(config.src.scriptDir, config.src.scriptMain))
       .pipe(plumber(config.plumber))
       .pipe(browserify(config.browserify))
@@ -47,7 +47,7 @@ module.exports = function(gulp, userConfig) {
       .on('end', cb);
   });
 
-  gulp.task('styles', ['dist-clean'], function(cb) {
+  gulp.task('styles', ['distClean'], function(cb) {
     gulp.src(path.join(config.src.styleDir, config.src.styleMain))
       .pipe(plumber(config.plumber))
       .pipe(less(config.less))
@@ -69,19 +69,7 @@ module.exports = function(gulp, userConfig) {
       .on('end', cb);
   });
 
-  gulp.task('default', ['index', 'lrServer'], function() {
-    gulp.watch([
-      path.join(config.src.markupDir, config.src.markupFiles),
-      path.join(config.src.scriptDir, config.src.scriptFiles),
-      path.join(config.src.styleDir, config.src.styleFiles),
-      path.join(config.src.specDir, config.src.specFiles),
-      path.join(config.src.imageDir, config.src.imageFiles)
-    ], ['index']);
-
-    karma.server.start({ configFile: path.join(process.cwd(), 'karma.conf.js'), singleRun: false, autoWatch: true }, process.exit);
-  });
-
-  gulp.task('images', ['dist-clean'], function() {
+  gulp.task('images', ['distClean'], function() {
     gulp.src(path.join(config.src.imageDir, config.src.imageFiles))
       .pipe(imagemin())
       .pipe(gulp.dest('dist/images'));
@@ -90,16 +78,28 @@ module.exports = function(gulp, userConfig) {
   gulp.task('test', ['index'], function() {
     karma.server.start({ configFile: path.join(process.cwd(), 'karma.conf.js'), singleRun: true, autoWatch: false }, process.exit);
   });
+  
+  gulp.task('testContinous', ['index'], function () {
+    karma.server.start({ configFile: path.join(process.cwd(), 'karma.conf.js'), singleRun: false, autoWatch: true }, process.exit);
+  });
 
   gulp.task('e2e', ['index'], function() {
     var testPath = path.join(config.src.specDir, config.src.integrationDir);
-
     var casper = spawn(path.join(__dirname, 'node_modules/casperjs/bin/casperjs'), ['test', testPath]);
 
     casper.stdout.on('data', function(data) {
       gulpLog('CasperJS: ' + data.toString().slice(0, -1));
     });
-
     casper.stdout.on('close', process.exit);
+  });
+
+  gulp.task('default', ['index', 'lrServer', 'testContinous'], function() {
+    gulp.watch([
+      path.join(config.src.markupDir, config.src.markupFiles),
+      path.join(config.src.scriptDir, config.src.scriptFiles),
+      path.join(config.src.styleDir, config.src.styleFiles),
+      path.join(config.src.specDir, config.src.specFiles),
+      path.join(config.src.imageDir, config.src.imageFiles)
+    ], ['index']);
   });
 };
