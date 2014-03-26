@@ -2,7 +2,12 @@
   "name": "pho-dev-stack",
   "version": "0.1.0",
   "description": "",
+  "license": "MIT",
   "homepage": "https://github.com/madebysource/pho-dev-stack",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/madebysource/pho-dev-stack"
+  },
   "bugs": "https://github.com/madebysource/pho-dev-stack/issues",
   "keywords": [
     "web",
@@ -13,16 +18,12 @@
     "less",
     "css",
     "lesshat",
-    "minify"
-  ],
-  "futureKeywords": [
+    "minify",
     "tdd",
-    "testing",
-    "jasmine",
-    "lint"
+    "testing"
   ],
+  "author": "Pavel Gavlík <pavelgavlik@abdoc.net>",
   "contributors": [
-    "Pavel Gavlík <pavelgavlik@abdoc.net>",
     "Petr Brzek <petrbrzek@abdoc.net>",
     "Jan Šedivý <jansedivy@abdoc.net>"
   ],
@@ -49,5 +50,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "license": "MIT"
+  "engines": {
+    "node": ">=0.10.0"
+  }
 }
