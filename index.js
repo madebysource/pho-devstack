@@ -5,6 +5,7 @@ var clean = require('gulp-clean');
 var htmlmin = require('gulp-htmlmin');
 var inject = require('gulp-inject');
 var less = require('gulp-less');
+var newer = require('gulp-newer');
 var plumber = require('gulp-plumber');
 var refresh = require('gulp-livereload');
 var rev = require('gulp-rev');
@@ -23,37 +24,49 @@ var gulpLog = function(text) {
 
 module.exports = function(gulp, userConfig) {
   var config = extend(true, {}, defaultConfig, userConfig);
+  var scriptsChanged = true;
+  var stylesChanged = true;
 
   gulp.task('lrServer', function(cb) {
     lrServer.listen(35729, cb);
   });
 
-  gulp.task('distClean', function(cb) {
-    gulp.src([
-      path.join(config.dist.scriptDir, config.dist.scriptFiles),
-      path.join(config.dist.styleDir, config.dist.styleFiles),
-      path.join(config.dist.imageDir, config.src.imageFiles)
-    ], { read: false })
+  gulp.task('scripts', function(cb) {
+    if (!scriptsChanged) {
+      cb();
+      return;
+    }
+
+    scriptsChanged = false;
+    gulp.src([path.join(config.dist.scriptDir, config.dist.scriptFiles)], {read: false})
       .pipe(clean())
-      .on('end', cb);
+      .on('end', function () {
+        gulp.src(path.join(config.src.scriptDir, config.src.scriptMain))
+          .pipe(plumber(config.plumber))
+          .pipe(browserify(config.browserify))
+          .pipe(rev())
+          .pipe(gulp.dest(config.dist.scriptDir))
+          .on('end', cb);
+      });
   });
 
-  gulp.task('scripts', ['distClean'], function(cb) {
-    gulp.src(path.join(config.src.scriptDir, config.src.scriptMain))
-      .pipe(plumber(config.plumber))
-      .pipe(browserify(config.browserify))
-      .pipe(rev())
-      .pipe(gulp.dest(config.dist.scriptDir))
-      .on('end', cb);
-  });
+  gulp.task('styles', function(cb) {
+    if (!stylesChanged) {
+      cb();
+      return;
+    }
 
-  gulp.task('styles', ['distClean'], function(cb) {
-    gulp.src(path.join(config.src.styleDir, config.src.styleMain))
-      .pipe(plumber(config.plumber))
-      .pipe(less(config.less))
-      .pipe(rev())
-      .pipe(gulp.dest(config.dist.styleDir))
-      .on('end', cb);
+    stylesChanged = false;
+    gulp.src([path.join(config.dist.styleDir, config.dist.styleFiles)], {read: false})
+      .pipe(clean())
+      .on('end', function () {
+        gulp.src(path.join(config.src.styleDir, config.src.styleMain))
+        .pipe(plumber(config.plumber))
+        .pipe(less(config.less))
+        .pipe(rev())
+        .pipe(gulp.dest(config.dist.styleDir))
+        .on('end', cb);
+      });
   });
 
   gulp.task('index', ['scripts', 'styles', 'images'], function(cb) {
@@ -69,8 +82,10 @@ module.exports = function(gulp, userConfig) {
       .on('end', cb);
   });
 
-  gulp.task('images', ['distClean'], function(cb) {
+  gulp.task('images', function(cb) {
     gulp.src(path.join(config.src.imageDir, config.src.imageFiles))
+      .pipe(plumber(config.plumber))
+      .pipe(newer(config.dist.imageDir))
       .pipe(imagemin())
       .pipe(gulp.dest(config.dist.imageDir))
       .on('end', cb);
@@ -94,11 +109,17 @@ module.exports = function(gulp, userConfig) {
     casper.stdout.on('close', process.exit);
   });
 
-  gulp.task('default', ['index', 'lrServer', 'testContinous'], function() {
+  gulp.task('default', ['lrServer', 'index', 'testContinous'], function() {
+    gulp.watch([path.join(config.src.scriptDir, config.src.scriptFiles)], ['index'])
+      .on('change', function () {
+        scriptsChanged = true;
+      });
+    gulp.watch([path.join(config.src.styleDir, config.src.styleFiles)], ['index'])
+      .on('change', function () {
+        stylesChanged = true;
+      });
     gulp.watch([
       path.join(config.src.markupDir, config.src.markupFiles),
-      path.join(config.src.scriptDir, config.src.scriptFiles),
-      path.join(config.src.styleDir, config.src.styleFiles),
       path.join(config.src.specDir, config.src.specFiles),
       path.join(config.src.imageDir, config.src.imageFiles)
     ], ['index']);
