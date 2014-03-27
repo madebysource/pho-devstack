@@ -7,14 +7,13 @@ var inject = require('gulp-inject');
 var less = require('gulp-less');
 var newer = require('gulp-newer');
 var plumber = require('gulp-plumber');
-var refresh = require('gulp-livereload');
+var livereload = require('gulp-livereload');
 var rev = require('gulp-rev');
 var imagemin = require('gulp-imagemin');
 
 var defaultConfig = require('./config');
 var extend = require('node.extend');
 var karma = require('karma');
-var lrServer = require('tiny-lr')();
 var path = require('path');
 var spawn = require('child_process').spawn;
 
@@ -24,11 +23,13 @@ var gulpLog = function(text) {
 
 module.exports = function(gulp, userConfig) {
   var config = extend(true, {}, defaultConfig, userConfig);
+  var lrServer;
   var scriptsChanged = true;
   var stylesChanged = true;
 
   gulp.task('lrServer', function(cb) {
-    lrServer.listen(35729, cb);
+    lrServer = livereload();
+    cb();
   });
 
   gulp.task('scripts', function(cb) {
@@ -78,7 +79,6 @@ module.exports = function(gulp, userConfig) {
       .pipe(inject(path.join(config.src.markupDir, config.src.markupMain), config.inject))
       .pipe(htmlmin(config.htmlmin))
       .pipe(gulp.dest('dist'))
-      .pipe(refresh(lrServer))
       .on('end', cb);
   });
 
@@ -110,6 +110,10 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('default', ['lrServer', 'index', 'testContinous'], function() {
+    gulp.watch([path.join(config.dist.markupDir, config.src.markupFiles)], function (file) {
+      lrServer.changed(file.path);
+    });
+
     gulp.watch([path.join(config.src.scriptDir, config.src.scriptFiles)], ['index'])
       .on('change', function () {
         scriptsChanged = true;

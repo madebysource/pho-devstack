@@ -38,7 +38,7 @@
     "gulp-imagemin": "^0.1.5",
     "gulp-inject": "~0.2.2",
     "gulp-less": "~1.2.1",
-    "gulp-livereload": "~0.2.0",
+    "gulp-livereload": "~1.2.0",
     "gulp-newer": "~0.3.0",
     "gulp-plumber": "~0.5.6",
     "gulp-rev": "~0.2.1",
