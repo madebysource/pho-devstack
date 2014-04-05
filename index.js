@@ -94,7 +94,7 @@ module.exports = function(gulp, userConfig) {
   gulp.task('test', ['index'], function() {
     karma.server.start({ configFile: path.join(process.cwd(), 'karma.conf.js'), singleRun: true, autoWatch: false }, process.exit);
   });
-  
+
   gulp.task('testContinous', ['index'], function () {
     karma.server.start({ configFile: path.join(process.cwd(), 'karma.conf.js'), singleRun: false, autoWatch: true }, process.exit);
   });
