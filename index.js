@@ -19,14 +19,17 @@ module.exports = function(gulp, userConfig) {
   var lrServer;
   var cleanFolders = {};
 
-  var env = 'development';
-  var envConfig = config.env[env];
+  var envConfig;
 
   var plugin = function(name) {
+    var env = argv.type || 'development';
+    envConfig = envConfig || config.env[env];
+
+    if (!envConfig) { return plugins[name]; }
+
     var pluginOption = envConfig[name];
 
     var pluginIsTurnedOff = pluginOption !== undefined && pluginOption !== null && !pluginOption;
-
     if (pluginIsTurnedOff) {
       return gutil.noop;
     } else {
@@ -130,12 +133,5 @@ module.exports = function(gulp, userConfig) {
       path.join(config.src.specDir, config.src.specFiles),
       path.join(config.src.imageDir, config.src.imageFiles)
     ], ['index']);
-  });
-
-  gulp.task('build', function() {
-    env = argv.type || 'development';
-    envConfig = config.env[env];
-
-    gulp.start('index');
   });
 };
