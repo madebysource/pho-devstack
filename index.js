@@ -11,11 +11,12 @@ var livereload = require('gulp-livereload');
 var rev = require('gulp-rev');
 var imagemin = require('gulp-imagemin');
 
-var defaultConfig = require('./config');
 var extend = require('node.extend');
 var karma = require('karma');
 var path = require('path');
 var spawn = require('child_process').spawn;
+
+var defaultConfig = require('./config');
 
 var gulpLog = function(text) {
   console.log('[\x1B[32m' + 'gulp' + '\x1B[39m] ' + text);
@@ -23,6 +24,7 @@ var gulpLog = function(text) {
 
 module.exports = function(gulp, userConfig) {
   var config = extend(true, {}, defaultConfig, userConfig);
+
   var lrServer;
   var scriptsChanged = true;
   var stylesChanged = true;
@@ -33,15 +35,13 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('scripts', function(cb) {
-    if (!scriptsChanged) {
-      cb();
-      return;
-    }
+    if (!scriptsChanged) { return cb(); }
 
     scriptsChanged = false;
+
     gulp.src([path.join(config.dist.scriptDir, config.dist.scriptFiles)], {read: false})
       .pipe(clean())
-      .on('end', function () {
+      .on('end', function() {
         gulp.src(path.join(config.src.scriptDir, config.src.scriptMain))
           .pipe(plumber(config.plumber))
           .pipe(browserify(config.browserify))
@@ -52,21 +52,19 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('styles', function(cb) {
-    if (!stylesChanged) {
-      cb();
-      return;
-    }
+    if (!stylesChanged) { return cb(); }
 
     stylesChanged = false;
+
     gulp.src([path.join(config.dist.styleDir, config.dist.styleFiles)], {read: false})
       .pipe(clean())
-      .on('end', function () {
+      .on('end', function() {
         gulp.src(path.join(config.src.styleDir, config.src.styleMain))
-        .pipe(plumber(config.plumber))
-        .pipe(less(config.less))
-        .pipe(rev())
-        .pipe(gulp.dest(config.dist.styleDir))
-        .on('end', cb);
+          .pipe(plumber(config.plumber))
+          .pipe(less(config.less))
+          .pipe(rev())
+          .pipe(gulp.dest(config.dist.styleDir))
+          .on('end', cb);
       });
   });
 
@@ -95,7 +93,7 @@ module.exports = function(gulp, userConfig) {
     karma.server.start({ configFile: path.join(process.cwd(), 'karma.conf.js'), singleRun: true, autoWatch: false }, process.exit);
   });
 
-  gulp.task('testContinous', ['index'], function () {
+  gulp.task('testContinous', ['index'], function() {
     karma.server.start({ configFile: path.join(process.cwd(), 'karma.conf.js'), singleRun: false, autoWatch: true }, process.exit);
   });
 
@@ -106,22 +104,25 @@ module.exports = function(gulp, userConfig) {
     casper.stdout.on('data', function(data) {
       gulpLog('CasperJS: ' + data.toString().slice(0, -1));
     });
+
     casper.stdout.on('close', process.exit);
   });
 
   gulp.task('default', ['lrServer', 'index', 'testContinous'], function() {
-    gulp.watch([path.join(config.dist.markupDir, config.src.markupFiles)], function (file) {
+    gulp.watch([path.join(config.dist.markupDir, config.src.markupFiles)], function(file) {
       lrServer.changed(file.path);
     });
 
     gulp.watch([path.join(config.src.scriptDir, config.src.scriptFiles)], ['index'])
-      .on('change', function () {
+      .on('change', function() {
         scriptsChanged = true;
       });
+
     gulp.watch([path.join(config.src.styleDir, config.src.styleFiles)], ['index'])
-      .on('change', function () {
+      .on('change', function() {
         stylesChanged = true;
       });
+
     gulp.watch([
       path.join(config.src.markupDir, config.src.markupFiles),
       path.join(config.src.specDir, config.src.specFiles),

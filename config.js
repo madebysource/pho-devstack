@@ -39,10 +39,11 @@ module.exports = {
   },
   inject: {
     transform: function(filepath) {
-      if (filepath.indexOf('.js') !== -1)
+      if (filepath.indexOf('.js') !== -1) {
         return '<script src="' + filepath.substr(6) + '"></script>';
-      else
+      } else {
         return '<link rel="stylesheet" href="' + filepath.substr(6) + '" />';
+      }
     }
   },
   less: {
@@ -58,10 +59,11 @@ module.exports = {
       var beep = '\x07';
       var line2 = chalk.red(err.message);
       var line1 = beep + '[' + err.plugin + '] ' + err.name;
-      if (err.fileName)
+      if (err.fileName) {
         line1 += ' in ' + path.relative(process.cwd(), err.fileName) + ':' + chalk.bold(err.lineNumber);
-      else if (err.lineNumber)
+      } else if (err.lineNumber) {
         line1 += ' at line ' + chalk.bold(err.lineNumber);
+      }
 
       console.log(line1);
       console.log(line2);
