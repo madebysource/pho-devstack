@@ -18,8 +18,10 @@ var spawn = require('child_process').spawn;
 
 var defaultConfig = require('./config');
 
+var chalk = require('chalk');
+
 var gulpLog = function(text) {
-  console.log('[\x1B[32m' + 'gulp' + '\x1B[39m] ' + text);
+  console.log('[' + chalk.green('gulp') + '] ' + text);
 };
 
 module.exports = function(gulp, userConfig) {
