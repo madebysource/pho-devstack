@@ -100,7 +100,7 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('e2e', ['index'], function() {
-    var testPath = path.join(config.src.specDir, config.src.integrationDir);
+    var testPath = path.join(config.src.specDir, config.src.e2eDir);
     var casper = spawn(path.join(__dirname, 'node_modules/casperjs/bin/casperjs'), ['test', testPath]);
 
     casper.stdout.on('data', function(data) {
