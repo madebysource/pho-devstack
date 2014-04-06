@@ -23,7 +23,7 @@ module.exports = function(gulp, userConfig) {
   var config = extend(true, {}, defaultConfig, userConfig);
 
   var lrServer;
-  var changedFolders = {};
+  var cleanFolders = {};
 
   gulp.task('lrServer', function(cb) {
     lrServer = livereload();
@@ -31,9 +31,9 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('scripts', function(cb) {
-    if (!changedFolders['scripts']) { return cb(); }
+    if (cleanFolders['scripts']) { return cb(); }
 
-    changedFolders['scripts'] = false;
+    cleanFolders['scripts'] = true;
 
     gulp.src(path.join(config.dist.scriptDir, config.dist.scriptFiles), { read: false })
       .pipe(clean())
@@ -49,9 +49,9 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('styles', function(cb) {
-    if (!changedFolders['styles']) { return cb(); }
+    if (cleanFolders['styles']) { return cb(); }
 
-    changedFolders['styles'] = false;
+    cleanFolders['styles'] = true;
 
     gulp.src(path.join(config.dist.styleDir, config.dist.styleFiles), { read: false })
       .pipe(clean())
@@ -105,12 +105,12 @@ module.exports = function(gulp, userConfig) {
 
     gulp.watch(path.join(config.src.scriptDir, config.src.scriptFiles), ['index'])
       .on('change', function() {
-        changedFolders['scripts'] = true;
+        cleanFolders['scripts'] = false;
       });
 
     gulp.watch(path.join(config.src.styleDir, config.src.styleFiles), ['index'])
       .on('change', function() {
-        changedFolders['styles'] = true;
+        cleanFolders['styles'] = false;
       });
 
     gulp.watch([
