@@ -11,6 +11,7 @@ var livereload = require('gulp-livereload');
 var rev = require('gulp-rev');
 var imagemin = require('gulp-imagemin');
 var gutil = require('gulp-util');
+var uglify = require('gulp-uglify');
 
 var extend = require('node.extend');
 var karma = require('karma');
@@ -41,6 +42,7 @@ module.exports = function(gulp, userConfig) {
         gulp.src(path.join(config.src.scriptDir, config.src.scriptMain))
           .pipe(plumber(config.plumber))
           .pipe(browserify(config.browserify))
+          .pipe(uglify(config.uglify))
           .pipe(rev())
           .pipe(gulp.dest(config.dist.scriptDir))
           .on('end', cb);

@@ -31,7 +31,7 @@ module.exports = {
   browserify: {
     debug: true,
     detectGlobals: false,
-    transform: ['browserify-ngmin', 'uglifyify']
+    transform: ['browserify-ngmin']
   },
   htmlmin: {
     collapseWhitespace: true,
@@ -68,5 +68,7 @@ module.exports = {
       console.log(line1);
       console.log(line2);
     }
+  },
+  uglify: {
   }
 };
