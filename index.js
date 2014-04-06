@@ -109,9 +109,11 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('default', ['lrServer', 'index', 'testContinuous'], function() {
-    gulp.watch(path.join(config.dist.markupDir, config.src.markupFiles), function(file) {
-      lrServer.changed(file.path);
-    });
+    if (plugin('livereload')) {
+      gulp.watch(path.join(config.dist.markupDir, config.src.markupFiles), function(file) {
+        lrServer.changed(file.path);
+      });
+    }
 
     gulp.watch(path.join(config.src.scriptDir, config.src.scriptFiles), ['index'])
       .on('change', function() {
