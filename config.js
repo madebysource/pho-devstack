@@ -30,8 +30,7 @@ module.exports = {
   },
   browserify: {
     debug: true,
-    detectGlobals: false,
-    transform: ['browserify-ngmin']
+    detectGlobals: false
   },
   htmlmin: {
     collapseWhitespace: true,

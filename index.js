@@ -11,6 +11,7 @@ var livereload = require('gulp-livereload');
 var rev = require('gulp-rev');
 var imagemin = require('gulp-imagemin');
 var uglify = require('gulp-uglify');
+var ngmin = require('gulp-ngmin');
 
 var extend = require('node.extend');
 var path = require('path');
@@ -41,6 +42,7 @@ module.exports = function(gulp, userConfig) {
         gulp.src(path.join(config.src.scriptDir, config.src.scriptMain))
           .pipe(plumber(config.plumber))
           .pipe(browserify(config.browserify))
+          .pipe(ngmin())
           .pipe(uglify(config.uglify))
           .pipe(rev())
           .pipe(gulp.dest(config.dist.scriptDir))
