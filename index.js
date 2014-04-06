@@ -1,23 +1,16 @@
 'use strict';
 
-var browserify = require('gulp-browserify');
-var clean = require('gulp-clean');
-var htmlmin = require('gulp-htmlmin');
-var inject = require('gulp-inject');
-var less = require('gulp-less');
-var newer = require('gulp-newer');
-var plumber = require('gulp-plumber');
-var livereload = require('gulp-livereload');
-var rev = require('gulp-rev');
-var imagemin = require('gulp-imagemin');
-var uglify = require('gulp-uglify');
-var ngmin = require('gulp-ngmin');
-
-var extend = require('node.extend');
+var gutil = require('gulp-util');
 var path = require('path');
 
-var defaultConfig = require('./config');
+var argv = require('yargs').argv;
+var extend = require('node.extend');
 
+var plugins = require("gulp-load-plugins")({
+  config: require.resolve('./package.json')
+});
+
+var defaultConfig = require('./config');
 var testRunner = require('./test-runner');
 
 module.exports = function(gulp, userConfig) {
@@ -26,8 +19,23 @@ module.exports = function(gulp, userConfig) {
   var lrServer;
   var cleanFolders = {};
 
+  var env = 'development';
+  var envConfig = config.env[env];
+
+  var plugin = function(name) {
+    var pluginOption = envConfig[name];
+
+    var pluginIsTurnedOff = pluginOption !== undefined && pluginOption !== null && !pluginOption;
+
+    if (pluginIsTurnedOff) {
+      return gutil.noop;
+    } else {
+      return plugins[name];
+    }
+  };
+
   gulp.task('lrServer', function(cb) {
-    lrServer = livereload();
+    lrServer = plugin('livereload')();
     cb();
   });
 
@@ -37,14 +45,14 @@ module.exports = function(gulp, userConfig) {
     cleanFolders['scripts'] = true;
 
     gulp.src(path.join(config.dist.scriptDir, config.dist.scriptFiles), { read: false })
-      .pipe(clean())
+      .pipe(plugin('clean')())
       .on('end', function() {
         gulp.src(path.join(config.src.scriptDir, config.src.scriptMain))
-          .pipe(plumber(config.plumber))
-          .pipe(browserify(config.browserify))
-          .pipe(ngmin())
-          .pipe(uglify(config.uglify))
-          .pipe(rev())
+          .pipe(plugin('plumber')(config.plumber))
+          .pipe(plugin('browserify')(config.browserify))
+          .pipe(plugin('ngmin')())
+          .pipe(plugin('uglify')(config.uglify))
+          .pipe(plugin('rev')())
           .pipe(gulp.dest(config.dist.scriptDir))
           .on('end', cb);
       });
@@ -56,12 +64,12 @@ module.exports = function(gulp, userConfig) {
     cleanFolders['styles'] = true;
 
     gulp.src(path.join(config.dist.styleDir, config.dist.styleFiles), { read: false })
-      .pipe(clean())
+      .pipe(plugin('clean')())
       .on('end', function() {
         gulp.src(path.join(config.src.styleDir, config.src.styleMain))
-          .pipe(plumber(config.plumber))
-          .pipe(less(config.less))
-          .pipe(rev())
+          .pipe(plugin('plumber')(config.plumber))
+          .pipe(plugin('less')(config.less))
+          .pipe(plugin('rev')())
           .pipe(gulp.dest(config.dist.styleDir))
           .on('end', cb);
       });
@@ -72,18 +80,18 @@ module.exports = function(gulp, userConfig) {
       path.join(config.dist.scriptDir, config.dist.scriptFiles),
       path.join(config.dist.styleDir, config.dist.styleFiles)
     ], { read: false })
-      .pipe(plumber(config.plumber))
-      .pipe(inject(path.join(config.src.markupDir, config.src.markupMain), config.inject))
-      .pipe(htmlmin(config.htmlmin))
+      .pipe(plugin('plumber')(config.plumber))
+      .pipe(plugin('inject')(path.join(config.src.markupDir, config.src.markupMain), config.inject))
+      .pipe(plugin('htmlmin')(config.htmlmin))
       .pipe(gulp.dest('dist'))
       .on('end', cb);
   });
 
   gulp.task('images', function(cb) {
     gulp.src(path.join(config.src.imageDir, config.src.imageFiles))
-      .pipe(plumber(config.plumber))
-      .pipe(newer(config.dist.imageDir))
-      .pipe(imagemin())
+      .pipe(plugin('plumber')(config.plumber))
+      .pipe(plugin('newer')(config.dist.imageDir))
+      .pipe(plugin('imagemin')())
       .pipe(gulp.dest(config.dist.imageDir))
       .on('end', cb);
   });
@@ -120,5 +128,12 @@ module.exports = function(gulp, userConfig) {
       path.join(config.src.specDir, config.src.specFiles),
       path.join(config.src.imageDir, config.src.imageFiles)
     ], ['index']);
+  });
+
+  gulp.task('build', function() {
+    env = argv.type || 'development';
+    envConfig = config.env[env];
+
+    gulp.start('index');
   });
 };

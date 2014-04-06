@@ -43,6 +43,8 @@
     "gulp-util": "^2.2.14",
     "gulp-uglify": "^0.2.1",
     "gulp-ngmin": "^0.2.0",
+    "gulp-load-plugins": "^0.5.0",
+    "yargs": "^1.2.1",
     "karma": "^0.12.1",
     "karma-jasmine": "^0.2.1",
     "karma-mocha-reporter": "^0.2.2",

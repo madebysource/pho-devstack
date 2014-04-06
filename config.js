@@ -28,6 +28,14 @@ module.exports = {
     specFiles: '**/*Spec.js',
     imageFiles: '**/*.{png,jpg,jpeg}'
   },
+  env: {
+    development: {
+      imagemin: false,
+      ngmin: false,
+      uglify: false,
+      htmlmin: false
+    }
+  },
   browserify: {
     debug: true,
     detectGlobals: false
