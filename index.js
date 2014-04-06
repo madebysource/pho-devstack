@@ -36,7 +36,7 @@ module.exports = function(gulp, userConfig) {
 
     foldersChanged['scripts'] = false;
 
-    gulp.src([path.join(config.dist.scriptDir, config.dist.scriptFiles)], {read: false})
+    gulp.src([path.join(config.dist.scriptDir, config.dist.scriptFiles)], { read: false })
       .pipe(clean())
       .on('end', function() {
         gulp.src(path.join(config.src.scriptDir, config.src.scriptMain))
@@ -54,7 +54,7 @@ module.exports = function(gulp, userConfig) {
 
     foldersChanged['styles'] = false;
 
-    gulp.src([path.join(config.dist.styleDir, config.dist.styleFiles)], {read: false})
+    gulp.src([path.join(config.dist.styleDir, config.dist.styleFiles)], { read: false })
       .pipe(clean())
       .on('end', function() {
         gulp.src(path.join(config.src.styleDir, config.src.styleMain))
