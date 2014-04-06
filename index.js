@@ -21,19 +21,22 @@ module.exports = function(gulp, userConfig) {
 
   var envConfig;
 
+  var isPluginActivated = function(name) {
+    var option = envConfig[name];
+
+    return !(option !== undefined && option !== null && !option);
+  };
+
   var plugin = function(name) {
     var env = argv.type || 'development';
     envConfig = envConfig || config.env[env];
 
     if (!envConfig) { return plugins[name]; }
 
-    var pluginOption = envConfig[name];
-
-    var pluginIsTurnedOff = pluginOption !== undefined && pluginOption !== null && !pluginOption;
-    if (pluginIsTurnedOff) {
-      return gutil.noop;
-    } else {
+    if (isPluginActivated(name)) {
       return plugins[name];
+    } else {
+      return gutil.noop;
     }
   };
 
@@ -112,7 +115,7 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('default', ['lrServer', 'index', 'testContinuous'], function() {
-    if (plugin('livereload')) {
+    if (isPluginActivated('livereload')) {
       gulp.watch(path.join(config.dist.markupDir, config.src.markupFiles), function(file) {
         lrServer.changed(file.path);
       });
