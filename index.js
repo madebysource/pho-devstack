@@ -91,7 +91,7 @@ module.exports = function(gulp, userConfig) {
     karma.server.start({ configFile: path.join(process.cwd(), 'karma.conf.js'), singleRun: true, autoWatch: false }, process.exit);
   });
 
-  gulp.task('testContinous', ['index'], function() {
+  gulp.task('testContinuous', ['index'], function() {
     karma.server.start({ configFile: path.join(process.cwd(), 'karma.conf.js'), singleRun: false, autoWatch: true }, process.exit);
   });
 
@@ -106,7 +106,7 @@ module.exports = function(gulp, userConfig) {
     casper.stdout.on('close', process.exit);
   });
 
-  gulp.task('default', ['lrServer', 'index', 'testContinous'], function() {
+  gulp.task('default', ['lrServer', 'index', 'testContinuous'], function() {
     gulp.watch([path.join(config.dist.markupDir, config.src.markupFiles)], function(file) {
       lrServer.changed(file.path);
     });
