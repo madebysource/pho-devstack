@@ -42,6 +42,7 @@
     "gulp-newer": "~0.3.0",
     "gulp-plumber": "~0.5.6",
     "gulp-rev": "~0.3.1",
+    "gulp-util": "^2.2.14",
     "karma": "^0.12.1",
     "karma-jasmine": "^0.2.1",
     "karma-mocha-reporter": "^0.2.2",
