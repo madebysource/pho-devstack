@@ -95,8 +95,7 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('e2e', ['index'], function() {
-    var testPath = path.join(config.src.specDir, config.src.e2eDir);
-    testRunner.casper(testPath);
+    testRunner.casper(path.join(config.src.specDir, config.src.e2eDir));
   });
 
   gulp.task('default', ['lrServer', 'index', 'testContinuous'], function() {
