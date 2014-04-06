@@ -35,7 +35,7 @@ module.exports = function(gulp, userConfig) {
 
     foldersChanged['scripts'] = false;
 
-    gulp.src([path.join(config.dist.scriptDir, config.dist.scriptFiles)], { read: false })
+    gulp.src(path.join(config.dist.scriptDir, config.dist.scriptFiles), { read: false })
       .pipe(clean())
       .on('end', function() {
         gulp.src(path.join(config.src.scriptDir, config.src.scriptMain))
@@ -53,7 +53,7 @@ module.exports = function(gulp, userConfig) {
 
     foldersChanged['styles'] = false;
 
-    gulp.src([path.join(config.dist.styleDir, config.dist.styleFiles)], { read: false })
+    gulp.src(path.join(config.dist.styleDir, config.dist.styleFiles), { read: false })
       .pipe(clean())
       .on('end', function() {
         gulp.src(path.join(config.src.styleDir, config.src.styleMain))
@@ -99,16 +99,16 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('default', ['lrServer', 'index', 'testContinuous'], function() {
-    gulp.watch([path.join(config.dist.markupDir, config.src.markupFiles)], function(file) {
+    gulp.watch(path.join(config.dist.markupDir, config.src.markupFiles), function(file) {
       lrServer.changed(file.path);
     });
 
-    gulp.watch([path.join(config.src.scriptDir, config.src.scriptFiles)], ['index'])
+    gulp.watch(path.join(config.src.scriptDir, config.src.scriptFiles), ['index'])
       .on('change', function() {
         foldersChanged['scripts'] = true;
       });
 
-    gulp.watch([path.join(config.src.styleDir, config.src.styleFiles)], ['index'])
+    gulp.watch(path.join(config.src.styleDir, config.src.styleFiles), ['index'])
       .on('change', function() {
         foldersChanged['styles'] = true;
       });
