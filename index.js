@@ -36,9 +36,9 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('scripts', function(cb) {
-    if (!foldersChanged['scriptsChanged']) { return cb(); }
+    if (!foldersChanged['scripts']) { return cb(); }
 
-    foldersChanged['scriptsChanged'] = false;
+    foldersChanged['scripts'] = false;
 
     gulp.src([path.join(config.dist.scriptDir, config.dist.scriptFiles)], {read: false})
       .pipe(clean())
@@ -53,9 +53,9 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('styles', function(cb) {
-    if (!foldersChanged['stylesChanged']) { return cb(); }
+    if (!foldersChanged['styles']) { return cb(); }
 
-    foldersChanged['stylesChanged'] = false;
+    foldersChanged['styles'] = false;
 
     gulp.src([path.join(config.dist.styleDir, config.dist.styleFiles)], {read: false})
       .pipe(clean())
@@ -116,12 +116,12 @@ module.exports = function(gulp, userConfig) {
 
     gulp.watch([path.join(config.src.scriptDir, config.src.scriptFiles)], ['index'])
       .on('change', function() {
-        foldersChanged['scriptsChanged'] = true;
+        foldersChanged['scripts'] = true;
       });
 
     gulp.watch([path.join(config.src.styleDir, config.src.styleFiles)], ['index'])
       .on('change', function() {
-        foldersChanged['stylesChanged'] = true;
+        foldersChanged['styles'] = true;
       });
 
     gulp.watch([
