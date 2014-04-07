@@ -78,5 +78,7 @@ module.exports = {
     }
   },
   uglify: {
+  },
+  imagemin: {
   }
 };

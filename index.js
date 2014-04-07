@@ -110,7 +110,7 @@ module.exports = function(gulp, userConfig) {
     gulp.src(path.join(config.src.imageDir, config.src.imageFiles))
       .pipe(plugin('plumber')(config.plumber))
       .pipe(plugin('newer')(config.dist.imageDir))
-      .pipe(plugin('imagemin')())
+      .pipe(plugin('imagemin')(config.imagemin))
       .pipe(gulp.dest(config.dist.imageDir))
       .on('end', cb);
   });
