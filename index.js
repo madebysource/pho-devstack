@@ -1,11 +1,11 @@
 'use strict';
 
-var gutil = require('gulp-util');
 var path = require('path');
 
 var argv = require('yargs').argv;
 var extend = require('node.extend');
 var es = require('event-stream');
+var through = require('through2');
 
 var plugins = require("gulp-load-plugins")({
   config: require.resolve('./package.json')
@@ -45,7 +45,7 @@ module.exports = function(gulp, userConfig) {
     if (isPluginActivated(name)) {
       return plugins[name];
     } else {
-      return gutil.noop;
+      return through.obj;
     }
   };
 

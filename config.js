@@ -1,6 +1,6 @@
 'use strict';
 var path = require('path');
-var gutil = require('gulp-util');
+var chalk = require('chalk');
 
 module.exports = {
   dist: {
@@ -65,12 +65,12 @@ module.exports = {
   plumber: {
     errorHandler: function(err) {
       var beep = '\x07';
-      var line2 = gutil.colors.red(err.message);
+      var line2 = chalk.red(err.message);
       var line1 = beep + '[' + err.plugin + '] ' + err.name;
       if (err.fileName) {
-        line1 += ' in ' + path.relative(process.cwd(), err.fileName) + ':' + gutil.colors.bold(err.lineNumber);
+        line1 += ' in ' + path.relative(process.cwd(), err.fileName) + ':' + chalk.bold(err.lineNumber);
       } else if (err.lineNumber) {
-        line1 += ' at line ' + gutil.colors.bold(err.lineNumber);
+        line1 += ' at line ' + chalk.bold(err.lineNumber);
       }
 
       console.log(line1);
