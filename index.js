@@ -5,6 +5,7 @@ var path = require('path');
 
 var argv = require('yargs').argv;
 var extend = require('node.extend');
+var es = require('event-stream');
 
 var plugins = require("gulp-load-plugins")({
   config: require.resolve('./package.json')
@@ -21,6 +22,12 @@ module.exports = function(gulp, userConfig) {
 
   var env;
   var envConfig;
+
+  var getFolders = function(base, folders) {
+    return gulp.src(folders.map(function(item) {
+      return path.join(base, item, '/**/*');
+    }), { base: base });
+  };
 
   var isPluginActivated = function(name) {
     var option = envConfig[name];
@@ -84,13 +91,17 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('index', ['scripts', 'styles', 'images'], function(cb) {
-    gulp.src([
+    var stream = gulp.src([
       path.join(config.dist.scriptDir, config.dist.scriptFiles),
       path.join(config.dist.styleDir, config.dist.styleFiles)
     ], { read: false })
       .pipe(plugin('plumber')(config.plumber))
       .pipe(plugin('inject')(path.join(config.src.markupDir, config.src.markupMain), config.inject))
-      .pipe(plugin('htmlmin')(config.htmlmin))
+      .pipe(plugin('htmlmin')(config.htmlmin));
+
+    var copyStream = getFolders('src', config.copy);
+
+    es.merge(stream, copyStream)
       .pipe(gulp.dest('dist'))
       .on('end', cb);
   });

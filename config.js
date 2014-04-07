@@ -36,6 +36,7 @@ module.exports = {
       htmlmin: false
     }
   },
+  copy: [],
   browserify: {
     debug: true,
     detectGlobals: false
