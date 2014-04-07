@@ -19,6 +19,7 @@ module.exports = function(gulp, userConfig) {
   var lrServer;
   var cleanFolders = {};
 
+  var env;
   var envConfig;
 
   var isPluginActivated = function(name) {
@@ -28,7 +29,8 @@ module.exports = function(gulp, userConfig) {
   };
 
   var plugin = function(name) {
-    var env = argv.type || 'development';
+    env = env || argv.type || 'development';
+
     envConfig = envConfig || config.env[env];
 
     if (!envConfig) { return plugins[name]; }
