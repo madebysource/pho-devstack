@@ -7,7 +7,7 @@ var extend = require('node.extend');
 var es = require('event-stream');
 var through = require('through2');
 
-var plugins = require("gulp-load-plugins")({
+var plugins = require('gulp-load-plugins')({
   config: require.resolve('./package.json')
 });
 
