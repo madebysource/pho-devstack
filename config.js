@@ -65,16 +65,16 @@ module.exports = {
   plumber: {
     errorHandler: function(err) {
       var beep = '\x07';
-      var line2 = chalk.red(err.message);
-      var line1 = beep + '[' + err.plugin + '] ' + err.name;
+      var message = beep + '[' + err.plugin + '] ' + err.name;
+
       if (err.fileName) {
-        line1 += ' in ' + path.relative(process.cwd(), err.fileName) + ':' + chalk.bold(err.lineNumber);
+        message += ' in ' + path.relative(process.cwd(), err.fileName) + ':' + chalk.bold(err.lineNumber);
       } else if (err.lineNumber) {
-        line1 += ' at line ' + chalk.bold(err.lineNumber);
+        message += ' at line ' + chalk.bold(err.lineNumber);
       }
 
-      console.log(line1);
-      console.log(line2);
+      console.log(message);
+      console.log(chalk.red(err.message));
     }
   },
   uglify: {
