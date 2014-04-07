@@ -25,7 +25,7 @@ module.exports = function(gulp, userConfig) {
 
   var getFolders = function(base, folders) {
     return gulp.src(folders.map(function(item) {
-      return path.join(base, item, '/**/*');
+      return path.join(base, item);
     }), { base: base });
   };
 
