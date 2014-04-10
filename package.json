@@ -1,14 +1,14 @@
 {
-  "name": "pho-dev-stack",
+  "name": "pho-devstack",
   "version": "0.1.0",
   "description": "",
   "license": "MIT",
-  "homepage": "https://github.com/madebysource/pho-dev-stack",
+  "homepage": "https://github.com/madebysource/pho-devstack",
   "repository": {
     "type": "git",
-    "url": "https://github.com/madebysource/pho-dev-stack"
+    "url": "https://github.com/madebysource/pho-devstack"
   },
-  "bugs": "https://github.com/madebysource/pho-dev-stack/issues",
+  "bugs": "https://github.com/madebysource/pho-devstack/issues",
   "keywords": [
   ],
   "author": "Pavel Gavlík <pavelgavlik@abdoc.net>",
