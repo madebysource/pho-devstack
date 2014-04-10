@@ -21,7 +21,6 @@ module.exports = function(gulp, userConfig) {
   var cleanFolders = {};
 
   var env;
-  var envConfig;
 
   var getFolders = function(base, folders) {
     return gulp.src(folders.map(function(item) {
@@ -30,17 +29,16 @@ module.exports = function(gulp, userConfig) {
   };
 
   var isPluginActivated = function(name) {
-    var option = envConfig[name];
+    var option = config.env[name];
 
-    return !(option !== undefined && option !== null && !option);
+    if (option === true || option === false)
+      return option;
+    else
+      return true;
   };
 
   var plugin = function(name) {
     env = env || argv.type || 'development';
-
-    envConfig = envConfig || config.env[env];
-
-    if (!envConfig) { return plugins[name]; }
 
     if (isPluginActivated(name)) {
       return plugins[name];
@@ -99,9 +97,11 @@ module.exports = function(gulp, userConfig) {
       .pipe(plugin('inject')(path.join(config.src.markupDir, config.src.markupMain), config.inject))
       .pipe(plugin('htmlmin')(config.htmlmin));
 
-    var copyStream = getFolders('src', config.copy);
+    var streams = [stream];
+    if (config.copy.length)
+      streams.push(getFolders('src', config.copy));
 
-    es.merge(stream, copyStream)
+    es.merge.apply(null, streams)
       .pipe(gulp.dest('dist'))
       .on('end', cb);
   });
@@ -116,15 +116,18 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('test', ['index'], function() {
-    testRunner.karma();
+    if (isPluginActivated('karma'))
+      testRunner.karma();
   });
 
   gulp.task('testContinuous', ['index'], function() {
-    testRunner.karmaWatch();
+    if (isPluginActivated('karma'))
+      testRunner.karmaWatch();
   });
 
   gulp.task('e2e', ['index'], function() {
-    testRunner.casper(path.join(config.src.specDir, config.src.e2eDir));
+    if (isPluginActivated('e2e'))
+      testRunner.casper(path.join(config.src.specDir, config.src.e2eDir));
   });
 
   gulp.task('default', ['lrServer', 'index', 'testContinuous'], function() {
