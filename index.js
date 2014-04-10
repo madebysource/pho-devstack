@@ -7,7 +7,7 @@ var extend = require('node.extend');
 var es = require('event-stream');
 var through = require('through2');
 
-var plugins = require('gulp-load-plugins')({
+var $ = require('gulp-load-plugins')({
   config: require.resolve('./package.json')
 });
 
@@ -20,7 +20,7 @@ module.exports = function(gulp, userConfig) {
   var lrServer;
   var cleanFolders = {};
 
-  var env;
+  var env = argv.type || 'development';
 
   var getFolders = function(base, folders) {
     return gulp.src(folders.map(function(item) {
@@ -37,18 +37,16 @@ module.exports = function(gulp, userConfig) {
       return true;
   };
 
-  var plugin = function(name) {
-    env = env || argv.type || 'development';
-
-    if (isPluginActivated(name)) {
-      return plugins[name];
-    } else {
-      return through.obj;
+  // disabled gulp plugins are replaced with stream that passes everything through
+  for (var p in $)
+    if ($.hasOwnProperty(p)) {
+      if (!isPluginActivated(p))
+        $[p] = through.obj;
     }
-  };
 
+  // every task calls cb to measure its execution time
   gulp.task('lrServer', function(cb) {
-    lrServer = plugin('livereload')();
+    lrServer = $.livereload();
     cb();
   });
 
@@ -58,14 +56,14 @@ module.exports = function(gulp, userConfig) {
     cleanFolders['scripts'] = true;
 
     gulp.src(path.join(config.dist.scriptDir, config.dist.scriptFiles), { read: false })
-      .pipe(plugin('clean')())
+      .pipe($.clean())
       .on('end', function() {
         gulp.src(path.join(config.src.scriptDir, config.src.scriptMain))
-          .pipe(plugin('plumber')(config.plumber))
-          .pipe(plugin('browserify')(config.browserify))
-          .pipe(plugin('ngmin')())
-          .pipe(plugin('uglify')(config.uglify))
-          .pipe(plugin('rev')())
+          .pipe($.plumber(config.plumber))
+          .pipe($.browserify(config.browserify))
+          .pipe($.ngmin())
+          .pipe($.uglify(config.uglify))
+          .pipe($.rev())
           .pipe(gulp.dest(config.dist.scriptDir))
           .on('end', cb);
       });
@@ -77,12 +75,12 @@ module.exports = function(gulp, userConfig) {
     cleanFolders['styles'] = true;
 
     gulp.src(path.join(config.dist.styleDir, config.dist.styleFiles), { read: false })
-      .pipe(plugin('clean')())
+      .pipe($.clean())
       .on('end', function() {
         gulp.src(path.join(config.src.styleDir, config.src.styleMain))
-          .pipe(plugin('plumber')(config.plumber))
-          .pipe(plugin('less')(config.less))
-          .pipe(plugin('rev')())
+          .pipe($.plumber(config.plumber))
+          .pipe($.less(config.less))
+          .pipe($.rev())
           .pipe(gulp.dest(config.dist.styleDir))
           .on('end', cb);
       });
@@ -93,9 +91,9 @@ module.exports = function(gulp, userConfig) {
       path.join(config.dist.scriptDir, config.dist.scriptFiles),
       path.join(config.dist.styleDir, config.dist.styleFiles)
     ], { read: false })
-      .pipe(plugin('plumber')(config.plumber))
-      .pipe(plugin('inject')(path.join(config.src.markupDir, config.src.markupMain), config.inject))
-      .pipe(plugin('htmlmin')(config.htmlmin));
+      .pipe($.plumber(config.plumber))
+      .pipe($.inject(path.join(config.src.markupDir, config.src.markupMain), config.inject))
+      .pipe($.htmlmin(config.htmlmin));
 
     var streams = [stream];
     if (config.copy.length)
@@ -108,9 +106,9 @@ module.exports = function(gulp, userConfig) {
 
   gulp.task('images', function(cb) {
     gulp.src(path.join(config.src.imageDir, config.src.imageFiles))
-      .pipe(plugin('plumber')(config.plumber))
-      .pipe(plugin('newer')(config.dist.imageDir))
-      .pipe(plugin('imagemin')(config.imagemin))
+      .pipe($.plumber(config.plumber))
+      .pipe($.newer(config.dist.imageDir))
+      .pipe($.imagemin(config.imagemin))
       .pipe(gulp.dest(config.dist.imageDir))
       .on('end', cb);
   });
