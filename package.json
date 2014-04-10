@@ -10,17 +10,6 @@
   },
   "bugs": "https://github.com/madebysource/pho-dev-stack/issues",
   "keywords": [
-    "web",
-    "app",
-    "front-end",
-    "gulp",
-    "browserify",
-    "less",
-    "css",
-    "lesshat",
-    "minify",
-    "tdd",
-    "testing"
   ],
   "author": "Pavel Gavlík <pavelgavlik@abdoc.net>",
   "contributors": [
