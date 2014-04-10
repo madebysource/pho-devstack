@@ -28,24 +28,25 @@ module.exports = {
     specFiles: '**/*Spec.js',
     imageFiles: '**/*.{png,jpg,jpeg}'
   },
-  env: {
-    development: {
-      imagemin: false,
-      ngmin: false,
-      uglify: false,
-      htmlmin: false
-    }
-  },
-  copy: [],
   browserify: {
+    enabled: true,
     debug: true,
     detectGlobals: false
   },
+  clean: {
+    enabled: true
+  },
+  copy: [],
   htmlmin: {
+    enabled: false,
     collapseWhitespace: true,
     removeComments: true
   },
+  imagemin: {
+    enabled: true
+  },
   inject: {
+    enabled: true,
     transform: function(filepath) {
       if (filepath.indexOf('.js') !== -1) {
         return '<script src="' + filepath.substr(6) + '"></script>';
@@ -55,6 +56,7 @@ module.exports = {
     }
   },
   less: {
+    enabled: true,
     compress: true,
     paths: [
       'src/styles/',
@@ -62,7 +64,17 @@ module.exports = {
     ],
     sourceMap: true
   },
+  livereload: {
+    enabled: true
+  },
+  newer: {
+    enabled: true
+  },
+  ngmin: {
+    enabled: true
+  },
   plumber: {
+    enabled: true,
     errorHandler: function(err) {
       var beep = '\x07';
       var message = beep + '[' + err.plugin + '] ' + err.name;
@@ -78,7 +90,9 @@ module.exports = {
     }
   },
   uglify: {
+    enabled: false
   },
-  imagemin: {
+  rev: {
+    enabled: true
   }
 };

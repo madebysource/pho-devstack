@@ -7,8 +7,10 @@ var extend = require('node.extend');
 var es = require('event-stream');
 var through = require('through2');
 
+// we later iterate through this plugin object, plugin lazy loading has to be disabled
 var $ = require('gulp-load-plugins')({
-  config: require.resolve('./package.json')
+  config: require.resolve('./package.json'),
+  lazy: false
 });
 
 var defaultConfig = require('./config');
@@ -29,20 +31,16 @@ module.exports = function(gulp, userConfig) {
   };
 
   var isPluginActivated = function(name) {
-    var option = config.env[name];
-
-    if (option === true || option === false)
-      return option;
-    else
-      return true;
+    return config[name] && config[name].enabled;
   };
 
   // disabled gulp plugins are replaced with stream that passes everything through
-  for (var p in $)
+  for (var p in $) {
     if ($.hasOwnProperty(p)) {
       if (!isPluginActivated(p))
         $[p] = through.obj;
     }
+  }
 
   // every task calls cb to measure its execution time
   gulp.task('lrServer', function(cb) {
