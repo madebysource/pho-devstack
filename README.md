@@ -1,3 +1,6 @@
+## Status
+This is EXPERIMENTAL SOFTWARE! Use it at your own risk. There will be no documentation before 1.0, just installation instructions.
+
 ## Installation
 
 1. Install Node.js and run ```npm install -g gulp && npm install```
