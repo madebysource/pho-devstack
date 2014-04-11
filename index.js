@@ -1,11 +1,12 @@
 'use strict';
 
-var path = require('path');
-
 var argv = require('yargs').argv;
 var extend = require('node.extend');
 var es = require('event-stream');
+var path = require('path');
 var through = require('through2');
+var vinylSourceStream = require('vinyl-source-stream');
+var watchify = require('watchify');
 
 // we later iterate through this plugin object, plugin lazy loading has to be disabled
 var $ = require('gulp-load-plugins')({
@@ -18,11 +19,13 @@ var testRunner = require('./test-runner');
 
 module.exports = function(gulp, userConfig) {
   var config = extend(true, {}, defaultConfig, userConfig);
+  var env = argv.type || 'development';
 
   var lrServer;
   var cleanFolders = {};
-
-  var env = argv.type || 'development';
+  var bundler = watchify('./' + path.join(config.src.scriptDir, config.src.scriptMain));
+  bundler.transform('browserify-ngmin');
+  bundler.transform('uglifyify');
 
   var getFolders = function(base, folders) {
     return gulp.src(folders.map(function(item) {
@@ -30,14 +33,14 @@ module.exports = function(gulp, userConfig) {
     }), { base: base });
   };
 
-  var isPluginActivated = function(name) {
+  var isPluginEnabled = function(name) {
     return config[name] && config[name].enabled;
   };
 
   // disabled gulp plugins are replaced with stream that passes everything through
   for (var p in $) {
     if ($.hasOwnProperty(p)) {
-      if (!isPluginActivated(p))
+      if (!isPluginEnabled(p))
         $[p] = through.obj;
     }
   }
@@ -52,16 +55,13 @@ module.exports = function(gulp, userConfig) {
     if (cleanFolders['scripts']) { return cb(); }
 
     cleanFolders['scripts'] = true;
-
     gulp.src(path.join(config.dist.scriptDir, config.dist.scriptFiles), { read: false })
       .pipe($.clean())
       .on('end', function() {
-        gulp.src(path.join(config.src.scriptDir, config.src.scriptMain))
+        bundler.bundle()
+          .pipe(vinylSourceStream(config.src.scriptMain))
           .pipe($.plumber(config.plumber))
-          .pipe($.browserify(config.browserify))
-          .pipe($.ngmin())
-          .pipe($.uglify(config.uglify))
-          .pipe($.rev())
+          .pipe($.rename(config.rename))
           .pipe(gulp.dest(config.dist.scriptDir))
           .on('end', cb);
       });
@@ -78,7 +78,7 @@ module.exports = function(gulp, userConfig) {
         gulp.src(path.join(config.src.styleDir, config.src.styleMain))
           .pipe($.plumber(config.plumber))
           .pipe($.less(config.less))
-          .pipe($.rev())
+          .pipe($.rename(config.rename))
           .pipe(gulp.dest(config.dist.styleDir))
           .on('end', cb);
       });
@@ -112,31 +112,32 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('test', ['index'], function() {
-    if (isPluginActivated('karma'))
+    if (isPluginEnabled('karma'))
       testRunner.karma();
   });
 
   gulp.task('testContinuous', ['index'], function() {
-    if (isPluginActivated('karma'))
+    if (isPluginEnabled('karma'))
       testRunner.karmaWatch();
   });
 
   gulp.task('e2e', ['index'], function() {
-    if (isPluginActivated('e2e'))
+    if (isPluginEnabled('e2e'))
       testRunner.casper(path.join(config.src.specDir, config.src.e2eDir));
   });
 
   gulp.task('default', ['lrServer', 'index', 'testContinuous'], function() {
-    if (isPluginActivated('livereload')) {
+    if (isPluginEnabled('livereload')) {
       gulp.watch(path.join(config.dist.markupDir, config.src.markupFiles), function(file) {
         lrServer.changed(file.path);
       });
     }
 
-    gulp.watch(path.join(config.src.scriptDir, config.src.scriptFiles), ['index'])
-      .on('change', function() {
-        cleanFolders['scripts'] = false;
-      });
+    // watchify has its own watcher
+    bundler.on('update', function () {
+      cleanFolders['scripts'] = false;
+      gulp.start('index');
+    });
 
     gulp.watch(path.join(config.src.styleDir, config.src.styleFiles), ['index'])
       .on('change', function() {

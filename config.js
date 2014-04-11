@@ -1,4 +1,5 @@
 'use strict';
+var crypto = require('crypto')
 var path = require('path');
 var chalk = require('chalk');
 
@@ -89,10 +90,11 @@ module.exports = {
       console.log(chalk.red(err.message));
     }
   },
+  rename: {
+    enabled: true,
+    suffix: '-' + crypto.createHash('md5').update(Date.now().toString(), 'utf8').digest('hex').slice(0, 10)
+  },
   uglify: {
     enabled: false
-  },
-  rev: {
-    enabled: true
   }
 };

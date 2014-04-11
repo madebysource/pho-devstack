@@ -9,8 +9,7 @@
     "url": "https://github.com/madebysource/pho-devstack"
   },
   "bugs": "https://github.com/madebysource/pho-devstack/issues",
-  "keywords": [
-  ],
+  "keywords": [],
   "author": "Pavel Gavlík <pavelgavlik@abdoc.net>",
   "contributors": [
     "Petr Brzek <petrbrzek@abdoc.net>",
@@ -28,9 +27,6 @@
     "gulp-livereload": "~1.2.0",
     "gulp-newer": "~0.3.0",
     "gulp-plumber": "~0.5.6",
-    "gulp-rev": "~0.3.1",
-    "gulp-uglify": "^0.2.1",
-    "gulp-ngmin": "^0.2.0",
     "gulp-load-plugins": "^0.5.0",
     "through2": "^0.4.1",
     "chalk": "^0.4.0",
@@ -42,7 +38,13 @@
     "node.extend": "~1.0.10",
     "tiny-lr": "~0.0.5",
     "event-stream": "~3.1.1",
-    "gulp-util": "~2.2.14"
+    "gulp-util": "~2.2.14",
+    "vinyl-source-stream": "~0.1.1",
+    "watchify": "~0.6.4",
+    "gulp-streamify": "0.0.5",
+    "uglifyify": "~2.1.1",
+    "browserify-ngmin": "0.0.2",
+    "gulp-rename": "~1.2.0"
   },
   "main": "index.js",
   "scripts": {
