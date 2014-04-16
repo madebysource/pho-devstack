@@ -1,5 +1,5 @@
 'use strict';
-var crypto = require('crypto')
+var crypto = require('crypto');
 var path = require('path');
 var chalk = require('chalk');
 
@@ -32,16 +32,24 @@ module.exports = {
   browserify: {
     enabled: true,
     debug: true,
-    detectGlobals: false
+    detectGlobals: false,
+    transforms: {
+      // order matters
+      "browserify-ngmin": false,
+      uglifyify: false
+    }
   },
   clean: {
     enabled: true
   },
   copy: [],
   htmlmin: {
-    enabled: false,
+    enabled: true,
     collapseWhitespace: true,
     removeComments: true
+  },
+  karma: {
+    enabled: false
   },
   imagemin: {
     enabled: true
@@ -71,9 +79,6 @@ module.exports = {
   newer: {
     enabled: true
   },
-  ngmin: {
-    enabled: true
-  },
   plumber: {
     enabled: true,
     errorHandler: function(err) {
@@ -93,8 +98,5 @@ module.exports = {
   rename: {
     enabled: true,
     suffix: '-' + crypto.createHash('md5').update(Date.now().toString(), 'utf8').digest('hex').slice(0, 10)
-  },
-  uglify: {
-    enabled: false
   }
 };

@@ -24,8 +24,12 @@ module.exports = function(gulp, userConfig) {
   var lrServer;
   var cleanFolders = {};
   var bundler = watchify('./' + path.join(config.src.scriptDir, config.src.scriptMain));
-  bundler.transform('browserify-ngmin');
-  bundler.transform('uglifyify');
+  for (var t in config.browserify.transforms) {
+    if (config.browserify.transforms.hasOwnProperty(t) && config.browserify.transforms[t]) {
+      console.log(t);
+      bundler.transform(t);
+    }
+  }
 
   var getFolders = function(base, folders) {
     return gulp.src(folders.map(function(item) {
@@ -58,7 +62,7 @@ module.exports = function(gulp, userConfig) {
     gulp.src(path.join(config.dist.scriptDir, config.dist.scriptFiles), { read: false })
       .pipe($.clean())
       .on('end', function() {
-        bundler.bundle()
+        bundler.bundle(config.browserify)
           .pipe(vinylSourceStream(config.src.scriptMain))
           .pipe($.plumber(config.plumber))
           .pipe($.rename(config.rename))
