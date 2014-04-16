@@ -98,5 +98,8 @@ module.exports = {
   rename: {
     enabled: true,
     suffix: '-' + crypto.createHash('md5').update(Date.now().toString(), 'utf8').digest('hex').slice(0, 10)
+  },
+  watch: {
+    enabled: true
   }
 };

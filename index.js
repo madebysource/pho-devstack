@@ -6,7 +6,6 @@ var es = require('event-stream');
 var path = require('path');
 var through = require('through2');
 var vinylSourceStream = require('vinyl-source-stream');
-var watchify = require('watchify');
 
 // we later iterate through this plugin object, plugin lazy loading has to be disabled
 var $ = require('gulp-load-plugins')({
@@ -23,13 +22,6 @@ module.exports = function(gulp, userConfig) {
 
   var lrServer;
   var cleanFolders = {};
-  var bundler = watchify('./' + path.join(config.src.scriptDir, config.src.scriptMain));
-  for (var t in config.browserify.transforms) {
-    if (config.browserify.transforms.hasOwnProperty(t) && config.browserify.transforms[t]) {
-      console.log(t);
-      bundler.transform(t);
-    }
-  }
 
   var getFolders = function(base, folders) {
     return gulp.src(folders.map(function(item) {
@@ -40,6 +32,14 @@ module.exports = function(gulp, userConfig) {
   var isPluginEnabled = function(name) {
     return config[name] && config[name].enabled;
   };
+
+  var browserify = isPluginEnabled('watch') ? require('watchify') : require('browserify');
+  var bundler = browserify('./' + path.join(config.src.scriptDir, config.src.scriptMain));
+  for (var t in config.browserify.transforms) {
+    if (config.browserify.transforms.hasOwnProperty(t) && config.browserify.transforms[t]) {
+      bundler.transform(t);
+    }
+  }
 
   // disabled gulp plugins are replaced with stream that passes everything through
   for (var p in $) {
@@ -131,6 +131,7 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('default', ['lrServer', 'index', 'testContinuous'], function() {
+    if (!isPluginEnabled('watch')) { return; }
     if (isPluginEnabled('livereload')) {
       gulp.watch(path.join(config.dist.markupDir, config.src.markupFiles), function(file) {
         lrServer.changed(file.path);
