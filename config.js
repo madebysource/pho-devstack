@@ -9,6 +9,7 @@ module.exports = {
     scriptDir: 'dist/scripts/',
     styleDir: 'dist/styles/',
     imageDir: 'dist/images/',
+    markupFiles: '**/*.html',
     scriptFiles: '*.js',
     styleFiles: '*.css',
     imageFiles: '**/*.{png,jpg,jpeg}'
@@ -20,7 +21,6 @@ module.exports = {
     specDir: 'spec/',
     imageDir: 'src/images/',
     e2eDir: 'e2e/',
-    markupMain: 'index.html',
     scriptMain: 'main.js',
     styleMain: 'main.less',
     markupFiles: '**/*.html',

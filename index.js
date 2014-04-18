@@ -54,7 +54,6 @@ module.exports = function(gulp, userConfig) {
     lrServer = $.livereload();
     cb();
   });
-
   gulp.task('scripts', function(cb) {
     if (cleanFolders['scripts']) { return cb(); }
 
@@ -89,12 +88,12 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('index', ['scripts', 'styles', 'images'], function(cb) {
-    var stream = gulp.src([
-      path.join(config.dist.scriptDir, config.dist.scriptFiles),
-      path.join(config.dist.styleDir, config.dist.styleFiles)
-    ], { read: false })
+    var stream = gulp.src(path.join(config.src.markupDir, config.src.markupFiles))
       .pipe($.plumber(config.plumber))
-      .pipe($.inject(path.join(config.src.markupDir, config.src.markupMain), config.inject))
+      .pipe($.inject(gulp.src([
+        path.join(config.dist.scriptDir, config.dist.scriptFiles),
+        path.join(config.dist.styleDir, config.dist.styleFiles)
+      ], { read: false }), config.inject))
       .pipe($.htmlmin(config.htmlmin));
 
     var streams = [stream];
@@ -133,7 +132,7 @@ module.exports = function(gulp, userConfig) {
   gulp.task('default', ['lrServer', 'index', 'testContinuous'], function() {
     if (!isPluginEnabled('watch')) { return; }
     if (isPluginEnabled('livereload')) {
-      gulp.watch(path.join(config.dist.markupDir, config.src.markupFiles), function(file) {
+      gulp.watch(path.join(config.dist.markupDir, config.dist.markupFiles), function(file) {
         lrServer.changed(file.path);
       });
     }
