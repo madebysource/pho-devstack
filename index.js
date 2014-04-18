@@ -62,6 +62,14 @@ module.exports = function(gulp, userConfig) {
       .pipe($.clean())
       .on('end', function() {
         bundler.bundle(config.browserify)
+          .on('error', function (err) {
+            if (isPluginEnabled('plumber')) {
+              config.plumber.errorHandler(err, 'browserify');
+              cb();
+            }
+            else
+              throw err;
+          })
           .pipe(vinylSourceStream(config.src.scriptMain))
           .pipe($.plumber(config.plumber))
           .pipe($.rename(config.rename))

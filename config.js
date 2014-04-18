@@ -81,9 +81,9 @@ module.exports = {
   },
   plumber: {
     enabled: true,
-    errorHandler: function(err) {
+    errorHandler: function(err, plugin) {
       var beep = '\x07';
-      var message = beep + '[' + err.plugin + '] ' + err.name;
+      var message = beep + '[' + (plugin || err.plugin) + '] ' + err.name;
 
       if (err.fileName) {
         message += ' in ' + path.relative(process.cwd(), err.fileName) + ':' + chalk.bold(err.lineNumber);
