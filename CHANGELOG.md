@@ -1,5 +1,11 @@
-<a name="0.2.0"></a>
-# 0.2.1 Irena's Phở (2014-04-11)
+<a name="0.2.2"></a>
+# 0.2.2 Valérie's Phở (2014-04-18)
+
+- Handle multiple HTML files
+- Fix browserify/watchify error handling
+
+<a name="0.2.1"></a>
+# 0.2.1 Irena's Phở (2014-04-16)
 
 - Option to disable file watching
 - Options for browserify transforms
