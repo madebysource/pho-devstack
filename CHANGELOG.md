@@ -1,3 +1,8 @@
+<a name="0.2.3"></a>
+# 0.2.3 Vojta's Phở (2014-04-23)
+
+-  Livereload CSS without whole page reload (rename plugin must be disabled)
+
 <a name="0.2.2"></a>
 # 0.2.2 Valérie's Phở (2014-04-18)
 
