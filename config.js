@@ -1,5 +1,4 @@
 'use strict';
-var crypto = require('crypto');
 var path = require('path');
 var chalk = require('chalk');
 
@@ -43,6 +42,9 @@ module.exports = {
     enabled: true
   },
   copy: [],
+  fileInsert: {
+    enabled: false
+  },
   htmlmin: {
     enabled: true,
     collapseWhitespace: true,
@@ -96,8 +98,7 @@ module.exports = {
     }
   },
   rename: {
-    enabled: false,
-    suffix: '-' + crypto.createHash('md5').update(Date.now().toString(), 'utf8').digest('hex').slice(0, 10)
+    enabled: false
   },
   watch: {
     enabled: true

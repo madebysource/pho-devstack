@@ -17,9 +17,15 @@ var defaultConfig = require('./config');
 var testRunner = require('./test-runner');
 
 module.exports = function(gulp, userConfig) {
-  var config = extend(true, {}, defaultConfig, userConfig);
-  var env = argv.type || 'development';
+  var originalConfig = extend(true, {}, defaultConfig, userConfig);
+  var config = extend(true, {}, originalConfig);
+  for (var c in config) {
+    if (config.hasOwnProperty(c) && config[c].hasOwnProperty('enabled')) {
+      delete config[c].enabled;
+    }
+  }
 
+  var env = argv.type || 'development';
   var lrServer;
   var cleanFolders = {};
 
@@ -30,7 +36,7 @@ module.exports = function(gulp, userConfig) {
   };
 
   var isPluginEnabled = function(name) {
-    return config[name] && config[name].enabled;
+    return originalConfig[name] && originalConfig[name].enabled;
   };
 
   var browserify = isPluginEnabled('watch') ? require('watchify') : require('browserify');
@@ -56,8 +62,8 @@ module.exports = function(gulp, userConfig) {
   });
   gulp.task('scripts', function(cb) {
     if (cleanFolders['scripts']) { return cb(); }
-
     cleanFolders['scripts'] = true;
+
     gulp.src(path.join(config.dist.scriptDir, config.dist.scriptFiles), { read: false })
       .pipe($.clean())
       .on('end', function() {
@@ -72,7 +78,7 @@ module.exports = function(gulp, userConfig) {
           })
           .pipe(vinylSourceStream(config.src.scriptMain))
           .pipe($.plumber(config.plumber))
-          .pipe($.rename(config.rename))
+          .pipe($.rename({ suffix: '-' + Date.now().toString() }))
           .pipe(gulp.dest(config.dist.scriptDir))
           .on('end', cb);
       });
@@ -80,7 +86,6 @@ module.exports = function(gulp, userConfig) {
 
   gulp.task('styles', function(cb) {
     if (cleanFolders['styles']) { return cb(); }
-
     cleanFolders['styles'] = true;
 
     gulp.src(path.join(config.dist.styleDir, config.dist.styleFiles), { read: false })
@@ -89,28 +94,30 @@ module.exports = function(gulp, userConfig) {
         gulp.src(path.join(config.src.styleDir, config.src.styleMain))
           .pipe($.plumber(config.plumber))
           .pipe($.less(config.less))
-          .pipe($.rename(config.rename))
+          .pipe($.rename({ suffix: '-' + Date.now().toString() }))
           .pipe(gulp.dest(config.dist.styleDir))
           .on('end', cb);
       });
   });
 
   gulp.task('index', ['scripts', 'styles', 'images'], function(cb) {
+    var streams = [];
     var markupStream = gulp.src(path.join(config.src.markupDir, config.src.markupFiles))
-      .pipe($.plumber(config.plumber));
-    if (!isPluginEnabled('rename'))
-      markupStream = markupStream.pipe($.newer(config.dist.markupDir));
-
-    markupStream = markupStream
+      .pipe($.plumber(config.plumber))
+      .pipe($.fileInsert(config.fileInsert))
       .pipe($.inject(gulp.src([
         path.join(config.dist.scriptDir, config.dist.scriptFiles),
         path.join(config.dist.styleDir, config.dist.styleFiles)
       ], { read: false }), config.inject))
       .pipe($.htmlmin(config.htmlmin));
 
-    var streams = [markupStream];
+    if (!cleanFolders['markups'] || isPluginEnabled('rename')) {
+      cleanFolders['markups'] = true;
+      streams.push(markupStream);
+    }
     if (config.copy.length)
       streams.push(getFolders('src', config.copy));
+    if (!streams.length) { return cb(); }
 
     es.merge.apply(null, streams)
       .pipe(gulp.dest('dist'))
@@ -155,8 +162,12 @@ module.exports = function(gulp, userConfig) {
         cleanFolders['styles'] = false;
       });
 
+    gulp.watch(path.join(config.src.markupDir, config.src.markupFiles), ['index'])
+      .on('change', function() {
+        cleanFolders['markups'] = false;
+      });
+
     gulp.watch([
-      path.join(config.src.markupDir, config.src.markupFiles),
       path.join(config.src.specDir, config.src.specFiles),
       path.join(config.src.imageDir, config.src.imageFiles)
     ], ['index']);
