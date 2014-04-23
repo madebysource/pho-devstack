@@ -26,7 +26,6 @@ module.exports = function(gulp, userConfig) {
   }
 
   var env = argv.type || 'development';
-  var lrServer;
   var cleanFolders = {};
 
   var getFolders = function(base, folders) {
@@ -56,10 +55,6 @@ module.exports = function(gulp, userConfig) {
   }
 
   // every task calls cb to measure its execution time
-  gulp.task('lrServer', function(cb) {
-    lrServer = $.livereload();
-    cb();
-  });
   gulp.task('scripts', function(cb) {
     if (cleanFolders['scripts']) { return cb(); }
     cleanFolders['scripts'] = true;
@@ -148,7 +143,7 @@ module.exports = function(gulp, userConfig) {
       testRunner.casper(path.join(config.src.specDir, config.src.e2eDir));
   });
 
-  gulp.task('default', ['lrServer', 'index', 'testContinuous'], function() {
+  gulp.task('default', ['index', 'testContinuous'], function() {
     if (!isPluginEnabled('watch')) { return; }
 
     // watchify has its own watcher
@@ -173,6 +168,7 @@ module.exports = function(gulp, userConfig) {
     ], ['index']);
 
     if (!isPluginEnabled('livereload')) { return; }
+    var lrServer = $.livereload();
     gulp.watch(path.join(config.dist.markupDir, config.dist.markupFiles), function(file) {
       lrServer.changed(file.path);
       console.log(file.path);
