@@ -17,7 +17,6 @@
   ],
   "dependencies": {
     "casperjs": "^1.1.0-beta3",
-    "gulp-browserify": "~0.5.0",
     "gulp-clean": "~0.2.4",
     "gulp-htmlmin": "~0.1.2",
     "gulp-imagemin": "^0.1.5",
