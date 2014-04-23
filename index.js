@@ -96,15 +96,19 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('index', ['scripts', 'styles', 'images'], function(cb) {
-    var stream = gulp.src(path.join(config.src.markupDir, config.src.markupFiles))
-      .pipe($.plumber(config.plumber))
+    var markupStream = gulp.src(path.join(config.src.markupDir, config.src.markupFiles))
+      .pipe($.plumber(config.plumber));
+    if (!isPluginEnabled('rename'))
+      markupStream = markupStream.pipe($.newer(config.dist.markupDir));
+
+    markupStream = markupStream
       .pipe($.inject(gulp.src([
         path.join(config.dist.scriptDir, config.dist.scriptFiles),
         path.join(config.dist.styleDir, config.dist.styleFiles)
       ], { read: false }), config.inject))
       .pipe($.htmlmin(config.htmlmin));
 
-    var streams = [stream];
+    var streams = [markupStream];
     if (config.copy.length)
       streams.push(getFolders('src', config.copy));
 
@@ -139,11 +143,6 @@ module.exports = function(gulp, userConfig) {
 
   gulp.task('default', ['lrServer', 'index', 'testContinuous'], function() {
     if (!isPluginEnabled('watch')) { return; }
-    if (isPluginEnabled('livereload')) {
-      gulp.watch(path.join(config.dist.markupDir, config.dist.markupFiles), function(file) {
-        lrServer.changed(file.path);
-      });
-    }
 
     // watchify has its own watcher
     bundler.on('update', function () {
@@ -161,5 +160,22 @@ module.exports = function(gulp, userConfig) {
       path.join(config.src.specDir, config.src.specFiles),
       path.join(config.src.imageDir, config.src.imageFiles)
     ], ['index']);
+
+    if (!isPluginEnabled('livereload')) { return; }
+    gulp.watch(path.join(config.dist.markupDir, config.dist.markupFiles), function(file) {
+      lrServer.changed(file.path);
+      console.log(file.path);
+    });
+
+    if (!isPluginEnabled('rename')) {
+      // markup is not changed when rename is disabled, we can livereload
+      gulp.watch([
+        path.join(config.dist.scriptDir, config.dist.scriptFiles),
+        path.join(config.dist.styleDir, config.dist.styleFiles)
+      ], function(file) {
+        lrServer.changed(file.path);
+        console.log(file.path);
+      });
+    }
   });
 };
