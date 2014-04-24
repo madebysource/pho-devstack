@@ -169,20 +169,18 @@ module.exports = function(gulp, userConfig) {
 
     if (!isPluginEnabled('livereload')) { return; }
     var lrServer = $.livereload();
-    gulp.watch(path.join(config.dist.markupDir, config.dist.markupFiles), function(file) {
+    var lrHandler = function (file) {
       lrServer.changed(file.path);
       console.log('Reloading ' + file.path);
-    });
+    };
+    gulp.watch(path.join(config.dist.markupDir, config.dist.markupFiles), lrHandler);
 
     if (!isPluginEnabled('rename')) {
       // markup is not changed when rename is disabled, we can livereload
       gulp.watch([
         path.join(config.dist.scriptDir, config.dist.scriptFiles),
         path.join(config.dist.styleDir, config.dist.styleFiles)
-      ], function(file) {
-        lrServer.changed(file.path);
-        console.log('Reloading ' + file.path);
-      });
+      ], lrHandler);
     }
   });
 };
