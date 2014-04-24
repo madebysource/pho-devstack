@@ -171,7 +171,7 @@ module.exports = function(gulp, userConfig) {
     var lrServer = $.livereload();
     gulp.watch(path.join(config.dist.markupDir, config.dist.markupFiles), function(file) {
       lrServer.changed(file.path);
-      console.log(file.path);
+      console.log('Reloading ' + file.path);
     });
 
     if (!isPluginEnabled('rename')) {
@@ -181,7 +181,7 @@ module.exports = function(gulp, userConfig) {
         path.join(config.dist.styleDir, config.dist.styleFiles)
       ], function(file) {
         lrServer.changed(file.path);
-        console.log(file.path);
+        console.log('Reloading ' + file.path);
       });
     }
   });
