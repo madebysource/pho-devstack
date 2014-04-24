@@ -1,5 +1,5 @@
 <a name="0.3.0"></a>
-# 0.3.0 Vojta's Phở (2014-04-24)
+# 0.3.0 Jirka's Phở (2014-04-24)
 
 - Injecting file contents into markup
 - Smarter index task - executing only when needed
