@@ -99,7 +99,7 @@ module.exports = function(gulp, userConfig) {
     var streams = [];
     var markupStream = gulp.src(path.join(config.src.markupDir, config.src.markupFiles))
       .pipe($.plumber(config.plumber))
-      .pipe($.fileInsert(config.fileInsert))
+      .pipe($.fileInsert(extend({}, config.fileInsert)))
       .pipe($.inject(gulp.src([
         path.join(config.dist.scriptDir, config.dist.scriptFiles),
         path.join(config.dist.styleDir, config.dist.styleFiles)
