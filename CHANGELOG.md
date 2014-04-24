@@ -1,7 +1,14 @@
+<a name="0.3.0"></a>
+# 0.3.0 Vojta's Phở (2014-04-24)
+
+- Injecting file contents into markup
+- Smarter index task - executing only when needed
+- Fixed rename suffix not beeing unique for each build
+
 <a name="0.2.3"></a>
 # 0.2.3 Vojta's Phở (2014-04-23)
 
--  Livereload CSS without whole page reload (rename plugin must be disabled)
+- Livereload CSS without whole page reload (rename plugin must be disabled)
 
 <a name="0.2.2"></a>
 # 0.2.2 Valérie's Phở (2014-04-18)
