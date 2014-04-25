@@ -36,7 +36,7 @@ module.exports = {
   },
   browserify: {
     /* Parses javascript module files with require() functions and produces single bundle */
-    /* Option list:  */
+    /* Option list: https://github.com/substack/node-browserify#bbundleopts-cb */
     enabled: true,        // each plugin can be enabled or disabled by setting this property
     debug: true,          // enable source maps
     detectGlobals: false, // performance optimization
