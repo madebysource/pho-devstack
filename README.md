@@ -1,3 +1,5 @@
+# pho-devstack [![NPM version][npm-image]][npm-url]
+
 ## Status
 This is an EXPERIMENTAL SOFTWARE! Use it at your own risk. There will be BREAKING CHANGES and probably no documentation before 1.0, just installation instructions.
 
@@ -26,3 +28,6 @@ When you're finished, press ```Ctrl + C``` to quit build system.
 ## License
 
 [MIT license](http://opensource.org/licenses/mit-license.php)
+
+[npm-url]: https://npmjs.org/package/pho-devstack
+[npm-image]: https://badge.fury.io/js/pho-devstack.png
