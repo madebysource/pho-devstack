@@ -1,3 +1,8 @@
+<a name="0.3.1"></a>
+# 0.3.1 Jirka's Phở (2014-04-25)
+
+- Fix fileInsert not working on every next run in development mode
+
 <a name="0.3.0"></a>
 # 0.3.0 Jirka's Phở (2014-04-24)
 
