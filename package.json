@@ -42,7 +42,9 @@
     "browserify": "^3.44.0",
     "watchify": "~0.6.4",
     "uglifyify": "~2.1.1",
-    "browserify-ngmin": "^0.1.0"
+    "browserify-ngmin": "^0.1.0",
+    "sprites-preprocessor": "^0.1.2",
+    "gulp-filter": "^0.4.1"
   },
   "peerDependencies": {
     "gulp": "~3.6.0"
