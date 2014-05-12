@@ -21,6 +21,8 @@ var testRunner = require('./test-runner');
 module.exports = function(gulp, userConfig) {
   var originalConfig = extend(true, {}, defaultConfig, userConfig);
   var config = extend(true, {}, originalConfig);
+
+  // remove "enabled" key from config
   for (var c in config) {
     if (config.hasOwnProperty(c) && config[c].hasOwnProperty('enabled')) {
       delete config[c].enabled;
@@ -41,6 +43,8 @@ module.exports = function(gulp, userConfig) {
 
   var browserify = isPluginEnabled('watch') ? require('watchify') : require('browserify');
   var bundler = browserify('./' + path.join(config.src.scriptDir, config.src.scriptMain));
+
+  // apply browserify transforms from config
   for (var t in config.browserify.transforms) {
     if (config.browserify.transforms.hasOwnProperty(t) && config.browserify.transforms[t]) {
       bundler.transform(t);
