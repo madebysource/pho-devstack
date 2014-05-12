@@ -18,6 +18,8 @@ $['sprites-preprocessor'] = require('sprites-preprocessor');
 var defaultConfig = require('./config');
 var testRunner = require('./test-runner');
 
+var Cache = require('./cache');
+
 module.exports = function(gulp, userConfig) {
   var originalConfig = extend(true, {}, defaultConfig, userConfig);
   var config = extend(true, {}, originalConfig);
@@ -30,6 +32,7 @@ module.exports = function(gulp, userConfig) {
   }
 
   var cleanFolders = {};
+  var cache = new Cache();
 
   var getFolders = function(base, folders) {
     return gulp.src(folders.map(function(item) {
@@ -61,8 +64,8 @@ module.exports = function(gulp, userConfig) {
 
   // every task calls cb to measure its execution time
   gulp.task('scripts', function(cb) {
-    if (cleanFolders['scripts']) { return cb(); }
-    cleanFolders['scripts'] = true;
+    if (cache.isClean('scripts')) { return cb(); }
+    cache.setClean('scripts');
 
     gulp.src(path.join(config.dist.scriptDir, config.dist.scriptFiles), { read: false })
       .pipe($.clean())
@@ -88,8 +91,8 @@ module.exports = function(gulp, userConfig) {
     var spriteFilter = gulpFilter('**/*.png');
     var cssFilter = gulpFilter('**/*.css');
 
-    if (cleanFolders['styles']) { return cb(); }
-    cleanFolders['styles'] = true;
+    if (cache.isClean('styles')) { return cb(); }
+    cache.setClean('styles');
 
     gulp.src(path.join(config.dist.styleDir, config.dist.styleFiles), { read: false })
       .pipe($.clean())
@@ -129,8 +132,8 @@ module.exports = function(gulp, userConfig) {
       ], { read: false }), config.inject))
       .pipe($.htmlmin(config.htmlmin));
 
-    if (!cleanFolders['markups'] || isPluginEnabled('rename')) {
-      cleanFolders['markups'] = true;
+    if (cache.isDirty('markups') || isPluginEnabled('rename')) {
+      cache.setClean('markups');
       streams.push(markupStream);
     }
     if (config.copy.length)
@@ -169,18 +172,18 @@ module.exports = function(gulp, userConfig) {
 
     // watchify has its own watcher
     bundler.on('update', function () {
-      cleanFolders['scripts'] = false;
+      cache.setDirty('scripts');
       gulp.start('index');
     });
 
     gulp.watch(path.join(config.src.styleDir, config.src.styleFiles), ['index'])
       .on('change', function() {
-        cleanFolders['styles'] = false;
+        cache.setDirty('styles');
       });
 
     gulp.watch(path.join(config.src.markupDir, config.src.markupFiles), ['index'])
       .on('change', function() {
-        cleanFolders['markups'] = false;
+        cache.setDirty('markups');
       });
 
     gulp.watch([
