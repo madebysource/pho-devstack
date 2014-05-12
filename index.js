@@ -88,11 +88,11 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('styles', function(cb) {
-    var spriteFilter = gulpFilter('**/*.png');
-    var cssFilter = gulpFilter('**/*.css');
-
     if (cache.isClean('styles')) { return cb(); }
     cache.setClean('styles');
+
+    var spriteFilter = gulpFilter('**/*.png');
+    var cssFilter = gulpFilter('**/*.css');
 
     gulp.src(path.join(config.dist.styleDir, config.dist.styleFiles), { read: false })
       .pipe($.clean())
