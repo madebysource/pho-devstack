@@ -114,7 +114,7 @@ module.exports = function(gulp, userConfig) {
       });
   });
 
-  gulp.task('index', ['scripts', 'styles', 'images'], function(cb) {
+  gulp.task('index', ['scripts', 'styles', 'images'], function() {
     var streams = [];
     var markupStream = gulp.src(path.join(config.src.markupDir, config.src.markupFiles))
       .pipe($.plumber(config.plumber))
@@ -131,20 +131,18 @@ module.exports = function(gulp, userConfig) {
     }
     if (config.copy.length)
       streams.push(getFolders('src', config.copy));
-    if (!streams.length) { return cb(); }
+    if (!streams.length) { return; }
 
-    es.merge.apply(null, streams)
-      .pipe(gulp.dest('dist'))
-      .on('end', cb);
+    return es.merge.apply(null, streams)
+      .pipe(gulp.dest('dist'));
   });
 
-  gulp.task('images', function(cb) {
-    gulp.src(path.join(config.src.imageDir, config.src.imageFiles))
+  gulp.task('images', function() {
+    return gulp.src(path.join(config.src.imageDir, config.src.imageFiles))
       .pipe($.plumber(config.plumber))
       .pipe($.newer(config.dist.imageDir))
       .pipe($.imagemin(config.imagemin))
-      .pipe(gulp.dest(config.dist.imageDir))
-      .on('end', cb);
+      .pipe(gulp.dest(config.dist.imageDir));
   });
 
   gulp.task('test', ['index'], function() {
