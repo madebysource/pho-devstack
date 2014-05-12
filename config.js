@@ -131,6 +131,7 @@ module.exports = {
     enabled: true
   },
   'sprites-preprocessor': {
+    /* Replace images in sprites folder with one image, and change css paths */
     enabled: false,
     path: 'src/sprites/',
     prefix: '../sprites/',
