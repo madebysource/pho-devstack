@@ -1,7 +1,7 @@
 # pho-devstack [![NPM version][npm-image]][npm-url]
 
 ## Status
-This is an EXPERIMENTAL SOFTWARE! Use it at your own risk. There will be BREAKING CHANGES and probably no documentation before 1.0, just installation instructions.
+This is software is under development. Use it at your own risk and expect some breaking changes. There will be no documentation before 1.0, just installation instructions.
 
 
 ## Installation
