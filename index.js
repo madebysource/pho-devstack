@@ -1,6 +1,5 @@
 'use strict';
 
-var argv = require('yargs').argv;
 var extend = require('node.extend');
 var es = require('event-stream');
 var path = require('path');
@@ -28,7 +27,6 @@ module.exports = function(gulp, userConfig) {
     }
   }
 
-  var env = argv.type || 'development';
   var cleanFolders = {};
 
   var getFolders = function(base, folders) {
