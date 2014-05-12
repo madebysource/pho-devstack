@@ -103,8 +103,10 @@ module.exports = function(gulp, userConfig) {
           .pipe(gulp.dest(config.dist.spriteDir))
           .pipe(spriteFilter.restore())
 
-          // css file
+          // filter css files
           .pipe(cssFilter)
+
+          // css file
           .pipe($.rename({ suffix: '-' + Date.now().toString() }))
           .pipe(gulp.dest(config.dist.styleDir))
           .on('end', cb);
