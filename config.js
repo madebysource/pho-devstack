@@ -13,6 +13,7 @@ module.exports = {
     scriptDir: 'dist/scripts/',
     styleDir: 'dist/styles/',
     imageDir: 'dist/images/',
+    spriteDir: 'dist/sprites/',
     markupFiles: '**/*.html',
     scriptFiles: '*.js',
     styleFiles: '*.css',
@@ -128,5 +129,16 @@ module.exports = {
   watch: {
     /* Run build each time file is changed */
     enabled: true
+  },
+  'sprites-preprocessor': {
+    /* Replace images in sprites folder with one image, and change css paths */
+    enabled: false,
+    path: 'src/sprites/',
+    prefix: '../sprites/',
+    name: '../sprites/sprite.png'
+  },
+  base64: {
+    enabled: false,
+    maxImageSize: 32768 // maximum filesize for replacing image with base64
   }
 };

@@ -6,12 +6,15 @@ var es = require('event-stream');
 var path = require('path');
 var through = require('through2');
 var vinylSourceStream = require('vinyl-source-stream');
+var gulpFilter = require('gulp-filter');
 
 // we later iterate through this plugin object, plugin lazy loading has to be disabled
 var $ = require('gulp-load-plugins')({
   config: require.resolve('./package.json'),
   lazy: false
 });
+
+$['sprites-preprocessor'] = require('sprites-preprocessor');
 
 var defaultConfig = require('./config');
 var testRunner = require('./test-runner');
@@ -80,15 +83,33 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('styles', function(cb) {
+    var spriteFilter = gulpFilter('**/*.png');
+    var cssFilter = gulpFilter('**/*.css');
+
     if (cleanFolders['styles']) { return cb(); }
     cleanFolders['styles'] = true;
 
     gulp.src(path.join(config.dist.styleDir, config.dist.styleFiles), { read: false })
       .pipe($.clean())
       .on('end', function() {
+
         gulp.src(path.join(config.src.styleDir, config.src.styleMain))
           .pipe($.plumber(config.plumber))
           .pipe($.less(config.less))
+
+          // base64
+          .pipe($.base64(config.base64))
+
+          // sprites
+          .pipe($['sprites-preprocessor'](config['sprites-preprocessor']))
+          .pipe(spriteFilter)
+          .pipe(gulp.dest(config.dist.spriteDir))
+          .pipe(spriteFilter.restore())
+
+          // filter css files
+          .pipe(cssFilter)
+
+          // css file
           .pipe($.rename({ suffix: '-' + Date.now().toString() }))
           .pipe(gulp.dest(config.dist.styleDir))
           .on('end', cb);
