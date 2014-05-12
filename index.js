@@ -31,7 +31,6 @@ module.exports = function(gulp, userConfig) {
     }
   }
 
-  var cleanFolders = {};
   var cache = new Cache();
 
   var getFolders = function(base, folders) {
