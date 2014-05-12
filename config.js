@@ -131,6 +131,7 @@ module.exports = {
     enabled: true
   },
   'sprites-preprocessor': {
+    enabled: false,
     path: 'src/sprites/',
     prefix: '../sprites/',
     name: '../sprites/sprite.png'
