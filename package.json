@@ -36,6 +36,7 @@
     "gulp-rename": "~1.2.0",
     "gulp-file-insert": "~1.0.2",
     "gulp-filter": "^0.4.1",
+    "gulp-base64": "~0.0.3",
     "karma": "^0.12.1",
     "karma-jasmine": "^0.2.1",
     "karma-mocha-reporter": "^0.2.2",

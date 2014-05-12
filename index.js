@@ -97,6 +97,9 @@ module.exports = function(gulp, userConfig) {
           .pipe($.plumber(config.plumber))
           .pipe($.less(config.less))
 
+          // base64
+          .pipe($.base64(config.base64))
+
           // sprites
           .pipe($['sprites-preprocessor'](config['sprites-preprocessor']))
           .pipe(spriteFilter)

@@ -136,5 +136,9 @@ module.exports = {
     path: 'src/sprites/',
     prefix: '../sprites/',
     name: '../sprites/sprite.png'
+  },
+  base64: {
+    enabled: false,
+    maxImageSize: 32768 // maximum filesize for replacing image with base64
   }
 };
