@@ -36,13 +36,13 @@ module.exports = function(gulp, userConfig) {
   };
 
   var isPluginEnabled = function(name) {
-    return originalConfig[name] && originalConfig[name].enabled;
+    return originalConfig[name] && originalConfig[name].enabled;
   };
 
   var browserify = isPluginEnabled('watch') ? require('watchify') : require('browserify');
   var bundler = browserify('./' + path.join(config.src.scriptDir, config.src.scriptMain));
   for (var t in config.browserify.transforms) {
-    if (config.browserify.transforms.hasOwnProperty(t) && config.browserify.transforms[t]) {
+    if (config.browserify.transforms.hasOwnProperty(t) && config.browserify.transforms[t]) {
       bundler.transform(t);
     }
   }
