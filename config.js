@@ -23,9 +23,9 @@ module.exports = {
     /* Directories and file patterns of source files */
     markupDir: 'src/',
     scriptDir: 'src/scripts/',
+    styleDir: 'src/styles/',
     specDir: 'spec/',
     imageDir: 'src/images/',
-    spriteDir: 'src/sprites/',
     e2eDir: 'e2e/',
     scriptMain: 'main.js',
     styleMain: 'main.less',
