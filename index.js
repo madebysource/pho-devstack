@@ -98,11 +98,7 @@ module.exports = function(gulp, userConfig) {
           .pipe($.less(config.less))
 
           // sprites
-          .pipe($['sprites-preprocessor']({
-            prefix: '../sprites/',
-            path: config.src.spriteDir,
-            name: '../sprites/sprite.png'
-          }))
+          .pipe($['sprites-preprocessor'](config['sprites-preprocessor']))
           .pipe(spriteFilter)
           .pipe(gulp.dest(config.dist.spriteDir))
           .pipe(spriteFilter.restore())

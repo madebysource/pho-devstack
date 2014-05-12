@@ -23,7 +23,6 @@ module.exports = {
     /* Directories and file patterns of source files */
     markupDir: 'src/',
     scriptDir: 'src/scripts/',
-    styleDir: 'src/styles/',
     specDir: 'spec/',
     imageDir: 'src/images/',
     spriteDir: 'src/sprites/',
@@ -130,5 +129,10 @@ module.exports = {
   watch: {
     /* Run build each time file is changed */
     enabled: true
+  },
+  'sprites-preprocessor': {
+    path: 'src/sprites/',
+    prefix: '../sprites/',
+    name: '../sprites/sprite.png'
   }
 };
