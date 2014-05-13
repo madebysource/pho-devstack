@@ -24,15 +24,6 @@ module.exports = function(gulp, userConfig) {
   var originalConfig = extend(true, {}, defaultConfig, userConfig);
   var config = extend(true, {}, originalConfig);
 
-  // remove "enabled" key from config
-  for (var configName in config) {
-    if (config.hasOwnProperty(configName) && config[configName].hasOwnProperty('enabled')) {
-      delete config[configName].enabled;
-    }
-  }
-
-  var cache = new Cache();
-
   var getFolders = function(base, folders) {
     return gulp.src(folders.map(function(item) {
       return path.join(base, item);
@@ -44,12 +35,11 @@ module.exports = function(gulp, userConfig) {
   };
 
   var browserify = isPluginEnabled('watch') ? require('watchify') : require('browserify');
-  var bundler = browserify('./' + path.join(config.src.scriptDir, config.src.scriptMain));
 
-  // apply browserify transforms from config
-  for (var transform in config.browserify.transforms) {
-    if (config.browserify.transforms.hasOwnProperty(transform) && config.browserify.transforms[transform]) {
-      bundler.transform(transform);
+  // remove "enabled" key from config
+  for (var configName in config) {
+    if (config.hasOwnProperty(configName) && config[configName].hasOwnProperty('enabled')) {
+      delete config[configName].enabled;
     }
   }
 
@@ -61,6 +51,17 @@ module.exports = function(gulp, userConfig) {
       }
     }
   }
+
+  var bundler = browserify('./' + path.join(config.src.scriptDir, config.src.scriptMain));
+
+  // apply browserify transforms from config
+  for (var transform in config.browserify.transforms) {
+    if (config.browserify.transforms.hasOwnProperty(transform) && config.browserify.transforms[transform]) {
+      bundler.transform(transform);
+    }
+  }
+
+  var cache = new Cache();
 
   // every task calls cb to measure its execution time
   gulp.task('scripts', function(cb) {
