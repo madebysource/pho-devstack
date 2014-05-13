@@ -179,7 +179,7 @@ module.exports = function(gulp, userConfig) {
     if (!isPluginEnabled('watch')) { return; }
 
     // watchify has its own watcher
-    bundler.on('update', function () {
+    bundler.on('update', function() {
       cache.setDirty('scripts');
       gulp.start('index');
     });
