@@ -6,6 +6,7 @@ var path = require('path');
 var through = require('through2');
 var vinylSourceStream = require('vinyl-source-stream');
 var gulpFilter = require('gulp-filter');
+var chalk = require('chalk');
 
 // we later iterate through this plugin object, plugin lazy loading has to be disabled
 var $ = require('gulp-load-plugins')({
@@ -206,10 +207,12 @@ module.exports = function(gulp, userConfig) {
 
     if (!isPluginEnabled('livereload')) { return; }
     var lrServer = $.livereload();
+
     var lrHandler = function (file) {
       lrServer.changed(file.path);
-      console.log('Reloading ' + file.path);
+      console.log('[' + chalk.blue('Reload') + '] ' + file.path);
     };
+
     gulp.watch(path.join(config.dist.markupDir, config.dist.markupFiles), lrHandler);
 
     if (!isPluginEnabled('rename')) {
