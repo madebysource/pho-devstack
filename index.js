@@ -25,9 +25,9 @@ module.exports = function(gulp, userConfig) {
   var config = extend(true, {}, originalConfig);
 
   // remove "enabled" key from config
-  for (var c in config) {
-    if (config.hasOwnProperty(c) && config[c].hasOwnProperty('enabled')) {
-      delete config[c].enabled;
+  for (var configName in config) {
+    if (config.hasOwnProperty(configName) && config[configName].hasOwnProperty('enabled')) {
+      delete config[configName].enabled;
     }
   }
 
@@ -47,17 +47,18 @@ module.exports = function(gulp, userConfig) {
   var bundler = browserify('./' + path.join(config.src.scriptDir, config.src.scriptMain));
 
   // apply browserify transforms from config
-  for (var t in config.browserify.transforms) {
-    if (config.browserify.transforms.hasOwnProperty(t) && config.browserify.transforms[t]) {
-      bundler.transform(t);
+  for (var transform in config.browserify.transforms) {
+    if (config.browserify.transforms.hasOwnProperty(transform) && config.browserify.transforms[transform]) {
+      bundler.transform(transform);
     }
   }
 
   // disabled gulp plugins are replaced with stream that passes everything through
-  for (var p in $) {
-    if ($.hasOwnProperty(p)) {
-      if (!isPluginEnabled(p))
-        $[p] = through.obj;
+  for (var pluginName in $) {
+    if ($.hasOwnProperty(pluginName)) {
+      if (!isPluginEnabled(pluginName)) {
+        $[pluginName] = through.obj;
+      }
     }
   }
 
@@ -70,13 +71,13 @@ module.exports = function(gulp, userConfig) {
       .pipe($.clean())
       .on('end', function() {
         bundler.bundle(config.browserify)
-          .on('error', function (err) {
+          .on('error', function(err) {
             if (isPluginEnabled('plumber')) {
               config.plumber.errorHandler(err, 'browserify');
               cb();
-            }
-            else
+            } else {
               throw err;
+            }
           })
           .pipe(vinylSourceStream(config.src.scriptMain))
           .pipe($.plumber(config.plumber))
@@ -135,8 +136,11 @@ module.exports = function(gulp, userConfig) {
       cache.setClean('markups');
       streams.push(markupStream);
     }
-    if (config.copy.length)
+
+    if (config.copy.length) {
       streams.push(getFolders('src', config.copy));
+    }
+
     if (!streams.length) { return; }
 
     return es.merge.apply(null, streams)
@@ -152,18 +156,21 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('test', ['index'], function() {
-    if (isPluginEnabled('karma'))
+    if (isPluginEnabled('karma')) {
       testRunner.karma();
+    }
   });
 
   gulp.task('testContinuous', ['index'], function() {
-    if (isPluginEnabled('karma'))
+    if (isPluginEnabled('karma')) {
       testRunner.karmaWatch();
+    }
   });
 
   gulp.task('e2e', ['index'], function() {
-    if (isPluginEnabled('e2e'))
+    if (isPluginEnabled('e2e')) {
       testRunner.casper(path.join(config.src.specDir, config.src.e2eDir));
+    }
   });
 
   gulp.task('default', ['index', 'testContinuous'], function() {
