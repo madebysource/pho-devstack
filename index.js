@@ -34,6 +34,14 @@ module.exports = function(gulp, userConfig) {
     return originalConfig[name] && originalConfig[name].enabled;
   };
 
+  var handleError = function(err) {
+    if (isPluginEnabled('plumber')) {
+      config.plumber.errorHandler(err, 'browserify');
+    } else {
+      throw err;
+    }
+  };
+
   var browserify = isPluginEnabled('watch') ? require('watchify') : require('browserify');
 
   // remove "enabled" key from config
@@ -73,12 +81,8 @@ module.exports = function(gulp, userConfig) {
       .on('end', function() {
         bundler.bundle(config.browserify)
           .on('error', function(err) {
-            if (isPluginEnabled('plumber')) {
-              config.plumber.errorHandler(err, 'browserify');
-              cb();
-            } else {
-              throw err;
-            }
+            handleError(err);
+            cb();
           })
           .pipe(vinylSourceStream(config.src.scriptMain))
           .pipe($.plumber(config.plumber))
