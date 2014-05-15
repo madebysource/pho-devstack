@@ -59,6 +59,10 @@ module.exports = {
     /* Replace any text in markup by file content */
     enabled: false
   },
+  filter: {
+    /* Used internally for generating sprites */
+    enabled: true
+  },
   htmlmin: {
     /* Markup minification */
     /* Option list: https://github.com/kangax/html-minifier#options-quick-reference */
@@ -130,7 +134,7 @@ module.exports = {
     /* Run build each time file is changed */
     enabled: true
   },
-  'sprites-preprocessor': {
+  spritesPreprocessor: {
     /* Replace images in sprites folder with one image, and change css paths */
     enabled: false,
     path: 'src/sprites/',

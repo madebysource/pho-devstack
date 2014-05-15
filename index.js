@@ -5,16 +5,14 @@ var es = require('event-stream');
 var path = require('path');
 var through = require('through2');
 var vinylSourceStream = require('vinyl-source-stream');
-var gulpFilter = require('gulp-filter');
 var chalk = require('chalk');
 
 // we later iterate through this plugin object, plugin lazy loading has to be disabled
 var $ = require('gulp-load-plugins')({
   config: require.resolve('./package.json'),
-  lazy: false
+  lazy: false,
+  pattern: ['gulp-*', 'sprites-preprocessor']
 });
-
-$['sprites-preprocessor'] = require('sprites-preprocessor');
 
 var defaultConfig = require('./config');
 var testRunner = require('./test-runner');
@@ -24,6 +22,7 @@ var Cache = require('./cache');
 module.exports = function(gulp, userConfig) {
   var originalConfig = extend(true, {}, defaultConfig, userConfig);
   var config = extend(true, {}, originalConfig);
+  var cache = new Cache();
 
   var getFolders = function(base, folders) {
     return gulp.src(folders.map(function(item) {
@@ -35,15 +34,13 @@ module.exports = function(gulp, userConfig) {
     return originalConfig[name] && originalConfig[name].enabled;
   };
 
-  var handleError = function(err) {
+  var handleBrowserifyError = function(err) {
     if (isPluginEnabled('plumber')) {
       config.plumber.errorHandler(err, 'browserify');
     } else {
       throw err;
     }
   };
-
-  var browserify = isPluginEnabled('watch') ? require('watchify') : require('browserify');
 
   // remove "enabled" key from config
   for (var configName in config) {
@@ -61,6 +58,7 @@ module.exports = function(gulp, userConfig) {
     }
   }
 
+  var browserify = isPluginEnabled('watch') ? require('watchify') : require('browserify');
   var bundler = browserify('./' + path.join(config.src.scriptDir, config.src.scriptMain));
 
   // apply browserify transforms from config
@@ -69,8 +67,6 @@ module.exports = function(gulp, userConfig) {
       bundler.transform(transform);
     }
   }
-
-  var cache = new Cache();
 
   // every task calls cb to measure its execution time
   gulp.task('scripts', function(cb) {
@@ -82,7 +78,7 @@ module.exports = function(gulp, userConfig) {
       .on('end', function() {
         bundler.bundle(config.browserify)
           .on('error', function(err) {
-            handleError(err);
+            handleBrowserifyError(err);
             cb();
           })
           .pipe(vinylSourceStream(config.src.scriptMain))
@@ -97,8 +93,8 @@ module.exports = function(gulp, userConfig) {
     if (cache.isClean('styles')) { return cb(); }
     cache.setClean('styles');
 
-    var spriteFilter = gulpFilter('**/*.png');
-    var cssFilter = gulpFilter('**/*.css');
+    var spriteFilter = $.filter('**/*.png');
+    var cssFilter = $.filter('**/*.css');
 
     gulp.src(path.join(config.dist.styleDir, config.dist.styleFiles), { read: false })
       .pipe($.clean())
@@ -107,20 +103,14 @@ module.exports = function(gulp, userConfig) {
         gulp.src(path.join(config.src.styleDir, config.src.styleMain))
           .pipe($.plumber(config.plumber))
           .pipe($.less(config.less))
-
-          // base64
           .pipe($.base64(config.base64))
 
-          // sprites
-          .pipe($['sprites-preprocessor'](config['sprites-preprocessor']))
+          .pipe($.spritesPreprocessor(config.spritesPreprocessor))
           .pipe(spriteFilter)
           .pipe(gulp.dest(config.dist.spriteDir))
           .pipe(spriteFilter.restore())
 
-          // filter css files
           .pipe(cssFilter)
-
-          // css file
           .pipe($.rename({ suffix: '-' + Date.now().toString() }))
           .pipe(gulp.dest(config.dist.styleDir))
           .on('end', cb);
