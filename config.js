@@ -55,9 +55,9 @@ module.exports = {
   copy: [
     /* List of folders that will be copied to dist folder */
   ],
-  fileInsert: {
-    /* Replace any text in markup by file content */
-    enabled: false
+  substituter: {
+    /* Replace any text in markup with specified value */
+    enabled: true
   },
   filter: {
     /* Used internally for generating sprites */
