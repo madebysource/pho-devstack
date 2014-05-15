@@ -16,7 +16,6 @@
     "Jan Šedivý <jansedivy@abdoc.net>"
   ],
   "dependencies": {
-    "gulp-util": "~2.2.14",
     "through2": "^0.4.1",
     "chalk": "^0.4.0",
     "yargs": "^1.2.1",
