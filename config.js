@@ -57,7 +57,7 @@ module.exports = {
   ],
   substituter: {
     /* Replace any text in markup with specified value */
-    enabled: false
+    enabled: true
   },
   htmlmin: {
     /* Markup minification */
