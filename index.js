@@ -1,12 +1,12 @@
 'use strict';
 
-var argv = require('yargs').argv;
 var extend = require('node.extend');
 var es = require('event-stream');
 var path = require('path');
 var through = require('through2');
 var vinylSourceStream = require('vinyl-source-stream');
 var gulpFilter = require('gulp-filter');
+var chalk = require('chalk');
 
 // we later iterate through this plugin object, plugin lazy loading has to be disabled
 var $ = require('gulp-load-plugins')({
@@ -19,17 +19,11 @@ $['sprites-preprocessor'] = require('sprites-preprocessor');
 var defaultConfig = require('./config');
 var testRunner = require('./test-runner');
 
+var Cache = require('./cache');
+
 module.exports = function(gulp, userConfig) {
   var originalConfig = extend(true, {}, defaultConfig, userConfig);
   var config = extend(true, {}, originalConfig);
-  for (var c in config) {
-    if (config.hasOwnProperty(c) && config[c].hasOwnProperty('enabled')) {
-      delete config[c].enabled;
-    }
-  }
-
-  var env = argv.type || 'development';
-  var cleanFolders = {};
 
   var getFolders = function(base, folders) {
     return gulp.src(folders.map(function(item) {
@@ -38,41 +32,58 @@ module.exports = function(gulp, userConfig) {
   };
 
   var isPluginEnabled = function(name) {
-    return originalConfig[name] && originalConfig[name].enabled;
+    return originalConfig[name] && originalConfig[name].enabled;
+  };
+
+  var handleError = function(err) {
+    if (isPluginEnabled('plumber')) {
+      config.plumber.errorHandler(err, 'browserify');
+    } else {
+      throw err;
+    }
   };
 
   var browserify = isPluginEnabled('watch') ? require('watchify') : require('browserify');
-  var bundler = browserify('./' + path.join(config.src.scriptDir, config.src.scriptMain));
-  for (var t in config.browserify.transforms) {
-    if (config.browserify.transforms.hasOwnProperty(t) && config.browserify.transforms[t]) {
-      bundler.transform(t);
+
+  // remove "enabled" key from config
+  for (var configName in config) {
+    if (config.hasOwnProperty(configName) && config[configName].hasOwnProperty('enabled')) {
+      delete config[configName].enabled;
     }
   }
 
   // disabled gulp plugins are replaced with stream that passes everything through
-  for (var p in $) {
-    if ($.hasOwnProperty(p)) {
-      if (!isPluginEnabled(p))
-        $[p] = through.obj;
+  for (var pluginName in $) {
+    if ($.hasOwnProperty(pluginName)) {
+      if (!isPluginEnabled(pluginName)) {
+        $[pluginName] = through.obj;
+      }
     }
   }
 
+  var bundler = browserify('./' + path.join(config.src.scriptDir, config.src.scriptMain));
+
+  // apply browserify transforms from config
+  for (var transform in config.browserify.transforms) {
+    if (config.browserify.transforms.hasOwnProperty(transform) && config.browserify.transforms[transform]) {
+      bundler.transform(transform);
+    }
+  }
+
+  var cache = new Cache();
+
   // every task calls cb to measure its execution time
   gulp.task('scripts', function(cb) {
-    if (cleanFolders['scripts']) { return cb(); }
-    cleanFolders['scripts'] = true;
+    if (cache.isClean('scripts')) { return cb(); }
+    cache.setClean('scripts');
 
     gulp.src(path.join(config.dist.scriptDir, config.dist.scriptFiles), { read: false })
       .pipe($.clean())
       .on('end', function() {
         bundler.bundle(config.browserify)
-          .on('error', function (err) {
-            if (isPluginEnabled('plumber')) {
-              config.plumber.errorHandler(err, 'browserify');
-              cb();
-            }
-            else
-              throw err;
+          .on('error', function(err) {
+            handleError(err);
+            cb();
           })
           .pipe(vinylSourceStream(config.src.scriptMain))
           .pipe($.plumber(config.plumber))
@@ -83,11 +94,11 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('styles', function(cb) {
+    if (cache.isClean('styles')) { return cb(); }
+    cache.setClean('styles');
+
     var spriteFilter = gulpFilter('**/*.png');
     var cssFilter = gulpFilter('**/*.css');
-
-    if (cleanFolders['styles']) { return cb(); }
-    cleanFolders['styles'] = true;
 
     gulp.src(path.join(config.dist.styleDir, config.dist.styleFiles), { read: false })
       .pipe($.clean())
@@ -116,71 +127,77 @@ module.exports = function(gulp, userConfig) {
       });
   });
 
-  gulp.task('index', ['scripts', 'styles', 'images'], function(cb) {
+  gulp.task('index', ['scripts', 'styles', 'images'], function() {
     var streams = [];
-    var markupStream = gulp.src(path.join(config.src.markupDir, config.src.markupFiles))
-      .pipe($.plumber(config.plumber))
-      .pipe($.fileInsert(config.fileInsert))
-      .pipe($.inject(gulp.src([
-        path.join(config.dist.scriptDir, config.dist.scriptFiles),
-        path.join(config.dist.styleDir, config.dist.styleFiles)
-      ], { read: false }), config.inject))
-      .pipe($.htmlmin(config.htmlmin));
 
-    if (!cleanFolders['markups'] || isPluginEnabled('rename')) {
-      cleanFolders['markups'] = true;
+    if (cache.isDirty('markups') || isPluginEnabled('rename')) {
+      cache.setClean('markups');
+
+      var markupStream = gulp.src(path.join(config.src.markupDir, config.src.markupFiles))
+        .pipe($.plumber(config.plumber))
+        .pipe($.fileInsert(config.fileInsert))
+        .pipe($.inject(gulp.src([
+          path.join(config.dist.scriptDir, config.dist.scriptFiles),
+          path.join(config.dist.styleDir, config.dist.styleFiles)
+        ], { read: false }), config.inject))
+        .pipe($.htmlmin(config.htmlmin));
+
       streams.push(markupStream);
     }
-    if (config.copy.length)
-      streams.push(getFolders('src', config.copy));
-    if (!streams.length) { return cb(); }
 
-    es.merge.apply(null, streams)
-      .pipe(gulp.dest('dist'))
-      .on('end', cb);
+    if (config.copy.length) {
+      streams.push(getFolders('src', config.copy));
+    }
+
+    if (!streams.length) { return; }
+
+    return es.merge.apply(null, streams)
+      .pipe(gulp.dest('dist'));
   });
 
-  gulp.task('images', function(cb) {
-    gulp.src(path.join(config.src.imageDir, config.src.imageFiles))
+  gulp.task('images', function() {
+    return gulp.src(path.join(config.src.imageDir, config.src.imageFiles))
       .pipe($.plumber(config.plumber))
       .pipe($.newer(config.dist.imageDir))
       .pipe($.imagemin(config.imagemin))
-      .pipe(gulp.dest(config.dist.imageDir))
-      .on('end', cb);
+      .pipe(gulp.dest(config.dist.imageDir));
   });
 
   gulp.task('test', ['index'], function() {
-    if (isPluginEnabled('karma'))
+    if (isPluginEnabled('karma')) {
       testRunner.karma();
+    }
   });
 
   gulp.task('testContinuous', ['index'], function() {
-    if (isPluginEnabled('karma'))
+    if (isPluginEnabled('karma')) {
       testRunner.karmaWatch();
+    }
   });
 
   gulp.task('e2e', ['index'], function() {
-    if (isPluginEnabled('e2e'))
+    if (isPluginEnabled('e2e')) {
       testRunner.casper(path.join(config.src.specDir, config.src.e2eDir));
+    }
   });
 
   gulp.task('default', ['index', 'testContinuous'], function() {
     if (!isPluginEnabled('watch')) { return; }
 
     // watchify has its own watcher
-    bundler.on('update', function () {
-      cleanFolders['scripts'] = false;
+    bundler.on('update', function() {
+      cache.setDirty('scripts');
       gulp.start('index');
     });
 
     gulp.watch(path.join(config.src.styleDir, config.src.styleFiles), ['index'])
       .on('change', function() {
-        cleanFolders['styles'] = false;
+        cache.setDirty('styles');
       });
 
     gulp.watch(path.join(config.src.markupDir, config.src.markupFiles), ['index'])
       .on('change', function() {
-        cleanFolders['markups'] = false;
+        cache.setDirty('markups');
       });
 
     gulp.watch([
@@ -190,10 +207,12 @@ module.exports = function(gulp, userConfig) {
 
     if (!isPluginEnabled('livereload')) { return; }
     var lrServer = $.livereload();
+
     var lrHandler = function (file) {
       lrServer.changed(file.path);
-      console.log('Reloading ' + file.path);
+      console.log('[' + chalk.blue('Reload') + '] ' + file.path);
     };
+
     gulp.watch(path.join(config.dist.markupDir, config.dist.markupFiles), lrHandler);
 
     if (!isPluginEnabled('rename')) {
