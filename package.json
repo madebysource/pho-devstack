@@ -27,7 +27,6 @@
     "gulp-clean": "~0.2.4",
     "gulp-htmlmin": "~0.1.2",
     "gulp-imagemin": "^0.1.5",
-    "gulp-inject": "~0.4.1",
     "gulp-less": "~1.2.3",
     "gulp-livereload": "~1.3.0",
     "gulp-newer": "~0.3.0",
