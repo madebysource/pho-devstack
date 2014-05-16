@@ -6,19 +6,7 @@
 var path = require('path');
 var chalk = require('chalk');
 
-var gs = require('glob-stream');
-var through = require('through2');
-
-// get stream of filenames in directory
-var files = function(dir, format) {
-  return function() {
-    return gs.create(dir)
-    .pipe(through.obj(function(file, enc, callback) {
-      this.push(format(path.basename(file.path)));
-      callback();
-    }));
-  };
-};
+var files = require('./get-files');
 
 module.exports = {
   dist: {
