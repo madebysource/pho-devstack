@@ -15,7 +15,7 @@ var $ = require('gulp-load-plugins')({
 });
 
 var defaultConfig = require('./config');
-var testRunner = require('./test-runner');
+var testRunner = require('./lib/test-runner');
 
 var Cache = require('./cache');
 

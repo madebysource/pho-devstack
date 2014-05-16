@@ -6,7 +6,7 @@
 var path = require('path');
 var chalk = require('chalk');
 
-var files = require('./get-files');
+var files = require('./lib/get-files');
 
 module.exports = {
   dist: {
