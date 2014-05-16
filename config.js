@@ -101,18 +101,6 @@ module.exports = {
     /* Minify PNG, JPEG, GIF and SVG images */
     enabled: true
   },
-  inject: {
-    /* Inject assets into markup */
-    /* Option list: https://github.com/klei/gulp-inject#api */
-    enabled: true,
-    transform: function(filepath) { // used to generate the content to inject for each file
-      if (filepath.indexOf('.js') !== -1) {
-        return '<script src="' + filepath.substr(6) + '"></script>';
-      } else {
-        return '<link rel="stylesheet" href="' + filepath.substr(6) + '" />';
-      }
-    }
-  },
   less: {
     /* LESS style file compilation */
     enabled: true,
