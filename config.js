@@ -61,13 +61,17 @@ module.exports = {
     /* Replace any text in markup with specified value */
     enabled: true,
 
-    js: files('dist/scripts/**/*.js', function(name) {
-      return '<script src="scripts/' + name + '"></script>';
-    }),
+    js: function() {
+      return files('dist/scripts/**/*.js', function(name) {
+        return '<script src="scripts/' + name + '"></script>';
+      });
+    },
 
-    css: files('dist/styles/**/*.css', function(name) {
-      return '<link rel="stylesheet" href="styles/' + name + '">';
-    })
+    css: function() {
+      return files('dist/styles/**/*.css', function(name) {
+        return '<link rel="stylesheet" href="styles/' + name + '">';
+      });
+    }
   },
   filter: {
     /* Used internally for generating sprites */
