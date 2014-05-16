@@ -23,6 +23,7 @@
     "event-stream": "~3.1.0",
     "vinyl-source-stream": "~0.1.1",
     "casperjs": "^1.1.0-beta3",
+    "glob-stream": "^3.1.9",
     "gulp-clean": "~0.2.4",
     "gulp-htmlmin": "~0.1.2",
     "gulp-imagemin": "^0.1.5",

@@ -6,6 +6,20 @@
 var path = require('path');
 var chalk = require('chalk');
 
+var gs = require('glob-stream');
+var through = require('through2');
+
+// get stream of filenames in directory
+var files = function(dir, format) {
+  return function() {
+    return gs.create(dir)
+    .pipe(through.obj(function(file, enc, callback) {
+      this.push(format(path.basename(file.path)));
+      callback();
+    }));
+  };
+};
+
 module.exports = {
   dist: {
     /* Directories and file patterns for build output */
@@ -57,7 +71,15 @@ module.exports = {
   ],
   substituter: {
     /* Replace any text in markup with specified value */
-    enabled: true
+    enabled: true,
+
+    js: files('dist/scripts/**/*.js', function(name) {
+      return '<script src="scripts/' + name + '"></script>';
+    }),
+
+    css: files('dist/styles/**/*.css', function(name) {
+      return '<link rel="stylesheet" href="styles/' + name + '">';
+    })
   },
   filter: {
     /* Used internally for generating sprites */
