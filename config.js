@@ -6,8 +6,6 @@
 var path = require('path');
 var chalk = require('chalk');
 
-var files = require('./lib/get-files');
-
 module.exports = {
   dist: {
     /* Directories and file patterns for build output */
@@ -59,19 +57,7 @@ module.exports = {
   ],
   substituter: {
     /* Replace any text in markup with specified value */
-    enabled: true,
-
-    js: function() {
-      return files('dist/scripts/**/*.js', function(name) {
-        return '<script src="scripts/' + name + '"></script>';
-      });
-    },
-
-    css: function() {
-      return files('dist/styles/**/*.css', function(name) {
-        return '<link rel="stylesheet" href="styles/' + name + '">';
-      });
-    }
+    enabled: true
   },
   filter: {
     /* Used internally for generating sprites */

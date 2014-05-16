@@ -18,6 +18,8 @@ var defaultConfig = require('./config');
 var testRunner = require('./lib/test-runner');
 
 var Cache = require('./cache');
+var files = require('./lib/get-files');
+
 
 module.exports = function(gulp, userConfig) {
   var originalConfig = extend(true, {}, defaultConfig, userConfig);
@@ -46,6 +48,25 @@ module.exports = function(gulp, userConfig) {
   for (var configName in config) {
     if (config.hasOwnProperty(configName) && config[configName].hasOwnProperty('enabled')) {
       delete config[configName].enabled;
+    }
+  }
+
+  // setup gulp-substituter js and css keys
+  if (config.substituter) {
+    if (!config.substituter.js) {
+      config.substituter.js = function() {
+        return files(path.join(config.dist.scriptDir, config.dist.scriptFiles), function(name) {
+          return '<script src="scripts/' + name + '"></script>';
+        });
+      };
+    }
+
+    if (!config.substituter.css) {
+      config.substituter.css = function() {
+        return files(path.join(config.dist.styleDir, config.dist.styleFiles), function(name) {
+          return '<link rel="stylesheet" href="styles/' + name + '">';
+        });
+      };
     }
   }
 
