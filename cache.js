@@ -1,3 +1,5 @@
+'use strict';
+
 var Cache = function() {
   this._data = {};
 };
