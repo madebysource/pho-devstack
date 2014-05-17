@@ -163,7 +163,7 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('images', function() {
-    return gulp.src(path.join(config.src.imageDir, config.src.imageFiles))
+    return gulp.src(path.join(config.src.imageDir, '**/*'))
       .pipe($.plumber(config.plumber))
       .pipe($.newer(config.dist.imageDir))
       .pipe($.imagemin(config.imagemin))
@@ -209,7 +209,7 @@ module.exports = function(gulp, userConfig) {
 
     gulp.watch([
       path.join(config.src.specDir, config.src.specFiles),
-      path.join(config.src.imageDir, config.src.imageFiles)
+      path.join(config.src.imageDir, '**/*')
     ], ['index']);
 
     if (!isPluginEnabled('livereload')) { return; }
