@@ -1,7 +1,18 @@
+<a name="1.0.0-alpha.1"></a>
+# 1.0.0-alpha.1 Přemysl's Phở (2014-05-16)
+
+- BREAKING CHANGE: gulp-fileInsert replaced with substituter (markup files need update - see [new syntax][generator-index-1.0.0-alpha.1])
+- BREAKING CHANGE: gulp-inject replaced with substituter (markup files need update - see [new syntax][generator-index-1.0.0-alpha.1])
+- Add gulp-base64 for inlining small images into CSS file
+- Add sprites-preprocessor for generating sprites
+- Big cleanup
+
+[generator-index-1.0.0-alpha.1]: https://github.com/madebysource/generator-pho/blob/af917b1d96d22981fe7e2ad6a0ad13e37fcd3162/app/templates/src/index.html
+
 <a name="0.3.1"></a>
 # 0.3.1 Jirka's Phở (2014-04-25)
 
-- Fix fileInsert not working on every next run in development mode
+- Fix gulp-fileInsert not working on every next run in development mode
 
 <a name="0.3.0"></a>
 # 0.3.0 Jirka's Phở (2014-04-24)
