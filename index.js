@@ -121,7 +121,6 @@ module.exports = function(gulp, userConfig) {
     gulp.src(path.join(config.dist.styleDir, config.dist.styleFiles), { read: false })
       .pipe($.clean())
       .on('end', function() {
-
         gulp.src(path.join(config.src.styleDir, config.src.styleMain))
           .pipe($.plumber(config.plumber))
           .pipe($.less(config.less))
