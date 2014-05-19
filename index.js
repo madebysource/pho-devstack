@@ -37,9 +37,9 @@ module.exports = function(gulp, userConfig) {
     return originalConfig[name] && originalConfig[name].enabled;
   };
 
-  var handleBrowserifyError = function(err) {
+  var handleBrowserifyError = function(err, name) {
     if (isPluginEnabled('plumber')) {
-      config.plumber.errorHandler(err, 'browserify');
+      config.plumber.errorHandler(err, name);
     } else {
       throw err;
     }
@@ -100,7 +100,7 @@ module.exports = function(gulp, userConfig) {
       .on('end', function() {
         bundler.bundle(config.browserify)
           .on('error', function(err) {
-            handleBrowserifyError(err);
+            handleBrowserifyError(err, 'browserify');
             cb();
           })
           .pipe(vinylSourceStream(config.src.scriptMain))
