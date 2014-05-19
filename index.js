@@ -24,6 +24,7 @@ var files = require('./lib/get-files');
 module.exports = function(gulp, userConfig) {
   var originalConfig = extend(true, {}, defaultConfig, userConfig);
   var config = extend(true, {}, originalConfig);
+
   var cache = new Cache();
 
   var getFolders = function(base, folders) {
