@@ -156,10 +156,9 @@ module.exports = function(gulp, userConfig) {
       streams.push(getFolders('src', config.copy));
     }
 
-    if (!streams.length) { return; }
-
-    return es.merge.apply(null, streams)
-      .pipe(gulp.dest('dist'));
+    if (streams.length) {
+      return es.merge.apply(null, streams).pipe(gulp.dest('dist'));
+    }
   });
 
   gulp.task('images', function() {
@@ -212,22 +211,23 @@ module.exports = function(gulp, userConfig) {
       path.join(config.src.imageDir, '**/*')
     ], ['index']);
 
-    if (!isPluginEnabled('livereload')) { return; }
-    var lrServer = $.livereload();
+    if (!isPluginEnabled('livereload')) {
+      var liveReloadServer = $.livereload();
 
-    var lrHandler = function (file) {
-      lrServer.changed(file.path);
-      console.log('[' + chalk.blue('Reload') + '] ' + file.path);
-    };
+      var liveReloadHandler = function(file) {
+        liveReloadServer.changed(file.path);
+        console.log('[' + chalk.blue('Reload') + '] ' + file.path);
+      };
 
-    gulp.watch(path.join(config.dist.markupDir, config.dist.markupFiles), lrHandler);
+      gulp.watch(path.join(config.dist.markupDir, config.dist.markupFiles), liveReloadHandler);
 
-    if (!isPluginEnabled('rename')) {
-      // markup is not changed when rename is disabled, we can livereload
-      gulp.watch([
-        path.join(config.dist.scriptDir, config.dist.scriptFiles),
-        path.join(config.dist.styleDir, config.dist.styleFiles)
-      ], lrHandler);
+      if (!isPluginEnabled('rename')) {
+        // markup is not changed when rename is disabled, we can livereload
+        gulp.watch([
+          path.join(config.dist.scriptDir, config.dist.scriptFiles),
+          path.join(config.dist.styleDir, config.dist.styleFiles)
+        ], liveReloadHandler);
+      }
     }
   });
 };
