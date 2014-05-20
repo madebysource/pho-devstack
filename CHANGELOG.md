@@ -1,3 +1,11 @@
+<a name="1.0.0-beta.1"></a>
+# 1.0.0-beta.1 Bernard's Phở (2014-05-20)
+
+- Testing and writing documentation
+- Add CDN option to js and css substituter
+- Add JSHint (disabled by default)
+- Run image folder through image task for copying
+
 <a name="1.0.0-alpha.1"></a>
 # 1.0.0-alpha.1 Přemysl's Phở (2014-05-16)
 
