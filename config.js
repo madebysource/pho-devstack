@@ -16,8 +16,7 @@ module.exports = {
     spriteDir: 'dist/sprites/',
     markupFiles: '**/*.html',
     scriptFiles: '*.js',
-    styleFiles: '*.css',
-    imageFiles: '**/*.{png,jpg,jpeg}'
+    styleFiles: '*.css'
   },
   src: {
     /* Directories and file patterns of source files */
@@ -32,8 +31,7 @@ module.exports = {
     markupFiles: '**/*.html',
     scriptFiles: '**/*.js',
     styleFiles: '**/*.less',
-    specFiles: '**/*Spec.js',
-    imageFiles: '**/*.{png,jpg,jpeg}'
+    specFiles: '**/*Spec.js'
   },
   browserify: {
     /* Parses javascript module files with require() functions and produces single bundle */
@@ -132,5 +130,8 @@ module.exports = {
   base64: {
     enabled: false,
     maxImageSize: 32768 // maximum filesize for replacing image with base64
+  },
+  jshint: {
+    enabled: true
   }
 };

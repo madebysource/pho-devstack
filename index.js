@@ -14,16 +14,18 @@ var $ = require('gulp-load-plugins')({
   pattern: ['gulp-*', 'sprites-preprocessor']
 });
 
+var stylish = require('jshint-stylish');
+
 var defaultConfig = require('./config');
 var testRunner = require('./lib/test-runner');
 
 var Cache = require('./cache');
 var files = require('./lib/get-files');
 
-
 module.exports = function(gulp, userConfig) {
   var originalConfig = extend(true, {}, defaultConfig, userConfig);
   var config = extend(true, {}, originalConfig);
+
   var cache = new Cache();
 
   var getFolders = function(base, folders) {
@@ -36,9 +38,9 @@ module.exports = function(gulp, userConfig) {
     return originalConfig[name] && originalConfig[name].enabled;
   };
 
-  var handleBrowserifyError = function(err) {
+  var handleError = function(err, name) {
     if (isPluginEnabled('plumber')) {
-      config.plumber.errorHandler(err, 'browserify');
+      config.plumber.errorHandler(err, name);
     } else {
       throw err;
     }
@@ -51,12 +53,13 @@ module.exports = function(gulp, userConfig) {
     }
   }
 
+  var cdn = config.substituter.cdn || '';
   // setup gulp-substituter js and css keys
   if (config.substituter) {
     if (!config.substituter.js) {
       config.substituter.js = function() {
         return files(path.join(config.dist.scriptDir, config.dist.scriptFiles), function(name) {
-          return '<script src="scripts/' + name + '"></script>';
+          return '<script src="' + path.join(cdn, 'scripts', name) + '"></script>';
         });
       };
     }
@@ -64,7 +67,7 @@ module.exports = function(gulp, userConfig) {
     if (!config.substituter.css) {
       config.substituter.css = function() {
         return files(path.join(config.dist.styleDir, config.dist.styleFiles), function(name) {
-          return '<link rel="stylesheet" href="styles/' + name + '">';
+          return '<link rel="stylesheet" href="' + path.join(cdn, 'styles', name) + '">';
         });
       };
     }
@@ -90,7 +93,7 @@ module.exports = function(gulp, userConfig) {
   }
 
   // every task calls cb to measure its execution time
-  gulp.task('scripts', function(cb) {
+  gulp.task('scripts', ['jshint'], function(cb) {
     if (cache.isClean('scripts')) { return cb(); }
     cache.setClean('scripts');
 
@@ -99,7 +102,7 @@ module.exports = function(gulp, userConfig) {
       .on('end', function() {
         bundler.bundle(config.browserify)
           .on('error', function(err) {
-            handleBrowserifyError(err);
+            handleError(err, 'browserify');
             cb();
           })
           .pipe(vinylSourceStream(config.src.scriptMain))
@@ -108,6 +111,14 @@ module.exports = function(gulp, userConfig) {
           .pipe(gulp.dest(config.dist.scriptDir))
           .on('end', cb);
       });
+  });
+
+  gulp.task('jshint', function() {
+    if (!isPluginEnabled('jshint')) { return; }
+
+    return gulp.src(path.join(config.src.scriptDir, config.src.scriptFiles))
+      .pipe($.jshint(config.src.jshint))
+      .pipe($.jshint.reporter(stylish));
   });
 
   gulp.task('styles', function(cb) {
@@ -120,7 +131,6 @@ module.exports = function(gulp, userConfig) {
     gulp.src(path.join(config.dist.styleDir, config.dist.styleFiles), { read: false })
       .pipe($.clean())
       .on('end', function() {
-
         gulp.src(path.join(config.src.styleDir, config.src.styleMain))
           .pipe($.plumber(config.plumber))
           .pipe($.less(config.less))
@@ -156,14 +166,13 @@ module.exports = function(gulp, userConfig) {
       streams.push(getFolders('src', config.copy));
     }
 
-    if (!streams.length) { return; }
-
-    return es.merge.apply(null, streams)
-      .pipe(gulp.dest('dist'));
+    if (streams.length) {
+      return es.merge.apply(null, streams).pipe(gulp.dest('dist'));
+    }
   });
 
   gulp.task('images', function() {
-    return gulp.src(path.join(config.src.imageDir, config.src.imageFiles))
+    return gulp.src(path.join(config.src.imageDir, '**/*'))
       .pipe($.plumber(config.plumber))
       .pipe($.newer(config.dist.imageDir))
       .pipe($.imagemin(config.imagemin))
@@ -209,25 +218,26 @@ module.exports = function(gulp, userConfig) {
 
     gulp.watch([
       path.join(config.src.specDir, config.src.specFiles),
-      path.join(config.src.imageDir, config.src.imageFiles)
+      path.join(config.src.imageDir, '**/*')
     ], ['index']);
 
-    if (!isPluginEnabled('livereload')) { return; }
-    var lrServer = $.livereload();
+    if (!isPluginEnabled('livereload')) {
+      var liveReloadServer = $.livereload();
 
-    var lrHandler = function (file) {
-      lrServer.changed(file.path);
-      console.log('[' + chalk.blue('Reload') + '] ' + file.path);
-    };
+      var liveReloadHandler = function(file) {
+        liveReloadServer.changed(file.path);
+        console.log('[' + chalk.blue('Reload') + '] ' + file.path);
+      };
 
-    gulp.watch(path.join(config.dist.markupDir, config.dist.markupFiles), lrHandler);
+      gulp.watch(path.join(config.dist.markupDir, config.dist.markupFiles), liveReloadHandler);
 
-    if (!isPluginEnabled('rename')) {
-      // markup is not changed when rename is disabled, we can livereload
-      gulp.watch([
-        path.join(config.dist.scriptDir, config.dist.scriptFiles),
-        path.join(config.dist.styleDir, config.dist.styleFiles)
-      ], lrHandler);
+      if (!isPluginEnabled('rename')) {
+        // markup is not changed when rename is disabled, we can livereload
+        gulp.watch([
+          path.join(config.dist.scriptDir, config.dist.scriptFiles),
+          path.join(config.dist.styleDir, config.dist.styleFiles)
+        ], liveReloadHandler);
+      }
     }
   });
 };
