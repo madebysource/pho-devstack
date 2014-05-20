@@ -52,12 +52,13 @@ module.exports = function(gulp, userConfig) {
     }
   }
 
+  var cdn = config.substituter.cdn || '';
   // setup gulp-substituter js and css keys
   if (config.substituter) {
     if (!config.substituter.js) {
       config.substituter.js = function() {
         return files(path.join(config.dist.scriptDir, config.dist.scriptFiles), function(name) {
-          return '<script src="scripts/' + name + '"></script>';
+          return '<script src="' + path.join(cdn, 'scripts', name) + '"></script>';
         });
       };
     }
@@ -65,7 +66,7 @@ module.exports = function(gulp, userConfig) {
     if (!config.substituter.css) {
       config.substituter.css = function() {
         return files(path.join(config.dist.styleDir, config.dist.styleFiles), function(name) {
-          return '<link rel="stylesheet" href="styles/' + name + '">';
+          return '<link rel="stylesheet" href="' + path.join(cdn, 'styles', name) + '">';
         });
       };
     }
