@@ -1,11 +1,12 @@
 'use strict';
 
+var chalk = require('chalk');
 var extend = require('node.extend');
 var es = require('event-stream');
 var path = require('path');
 var through = require('through2');
+var url = require('url');
 var vinylSourceStream = require('vinyl-source-stream');
-var chalk = require('chalk');
 
 // we later iterate through this plugin object, plugin lazy loading has to be disabled
 var $ = require('gulp-load-plugins')({
@@ -59,7 +60,7 @@ module.exports = function(gulp, userConfig) {
     if (!config.substituter.js) {
       config.substituter.js = function() {
         return files(path.join(config.dist.scriptDir, config.dist.scriptFiles), function(name) {
-          return '<script src="' + path.join(cdn, 'scripts', name) + '"></script>';
+          return '<script src="' + url.resolve(url.resolve(cdn, 'scripts'), name) + '"></script>';
         });
       };
     }
@@ -67,7 +68,7 @@ module.exports = function(gulp, userConfig) {
     if (!config.substituter.css) {
       config.substituter.css = function() {
         return files(path.join(config.dist.styleDir, config.dist.styleFiles), function(name) {
-          return '<link rel="stylesheet" href="' + path.join(cdn, 'styles', name) + '">';
+          return '<link rel="stylesheet" href="' + url.resolve(url.resolve(cdn, 'styles'), name) + '">';
         });
       };
     }
