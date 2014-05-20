@@ -7,7 +7,7 @@ This software is in stabilization phase. We've used it in [Source][Source] and [
 
 ## Documentation
 
-For a Getting Started guide, FAQ and more 
+For a Getting Started guide, FAQ, etc. see [documentation](docs/README.md).
 
 ## Want to contribute?
 
