@@ -1,6 +1,6 @@
 # Getting Started
 
-After this walkthrough you will be able to use Phở Devstack with new or existing projects.
+<!--After this walkthrough you will be able to use Phở Devstack with new or existing projects.-->
 
 ## Installation
 
@@ -16,8 +16,11 @@ After this walkthrough you will be able to use Phở Devstack with new or existi
 1. Generate initial project structure with [Yeoman][Yeoman]<br>
 ```yo pho```
 
-## Setting up Phở for existing project
+<!--## Setting up Phở for existing project
 
+1. Run ```npm install pho-devstack gulp@3.6.0```
+1. Create ```Gulpfile.js``` that uses default Phở config
+1. Change config to match your project. It will probably have different directory structure.-->
 
 ## Usage
 1. Run build system ```gulp```
