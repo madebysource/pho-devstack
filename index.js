@@ -14,12 +14,13 @@ var $ = require('gulp-load-plugins')({
   pattern: ['gulp-*', 'sprites-preprocessor']
 });
 
+var stylish = require('jshint-stylish');
+
 var defaultConfig = require('./config');
 var testRunner = require('./lib/test-runner');
 
 var Cache = require('./cache');
 var files = require('./lib/get-files');
-
 
 module.exports = function(gulp, userConfig) {
   var originalConfig = extend(true, {}, defaultConfig, userConfig);
@@ -92,7 +93,7 @@ module.exports = function(gulp, userConfig) {
   }
 
   // every task calls cb to measure its execution time
-  gulp.task('scripts', function(cb) {
+  gulp.task('scripts', ['jshint'], function(cb) {
     if (cache.isClean('scripts')) { return cb(); }
     cache.setClean('scripts');
 
@@ -110,6 +111,14 @@ module.exports = function(gulp, userConfig) {
           .pipe(gulp.dest(config.dist.scriptDir))
           .on('end', cb);
       });
+  });
+
+  gulp.task('jshint', function() {
+    if (!isPluginEnabled('jshint')) { return; }
+
+    return gulp.src(path.join(config.src.scriptDir, config.src.scriptFiles))
+      .pipe($.jshint(config.src.jshint))
+      .pipe($.jshint.reporter(stylish));
   });
 
   gulp.task('styles', function(cb) {

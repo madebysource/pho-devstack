@@ -130,5 +130,8 @@ module.exports = {
   base64: {
     enabled: false,
     maxImageSize: 32768 // maximum filesize for replacing image with base64
+  },
+  jshint: {
+    enabled: true
   }
 };
