@@ -92,8 +92,10 @@ module.exports = function(gulp, userConfig) {
     }
   }
 
-  // every task calls cb to measure its execution time
-  gulp.task('scripts', ['jshint'], function(cb) {
+  var scriptsDependencies = [];
+  if (isPluginEnabled('jshint'))
+    scriptsDependencies.push('jshint');
+  gulp.task('scripts', scriptsDependencies, function(cb) {
     if (cache.isClean('scripts')) { return cb(); }
     cache.setClean('scripts');
 
@@ -114,8 +116,6 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('jshint', function() {
-    if (!isPluginEnabled('jshint')) { return; }
-
     return gulp.src(path.join(config.src.scriptDir, config.src.scriptFiles))
       .pipe($.jshint(config.src.jshint))
       .pipe($.jshint.reporter(stylish));
@@ -180,15 +180,11 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('test', ['index'], function() {
-    if (isPluginEnabled('karma')) {
-      testRunner.karma();
-    }
+    testRunner.karma();
   });
 
   gulp.task('testContinuous', ['index'], function() {
-    if (isPluginEnabled('karma')) {
-      testRunner.karmaWatch();
-    }
+    testRunner.karmaWatch();
   });
 
   gulp.task('e2e', ['index'], function() {
@@ -197,7 +193,14 @@ module.exports = function(gulp, userConfig) {
     }
   });
 
-  gulp.task('default', ['index', 'testContinuous'], function() {
+  var defaultDependencies = ['index'];
+  if (isPluginEnabled('karma')) {
+    if (isPluginEnabled('watch'))
+      defaultDependencies.push('testContinuous');
+    else
+      defaultDependencies.push('test');
+  }
+  gulp.task('default', defaultDependencies, function() {
     if (!isPluginEnabled('watch')) { return; }
 
     // watchify has its own watcher
