@@ -13,7 +13,7 @@
 
 1. Create a project directory<br>
 <code>mkdir <b>new-project</b> && cd $_</code>
-1. Generate initial project structure with [Yeoman][Yeoman]<br>
+1. Generate initial project structure<br>
 ```yo pho```
 
 <!--## Setting up Phở for existing project
@@ -28,6 +28,8 @@
 1. Edit files in ```src/```, build will run automatically and page will be reloaded in browser(s)
 
 When you're finished, press ```Ctrl + C``` to quit build system.
+
+For a production build, run ```gulp --gulpfile gulpfile-production.js```. You can use this command in your CI or deploy script.
 
 ## More information
 
