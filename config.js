@@ -33,6 +33,10 @@ module.exports = {
     styleFiles: '**/*.less',
     specFiles: '**/*Spec.js'
   },
+  base64: {
+    enabled: false,
+    maxImageSize: 32768 // maximum filesize for replacing image with base64
+  },
   browserify: {
     /* Parses javascript module files with require() functions and produces single bundle */
     /* Option list: https://github.com/substack/node-browserify#bbundleopts-cb */
@@ -67,6 +71,9 @@ module.exports = {
     enabled: true,
     collapseWhitespace: true, // remove whitespace characters from text nodes and document tree
     removeComments: true      // strip HTML comments
+  },
+  jshint: {
+    enabled: false
   },
   karma: {
     /* Test runner for JavaScript */
@@ -116,10 +123,6 @@ module.exports = {
     /* Rename files (used for revisioning) */
     enabled: false
   },
-  watch: {
-    /* Run build each time file is changed */
-    enabled: true
-  },
   spritesPreprocessor: {
     /* Replace images in sprites folder with one image, and change css paths */
     enabled: false,
@@ -127,11 +130,8 @@ module.exports = {
     prefix: '../sprites/',
     name: '../sprites/sprite.png'
   },
-  base64: {
-    enabled: false,
-    maxImageSize: 32768 // maximum filesize for replacing image with base64
-  },
-  jshint: {
+  watch: {
+    /* Run build each time file is changed */
     enabled: true
   }
 };
