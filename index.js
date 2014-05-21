@@ -11,8 +11,7 @@ var vinylSourceStream = require('vinyl-source-stream');
 // we later iterate through this plugin object, plugin lazy loading has to be disabled
 var $ = require('gulp-load-plugins')({
   config: require.resolve('./package.json'),
-  lazy: false,
-  pattern: ['gulp-*', 'sprites-preprocessor']
+  lazy: false
 });
 
 var stylish = require('jshint-stylish');
