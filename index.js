@@ -11,8 +11,7 @@ var vinylSourceStream = require('vinyl-source-stream');
 // we later iterate through this plugin object, plugin lazy loading has to be disabled
 var $ = require('gulp-load-plugins')({
   config: require.resolve('./package.json'),
-  lazy: false,
-  pattern: ['gulp-*', 'sprites-preprocessor']
+  lazy: false
 });
 
 var stylish = require('jshint-stylish');
@@ -60,7 +59,7 @@ module.exports = function(gulp, userConfig) {
     if (!config.substituter.js) {
       config.substituter.js = function() {
         return files(path.join(config.dist.scriptDir, config.dist.scriptFiles), function(name) {
-          return '<script src="' + url.resolve(url.resolve(cdn, 'scripts'), name) + '"></script>';
+          return '<script src="' + cdn + 'scripts/' + name + '"></script>';
         });
       };
     }
@@ -68,7 +67,7 @@ module.exports = function(gulp, userConfig) {
     if (!config.substituter.css) {
       config.substituter.css = function() {
         return files(path.join(config.dist.styleDir, config.dist.styleFiles), function(name) {
-          return '<link rel="stylesheet" href="' + url.resolve(url.resolve(cdn, 'styles'), name) + '">';
+          return '<link rel="stylesheet" href="' + cdn + 'styles/' + name + '">';
         });
       };
     }
@@ -173,7 +172,7 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('images', function() {
-    return gulp.src(path.join(config.src.imageDir, '**/*'))
+    return gulp.src([path.join(config.src.imageDir, '**/*'), '!' + path.join(config.src.imageDir, 'sprites/**/*')])
       .pipe($.plumber(config.plumber))
       .pipe($.newer(config.dist.imageDir))
       .pipe($.imagemin(config.imagemin))
