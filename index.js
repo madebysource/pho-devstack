@@ -172,7 +172,7 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('images', function() {
-    return gulp.src(path.join(config.src.imageDir, '**/*'))
+    return gulp.src([path.join(config.src.imageDir, '**/*'), '!' + path.join(config.src.imageDir, 'sprites/**/*')])
       .pipe($.plumber(config.plumber))
       .pipe($.newer(config.dist.imageDir))
       .pipe($.imagemin(config.imagemin))

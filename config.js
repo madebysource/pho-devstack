@@ -13,7 +13,7 @@ module.exports = {
     scriptDir: 'dist/scripts/',
     styleDir: 'dist/styles/',
     imageDir: 'dist/images/',
-    spriteDir: 'dist/sprites/',
+    spriteDir: 'dist/images/sprites/',
     markupFiles: '**/*.html',
     scriptFiles: '*.js',
     styleFiles: '*.css'
@@ -126,9 +126,9 @@ module.exports = {
   spritesPreprocessor: {
     /* Replace images in sprites folder with one image, and change css paths */
     enabled: false,
-    path: 'src/sprites/',
-    prefix: '../sprites/',
-    name: '../sprites/sprite.png'
+    path: 'src/images/sprites/',
+    prefix: '../images/sprites/',
+    name: '../images/sprites/sprite.png'
   },
   watch: {
     /* Run build each time file is changed */
