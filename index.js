@@ -223,7 +223,7 @@ module.exports = function(gulp, userConfig) {
       path.join(config.src.imageDir, '**/*')
     ], ['index']);
 
-    if (!isPluginEnabled('livereload')) {
+    if (isPluginEnabled('livereload')) {
       var liveReloadServer = $.livereload();
 
       var liveReloadHandler = function(file) {
