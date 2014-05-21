@@ -57,10 +57,6 @@ module.exports = {
   copy: [
     /* List of folders that will be copied to dist folder */
   ],
-  substituter: {
-    /* Replace any text in markup with specified value */
-    enabled: true
-  },
   filter: {
     /* Used internally for generating sprites */
     enabled: true
@@ -126,9 +122,13 @@ module.exports = {
   spritesPreprocessor: {
     /* Replace images in sprites folder with one image, and change css paths */
     enabled: false,
-    path: 'src/images/sprites/',
-    prefix: '../images/sprites/',
-    name: '../images/sprites/sprite.png'
+    path: 'src/images/sprites/',         // path to the source image files
+    prefix: '../images/sprites/',        // CSS prefix in image url to know what images transform into sprites
+    name: '../images/sprites/sprite.png' // name of the output sprite file
+  },
+  substituter: {
+    /* Replace any text in markup with specified value */
+    enabled: true
   },
   watch: {
     /* Run build each time file is changed */
