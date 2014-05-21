@@ -1,3 +1,8 @@
+<a name="1.0.0-beta.2"></a>
+# 1.0.0-beta-2 Monika's Phở (2014-05-21)
+
+- Fix CDN substituter (one / was missing after http)
+
 <a name="1.0.0-beta.1"></a>
 # 1.0.0-beta.1 Bernard's Phở (2014-05-20)
 
