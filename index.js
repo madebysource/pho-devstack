@@ -59,7 +59,7 @@ module.exports = function(gulp, userConfig) {
     if (!config.substituter.js) {
       config.substituter.js = function() {
         return files(path.join(config.dist.scriptDir, config.dist.scriptFiles), function(name) {
-          return '<script src="' + url.resolve(url.resolve(cdn, 'scripts'), name) + '"></script>';
+          return '<script src="' + cdn + 'scripts/' + name + '"></script>';
         });
       };
     }
@@ -67,7 +67,7 @@ module.exports = function(gulp, userConfig) {
     if (!config.substituter.css) {
       config.substituter.css = function() {
         return files(path.join(config.dist.styleDir, config.dist.styleFiles), function(name) {
-          return '<link rel="stylesheet" href="' + url.resolve(url.resolve(cdn, 'styles'), name) + '">';
+          return '<link rel="stylesheet" href="' + cdn + 'styles/' + name + '">';
         });
       };
     }
