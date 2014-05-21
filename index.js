@@ -5,7 +5,6 @@ var extend = require('node.extend');
 var es = require('event-stream');
 var path = require('path');
 var through = require('through2');
-var url = require('url');
 var vinylSourceStream = require('vinyl-source-stream');
 
 // we later iterate through this plugin object, plugin lazy loading has to be disabled
