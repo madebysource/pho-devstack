@@ -6,6 +6,8 @@
 
 # pho-devstack [![NPM version][npm-image]][npm-url]
 
+> Everything what a front-end developer needs in one tasty soup.
+
 ## Status
 
 This software is in stabilization phase. We've used it in [Source][Source] and [Abdoc][Abdoc] for some months now. We're currently working mainly on documentation and website.
