@@ -94,6 +94,10 @@ module.exports = function(gulp, userConfig) {
   var scriptsDependencies = [];
   if (isPluginEnabled('jshint'))
     scriptsDependencies.push('jshint');
+
+  if (isPluginEnabled('jscs'))
+    scriptsDependencies.push('jscs');
+
   gulp.task('scripts', scriptsDependencies, function(cb) {
     if (cache.isClean('scripts')) { return cb(); }
     cache.setClean('scripts');

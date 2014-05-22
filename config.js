@@ -72,7 +72,7 @@ module.exports = {
     enabled: false
   },
   jscs: {
-    enabled: true
+    enabled: false
   },
   karma: {
     /* Test runner for JavaScript */
