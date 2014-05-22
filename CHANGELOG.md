@@ -1,3 +1,8 @@
+<a name="1.0.0"></a>
+# 1.0.0 Emil's Phở (2014-05-22)
+
+- Add JSCS - JavaScript code style checker
+
 <a name="1.0.0-beta.2"></a>
 # 1.0.0-beta-2 Monika's Phở (2014-05-21)
 
