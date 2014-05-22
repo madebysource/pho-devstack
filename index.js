@@ -94,6 +94,10 @@ module.exports = function(gulp, userConfig) {
   var scriptsDependencies = [];
   if (isPluginEnabled('jshint'))
     scriptsDependencies.push('jshint');
+
+  if (isPluginEnabled('jscs'))
+    scriptsDependencies.push('jscs');
+
   gulp.task('scripts', scriptsDependencies, function(cb) {
     if (cache.isClean('scripts')) { return cb(); }
     cache.setClean('scripts');
@@ -118,6 +122,15 @@ module.exports = function(gulp, userConfig) {
     return gulp.src(path.join(config.src.scriptDir, config.src.scriptFiles))
       .pipe($.jshint(config.src.jshint))
       .pipe($.jshint.reporter(stylish));
+  });
+
+  gulp.task('jscs', function(cb) {
+    return gulp.src(path.join(config.src.scriptDir, config.src.scriptFiles))
+      .pipe($.jscs())
+      .on('error', function(err) {
+        handleError(err);
+        cb();
+      });
   });
 
   gulp.task('styles', function(cb) {
