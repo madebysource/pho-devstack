@@ -10,11 +10,18 @@
 
 ## Features
 
-- Livereload
+- Livereload (without refresh for CSS)
 - LESS stylesheets compilation
+- HTML, JavaScript and CSS minification
+- Advanced image handling (base64 inlining, image optimization, sprite generation)
 - Browserify JavaScript modules
-- Advanced image handling
-- Configurable
+- Linting JavaScript
+- Running unit and end to end tests
+- Configurable directory structure
+- Replacing text in HTML (meta tags, analytics codes)
+- Scripts and stylesheets revisioning
+- Running build after file is changed
+- Configurable plugins
 - Stays up-to-date
 
 ## Installation
@@ -31,7 +38,7 @@ For a Getting Started guide, FAQ, etc. see [documentation](docs/README.md).
 
 ## Status
 
-This software is in stabilization phase. We've used it in [Source][Source] and [Abdoc][Abdoc] for some months now. We're currently working mainly on documentation and website.
+This software should be stable. We've used it in [Source][Source] for all new landing pages and in [abdoc][Abdoc] for all new client projects since February 2014. We're currently working mainly on documentation.
 
 ## Want to contribute?
 
