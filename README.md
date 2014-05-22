@@ -1,6 +1,6 @@
 <p align="center">
   <a href="http://pho.madebysource.com">
-    <img width="314" height="252" src="http://pho.madebysource.com/images/logo-big.png"/>
+    <img width="314" height="252" src="http://pho.madebysource.com/images/logo-big.png?"/>
   </a>
 </p>
 
