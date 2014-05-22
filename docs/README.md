@@ -6,4 +6,4 @@
 
 ## Articles
 
-* (in Czech) [Brus kódu - Epizoda 9: S Petrem Brzkem o tripletu LESS Hat, Pho a Avocode](http://bruskodu.cz/epizoda/9/)
+* (in Czech) [Brus kódu - Epizoda 9: S Petrem Brzkem o tripletu LESS Hat, Phở a Avocode](http://bruskodu.cz/epizoda/9/)

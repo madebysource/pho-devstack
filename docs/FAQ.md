@@ -20,7 +20,7 @@ There are 3 ways to run your application:
 ## Can I write my own Gulp tasks or customize Phở's tasks?
 Absolutely! Put your new tasks in your gulpfile. You can rewrite Phở's tasks if you give them same name.
 
-<!--## Can I write my own npm module as Pho extension?-->
+<!--## Can I write my own npm module as Phở extension?-->
 
 ## Where can I get updates on Phở
 
