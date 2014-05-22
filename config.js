@@ -71,6 +71,9 @@ module.exports = {
   jshint: {
     enabled: false
   },
+  jscs: {
+    enabled: false
+  },
   karma: {
     /* Test runner for JavaScript */
     // configure it in karma.conf.js

@@ -120,6 +120,15 @@ module.exports = function(gulp, userConfig) {
       .pipe($.jshint.reporter(stylish));
   });
 
+  gulp.task('jscs', function(cb) {
+    return gulp.src(path.join(config.src.scriptDir, config.src.scriptFiles))
+      .pipe($.jscs())
+      .on('error', function(err) {
+        handleError(err);
+        cb();
+      });
+  });
+
   gulp.task('styles', function(cb) {
     if (cache.isClean('styles')) { return cb(); }
     cache.setClean('styles');
