@@ -9,7 +9,22 @@
     "url": "https://github.com/madebysource/pho-devstack"
   },
   "bugs": "https://github.com/madebysource/pho-devstack/issues",
-  "keywords": [],
+  "keywords": [
+    "build",
+    "web",
+    "app",
+    "front-end",
+    "lint",
+    "tdd",
+    "testing",
+    "gulp",
+    "browserify",
+    "less",
+    "css",
+    "lesshat",
+    "minify",
+    "image-min"
+  ],
   "author": "Pavel Gavlík <pavelgavlik@abdoc.net>",
   "contributors": [
     "Petr Brzek <petrbrzek@abdoc.net>",
