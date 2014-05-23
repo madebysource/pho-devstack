@@ -1,7 +1,7 @@
 {
   "name": "pho-devstack",
   "version": "1.0.0",
-  "description": "Everything what a front-end developer needs in one tasty soup.",
+  "description": "Everything a front-end developer needs in a one tasty soup.",
   "license": "MIT",
   "homepage": "https://github.com/madebysource/pho-devstack",
   "repository": {

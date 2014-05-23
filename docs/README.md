@@ -1,7 +1,7 @@
 # Phở Devstack documentation
 
 * [Getting Started](getting-started.md) - Learn Phở basics
-* [Configuration](configuration.md) - How to configure Phở exactly by your taste
+* [Configuration](configuration.md) - How to configure Phở exactly to your taste
 * [FAQ](FAQ.md) - Answers to your common questions
 
 ## Articles

@@ -6,10 +6,11 @@
 
 # Phở Devstack [![NPM version][npm-image]][npm-url]
 
-> Everything what a front-end developer needs in one tasty soup.
+> Everything a front-end developer needs in a one tasty soup.
 
 ## Features
 
+- Yeoman [generator](https://github.com/madebysource/generator-pho)
 - Livereload (without refresh for CSS)
 - LESS stylesheets compilation
 - HTML, JavaScript and CSS minification
