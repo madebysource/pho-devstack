@@ -69,6 +69,9 @@ module.exports = {
     collapseWhitespace: true, // remove whitespace characters from text nodes and document tree
     removeComments: true      // strip HTML comments
   },
+  indexDependencies: [
+    /* Add custom tasks to run as dependencies to the `index` task */
+  ],
   jshint: {
     enabled: false
   },
