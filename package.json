@@ -1,6 +1,6 @@
 {
   "name": "pho-devstack",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Automated workflow for front-end developers in one tasty bowl of code",
   "license": "MIT",
   "homepage": "https://github.com/madebysource/pho-devstack",

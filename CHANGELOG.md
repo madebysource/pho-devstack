@@ -1,3 +1,8 @@
+<a name="1.0.1"></a>
+# 1.0.1 Filip's Phở (2014-05-26)
+
+- Don't copy html files from bower_components
+
 <a name="1.0.0"></a>
 # 1.0.0 Emil's Phở (2014-05-22)
 
