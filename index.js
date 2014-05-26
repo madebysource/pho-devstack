@@ -25,6 +25,11 @@ module.exports = function(gulp, userConfig) {
   var originalConfig = extend(true, {}, defaultConfig, userConfig);
   var config = extend(true, {}, originalConfig);
 
+  var srcMarkupFiles = [
+    path.join(config.src.markupDir, config.src.markupFiles),
+    '!' + path.join(config.src.markupDir, '{bower_components,bower_components/**}')
+  ];
+
   var cache = new Cache();
 
   var getFolders = function(base, folders) {
@@ -166,7 +171,7 @@ module.exports = function(gulp, userConfig) {
     if (cache.isDirty('markups') || isPluginEnabled('rename')) {
       cache.setClean('markups');
 
-      var markupStream = gulp.src(path.join(config.src.markupDir, config.src.markupFiles))
+      var markupStream = gulp.src(srcMarkupFiles)
         .pipe($.plumber(config.plumber))
         .pipe($.substituter(config.substituter))
         .pipe($.htmlmin(config.htmlmin));
@@ -226,7 +231,7 @@ module.exports = function(gulp, userConfig) {
         cache.setDirty('styles');
       });
 
-    gulp.watch(path.join(config.src.markupDir, config.src.markupFiles), ['index'])
+    gulp.watch(srcMarkupFiles, ['index'])
       .on('change', function() {
         cache.setDirty('markups');
       });

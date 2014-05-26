@@ -56,6 +56,7 @@ module.exports = {
   },
   copy: [
     /* List of folders that will be copied to dist folder */
+    // example: 'images/sprites/**/*', 'humans.txt', 'bower_components/jquery/dist/jquery.js'
   ],
   filter: {
     /* Used internally for generating sprites */
