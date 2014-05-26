@@ -6,7 +6,7 @@
 
 # Phở Devstack [![NPM version][npm-image]][npm-url]
 
-> Everything a front-end developer needs in a one tasty soup.
+> Automated workflow for front-end developers in one tasty bowl of code.
 
 ## Features
 
