@@ -165,7 +165,9 @@ module.exports = function(gulp, userConfig) {
       });
   });
 
-  gulp.task('index', ['scripts', 'styles', 'images'], function() {
+  var indexDependencies = ['scripts', 'styles', 'images'].concat(config.indexDependencies);
+
+  gulp.task('index', indexDependencies, function() {
     var streams = [];
 
     if (cache.isDirty('markups') || isPluginEnabled('rename')) {
