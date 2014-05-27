@@ -1,3 +1,8 @@
+<a name="1.1.0"></a>
+# 1.1.0 Valdemar's Phở (2014-05-26)
+
+- Add ability to specify custom dependencies for index task
+
 <a name="1.0.1"></a>
 # 1.0.1 Filip's Phở (2014-05-26)
 
