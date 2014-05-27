@@ -69,8 +69,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "gulp & open dist/index.html"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
     "node": ">=0.10.0"
