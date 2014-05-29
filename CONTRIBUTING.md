@@ -12,6 +12,8 @@ If you find a bug in Phở Devstack, you can help us by submitting an issue to o
 
 ### Want a Feature
 
+Found a better plugin than pho-devstack's dependencies? Got an idea for a great feature everyone will love?
+
 You can request a new feature by submitting an issue to our [GitHub Issue Tracker][issues] and tagging it `enhancement` or `feature`.
 
 ### Want a Doc Fix?
