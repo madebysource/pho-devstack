@@ -53,9 +53,9 @@ For a production build, run ```gulp --gulpfile gulpfile-production.js```. You ca
 
 ## More information
 
-Now you've created a new project or set up Phở for existing project. With default options you should be able to do fairly much work, but every plugin that is included in Phở is customizable and can be turned off.
+Now you've created a new project or set up Phở for an existing project. With the default options enabled, you'll find yourself able to do a lot of cool stuff, but every plugin that's included in Phở is customizable and can be turned off.
 
-For information about configuring Phở see [Configuration](configuration.md). For answers to some common questing see [FAQ](FAQ.md).
+For information about configuring Phở, see [Configuration](configuration.md). For answers to some common questions see [FAQ](FAQ.md).
 
 [Gulp]: http://gulpjs.com/
 [Yeoman]: http://yeoman.io/
