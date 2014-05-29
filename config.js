@@ -85,7 +85,7 @@ module.exports = {
   },
   imagemin: {
     /* Minify PNG, JPEG, GIF and SVG images */
-    enabled: true
+    enabled: false // temporarily disabled (unreliable plugin)
   },
   less: {
     /* LESS style file compilation */
