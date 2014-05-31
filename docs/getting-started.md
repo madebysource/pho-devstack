@@ -28,7 +28,7 @@ You project directory will look like this:
 - `node_modules`   - folder where [npm][npm] packages like gulp or pho-devstack are installed
 - `package.json`   - file that specifies which packages should [npm][npm] install
 - `src`          - folder with source files (write your code here)
-	- `bower_components` - folder where [Bower][Bower] like lesshat are installed
+	- `bower_components` - folder where [Bower][Bower] packages like lesshat are installed
 	- `images`       - folder containing images
 		- `sprites`      - images for [sprites-preprocessor][sprites-preprocessor]
 	- `index.html`   - main markup file
