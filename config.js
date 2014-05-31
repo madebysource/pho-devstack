@@ -67,7 +67,12 @@ module.exports = {
     /* Option list: https://github.com/kangax/html-minifier#options-quick-reference */
     enabled: true,
     collapseWhitespace: true, // remove whitespace characters from text nodes and document tree
-    removeComments: true      // strip HTML comments
+    removeComments: true,     // strip HTML comments
+    keepClosingSlash: true    // keep the trailing slash on singleton elements - SVG doesn't break with this is enabled
+  },
+  imagemin: {
+    /* Minify PNG, JPEG, GIF and SVG images */
+    enabled: false // temporarily disabled (unreliable plugin)
   },
   indexDependencies: [
     /* Add custom tasks to run as dependencies to the `index` task */
@@ -82,10 +87,6 @@ module.exports = {
     /* Test runner for JavaScript */
     // configure it in karma.conf.js
     enabled: false
-  },
-  imagemin: {
-    /* Minify PNG, JPEG, GIF and SVG images */
-    enabled: false // temporarily disabled (unreliable plugin)
   },
   less: {
     /* LESS style file compilation */
