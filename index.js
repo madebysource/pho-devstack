@@ -182,11 +182,11 @@ module.exports = function(gulp, userConfig) {
     }
 
     if (config.copy.length) {
-      streams.push(getFolders('src', config.copy));
+      streams.push(getFolders(config.src.markupDir, config.copy));
     }
 
     if (streams.length) {
-      return es.merge.apply(null, streams).pipe(gulp.dest('dist'));
+      return es.merge.apply(null, streams).pipe(gulp.dest(config.dist.markupDir));
     }
   });
 
