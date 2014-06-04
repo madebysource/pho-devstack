@@ -212,7 +212,7 @@ module.exports = function(gulp, userConfig) {
     }
   });
 
-  var defaultDependencies = ['index'];
+  var defaultDependencies = ['index'].concat(config.defaultDependencies);;
   if (isPluginEnabled('karma')) {
     if (isPluginEnabled('watch'))
       defaultDependencies.push('testContinuous');
