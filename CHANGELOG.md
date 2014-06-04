@@ -1,3 +1,9 @@
+<a name="1.2.0"></a>
+# 1.2.0 Dalibor's Phở (2014-06-04)
+
+- Remove hardcoded directories in copy plugin
+- Add bower_components to Less include_path
+
 <a name="1.1.0"></a>
 # 1.1.0 Valdemar's Phở (2014-05-26)
 
@@ -38,7 +44,7 @@
 [generator-index-1.0.0-alpha.1]: https://github.com/madebysource/generator-pho/blob/af917b1d96d22981fe7e2ad6a0ad13e37fcd3162/app/templates/src/index.html
 
 <a name="0.3.1"></a>
-# 0.3.1 Jirka's Phở (2014-04-25)
+# 0.3.1 Marek's Phở (2014-04-25)
 
 - Fix gulp-fileInsert not working on every next run in development mode
 
