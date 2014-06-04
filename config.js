@@ -94,6 +94,7 @@ module.exports = {
     compress: true, // remove whitespace from CSS
     paths: [        // directories for locating less files
       'src/styles/',
+      'src/bower_components/',
       'src/bower_components/lesshat/build'
     ],
     sourceMap: true // enable source maps
