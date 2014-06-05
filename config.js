@@ -60,6 +60,8 @@ module.exports = {
   ],
   defaultDependencies: [
     /* Add custom tasks to run as dependencies to the `default` task */
+    // Put here task names for tasks that are executed once after launching Gulp
+    // Related: indexDependencies
   ],
   filter: {
     /* Used internally for generating sprites */
@@ -79,6 +81,8 @@ module.exports = {
   },
   indexDependencies: [
     /* Add custom tasks to run as dependencies to the `index` task */
+    // Task names for tasks that are executed in every incremental build (after file save) should go here
+    // Related: defaultDependencies
   ],
   jshint: {
     enabled: false
