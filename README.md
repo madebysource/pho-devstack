@@ -11,7 +11,7 @@
 ## Features
 
 - Yeoman [generator](https://github.com/madebysource/generator-pho)
-- Livereload (without refresh for CSS)
+- Livereload (without browser reload for CSS)
 - LESS stylesheets compilation
 - HTML, JavaScript and CSS minification
 - Advanced image handling (base64 inlining, image optimization, sprite generation)
