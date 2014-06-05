@@ -58,6 +58,9 @@ module.exports = {
     /* List of folders that will be copied to dist folder */
     // example: 'images/sprites/**/*', 'humans.txt', 'bower_components/jquery/dist/jquery.js'
   ],
+  defaultDependencies: [
+    /* Add custom tasks to run as dependencies to the `default` task */
+  ],
   filter: {
     /* Used internally for generating sprites */
     enabled: true
