@@ -262,4 +262,10 @@ module.exports = function(gulp, userConfig) {
       }
     }
   });
+
+  return {
+    $: $,
+    cache: cache,
+    config: config
+  }
 };

@@ -96,13 +96,12 @@ module.exports = {
     enabled: false
   },
   less: {
-    /* LESS style file compilation */
+    /* Less style file compilation */
     enabled: true,
     compress: true, // remove whitespace from CSS
-    paths: [        // directories for locating less files
+    paths: [        // directories for locating Less files
       'src/styles/',
-      'src/bower_components/',
-      'src/bower_components/lesshat/build'
+      'src/bower_components/'
     ],
     sourceMap: true // enable source maps
   },
