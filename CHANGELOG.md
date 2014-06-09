@@ -1,3 +1,10 @@
+<a name="1.3.0"></a>
+# 1.3.0 Gita's Phở (2014-06-10)
+
+- Remove Less Hat from include path
+- Export config and tasks from pho-devstack module
+- Add ability to add custom tasks as dependency to the default task
+
 <a name="1.2.0"></a>
 # 1.2.0 Dalibor's Phở (2014-06-04)
 
