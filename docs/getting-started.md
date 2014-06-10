@@ -5,7 +5,7 @@
 ## Installation
 
 1. Install [Node.js](http://nodejs.org/)
-1. Run ```sudo npm install -g gulp yo generator-pho bower```
+1. Run ```sudo npm install -g gulp yo generator-pho```
 
 *Phở Devstack uses [Gulp][Gulp] as task runner, [Yeoman][Yeoman] for scaffolding new projects and [Bower][Bower] for installing client-side packages*
 
