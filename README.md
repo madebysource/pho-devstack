@@ -12,7 +12,7 @@
 
 - Yeoman [generator](https://github.com/madebysource/generator-pho)
 - Livereload (without browser reload for CSS)
-- LESS stylesheets compilation
+- Sass and Less stylesheets compilation
 - HTML, JavaScript and CSS minification
 - Advanced image handling (base64 inlining, image optimization, sprite generation)
 - Browserify JavaScript modules
