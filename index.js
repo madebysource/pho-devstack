@@ -57,6 +57,10 @@ module.exports = function(gulp, userConfig) {
     }
   }
 
+  // start livereload server early
+  if (isPluginEnabled('livereload'))
+    $.livereload.listen();
+
   var cdn = config.substituter.cdn || '';
   // setup gulp-substituter js and css keys
   if (config.substituter) {
@@ -245,21 +249,16 @@ module.exports = function(gulp, userConfig) {
     ], ['index']);
 
     if (isPluginEnabled('livereload')) {
-      var liveReloadServer = $.livereload();
+      $.livereload.listen();
 
-      var liveReloadHandler = function(file) {
-        liveReloadServer.changed(file.path);
-        console.log('[' + chalk.blue('Reload') + '] ' + file.path);
-      };
-
-      gulp.watch(path.join(config.dist.markupDir, config.dist.markupFiles), liveReloadHandler);
+      gulp.watch(path.join(config.dist.markupDir, config.dist.markupFiles), $.livereload.changed);
 
       if (!isPluginEnabled('rename')) {
         // markup is not changed when rename is disabled, we can livereload
         gulp.watch([
           path.join(config.dist.scriptDir, config.dist.scriptFiles),
           path.join(config.dist.styleDir, config.dist.styleFiles)
-        ], liveReloadHandler);
+        ], $.livereload.changed);
       }
     }
   });
