@@ -1,3 +1,13 @@
+<a name="1.4.0"></a>
+# 1.4.0 Jan's Phở (2014-06-24)
+
+- Minor Browserify implementation changes to support transpilers such as CoffeeScript
+- Bump gulp-substituter (has recursive partial substitution)
+- Bump gulp-livereload for cleaner code
+- Remove yargs (unused)
+- Replace event-stream with merge-stream (It has less dependencies.)
+- Highlight plugin name in errors
+
 <a name="1.3.0"></a>
 # 1.3.0 Gita's Phở (2014-06-10)
 
