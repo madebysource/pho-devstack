@@ -2,7 +2,7 @@
 
 var chalk = require('chalk');
 var extend = require('node.extend');
-var es = require('event-stream');
+var mergeStream = require('merge-stream');
 var path = require('path');
 var through = require('through2');
 var vinylSourceStream = require('vinyl-source-stream');
@@ -191,7 +191,7 @@ module.exports = function(gulp, userConfig) {
     }
 
     if (streams.length) {
-      return es.merge.apply(null, streams).pipe(gulp.dest(config.dist.markupDir));
+      return mergeStream.apply(null, streams).pipe(gulp.dest(config.dist.markupDir));
     }
   });
 
