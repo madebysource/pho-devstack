@@ -118,7 +118,7 @@ module.exports = {
     enabled: true,
     errorHandler: function(err, plugin) { // custom error message output
       var beep = '\x07';
-      var message = beep + '[' + (plugin || err.plugin) + '] ' + err.name;
+      var message = beep + '[' + chalk.magenta(plugin || err.plugin) + '] ' + err.name;
 
       if (err.fileName) {
         message += ' in ' + path.relative(process.cwd(), err.fileName) + ':' + chalk.bold(err.lineNumber);
