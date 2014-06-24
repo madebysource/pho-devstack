@@ -24,4 +24,4 @@ Absolutely! Put your new tasks in your gulpfile. You can rewrite Phở's tasks i
 
 ## Where can I get updates on Phở
 
-You can find news about Phở, helpful links and product updates at [Source Facebook page](https://www.facebook.com/madebysource) or [follow @MadeBySource at Twitter](https://twitter.com/MadeBySource).
+[Follow @PavelGavlik at Twitter](https://twitter.com/PavelGavlik) for every update about Phở and more. [Like](https://www.facebook.com/madebysource) or [Follow](https://twitter.com/MadeBySource) Source for major Phở updates, helpful links and product releases.
