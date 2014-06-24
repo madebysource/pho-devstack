@@ -14,6 +14,7 @@ module.exports = {
     styleDir: 'dist/styles/',
     imageDir: 'dist/images/',
     spriteDir: 'dist/images/sprites/',
+    scriptMain: 'main.js',
     markupFiles: '**/*.html',
     scriptFiles: '*.js',
     styleFiles: '*.css'

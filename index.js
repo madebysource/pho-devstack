@@ -87,7 +87,8 @@ module.exports = function(gulp, userConfig) {
   }
 
   var browserify = isPluginEnabled('watch') ? require('watchify') : require('browserify');
-  var bundler = browserify('./' + path.join(config.src.scriptDir, config.src.scriptMain));
+  config.browserify.entries = './' + path.join(config.src.scriptDir, config.src.scriptMain);
+  var bundler = browserify(config.browserify);
 
   // apply browserify transforms from config
   for (var transform in config.browserify.transforms) {
@@ -115,7 +116,7 @@ module.exports = function(gulp, userConfig) {
             handleError(err, 'browserify');
             cb();
           })
-          .pipe(vinylSourceStream(config.src.scriptMain))
+          .pipe(vinylSourceStream(config.dist.scriptMain))
           .pipe($.plumber(config.plumber))
           .pipe($.rename({ suffix: '-' + Date.now().toString() }))
           .pipe(gulp.dest(config.dist.scriptDir))
