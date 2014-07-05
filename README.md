@@ -15,7 +15,7 @@
 - Sass and Less stylesheets compilation
 - HTML, JavaScript and CSS minification
 - Advanced image handling (base64 inlining, image optimization, sprite generation)
-- Browserify JavaScript modules
+- Browserify modules (written in JavaScript or CoffeeScript)
 - Linting JavaScript
 - Running unit and end to end tests
 - Configurable directory structure
