@@ -1,3 +1,8 @@
+<a name="1.4.1"></a>
+# 1.4.1 Cyril's Phở (2014-07-05)
+
+- Fix dying when error occurs in Less evaluation
+
 <a name="1.4.0"></a>
 # 1.4.0 Jan's Phở (2014-06-24)
 
