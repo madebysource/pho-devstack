@@ -1,6 +1,6 @@
 # Add AngularJS templates to cache and inline it on page
 
-This recipe assumes that your templates are in `src/templates`. It does a two steps substitution in order to achieve its goal, because it needs the Javascript and HTML to be minified with existing configurations, and then it inlines the generate template cache code. It also assumes that you have a module called `MY_MODULE_NAME`.
+This recipe assumes that your templates are in `src/templates`. It does a two-step substitution in order to achieve its goal, because it needs the Javascript and HTML to be minified with existing configurations, and then it inlines the generated template cache code. It also assumes that you have a module called `MY_MODULE_NAME`.
 
 
 1. Install packages [gulp-substituter](https://www.npmjs.org/package/gulp-substituter) and [gulp-angular-templatecache](https://www.npmjs.org/package/gulp-angular-templatecache) package <br>
@@ -52,11 +52,11 @@ gulp.task('templates', ['index'], function(cb) {
 });
 ```
 
-3. Add the following to your Pho configuration <br>
+3. Optionally, add the following to your Pho configuration <br>
   `defaultDependencies: ['templates']`
 
 4. Add the following to your page, after loading AngularJS and your controllers <br>
   `<!-- substitute:templates -->`
 
-5. Run the task compilation <br>
+5. Run the new task <br>
   `gulp templates`
