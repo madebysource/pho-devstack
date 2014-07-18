@@ -16,16 +16,6 @@ var fs = require('fs');
 var substituter = require('gulp-substituter');
 var templateCache = require('gulp-angular-templatecache');
 
-gulp.task('gzip', function(cb) {
-  gulp.src('./dist/**')
-    .pipe(gzip({
-      append: true,
-      level: 9
-    }))
-    .pipe(gulp.dest('dist'))
-    .on('end', cb);
-  });
-
 gulp.task('templates', ['index'], function(cb) {
   gulp.src('./dist/templates/**/*.html')
     .pipe(templateCache('templates.js', {
