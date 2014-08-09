@@ -1,5 +1,9 @@
 # GZip dist gulp task
 
+Servers are able to gzip files on the fly, but most of them can also serve "pre-gziped" files and thus avoid any CPU usage in runtime associated with the task. For instance, you can configure nginx to do so.
+
+This recipe makes gzipped versions of all files in `dist` folder
+
 1. Install [gulp-gzip](https://www.npmjs.org/package/gulp-gzip) <br>
   `npm install gulp-gzip --save-dev`
 
