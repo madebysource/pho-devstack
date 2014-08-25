@@ -1,3 +1,8 @@
+<a name="1.5.0"></a>
+# 1.5.0 Cyril's Phở (2014-08-25)
+
+- Better error reporting for Browserify
+
 <a name="1.4.1"></a>
 # 1.4.1 Cyril's Phở (2014-07-05)
 
