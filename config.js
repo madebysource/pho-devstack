@@ -126,10 +126,11 @@ module.exports = {
       } else if (err.lineNumber) {
         message += ' at line ' + chalk.bold(err.lineNumber);
       }
-       if(plugin == "browserify") {
+
+      console.log(message);
+      if(plugin == "browserify") {
         console.log(err);
       } else {
-        console.log(message);
         console.log(chalk.red(err.message));
       }
     }
