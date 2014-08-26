@@ -95,11 +95,12 @@ module.exports = function(gulp, userConfig) {
   var bundler = browserify(config.browserify);
 
   // apply browserify transforms from config
-  for (var transform in config.browserify.transforms) {
-    if (config.browserify.transforms.hasOwnProperty(transform) && config.browserify.transforms[transform]) {
+  // hack with Array.prototype.reverse() is used, because V8 iterates over objects in reversed order
+  // https://code.google.com/p/v8/issues/detail?id=164
+  Object.keys(config.browserify.transforms).reverse().forEach(function (transform) {
+    if (config.browserify.transforms[transform])
       bundler.transform(transform);
-    }
-  }
+  });
 
   var scriptsDependencies = [];
   if (isPluginEnabled('jshint'))

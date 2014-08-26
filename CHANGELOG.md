@@ -1,5 +1,11 @@
+<a name="1.5.1"></a>
+# 1.5.1 Luděk's Phở (2014-08-26)
+
+- Fix Browserify transforms being applied in wrong order
+- Fix minification not working for CoffeeScript in some use cases
+
 <a name="1.5.0"></a>
-# 1.5.0 Cyril's Phở (2014-08-25)
+# 1.5.0 Radim's Phở (2014-08-25)
 
 - Better error reporting for Browserify
 
