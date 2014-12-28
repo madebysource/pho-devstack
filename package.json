@@ -35,6 +35,7 @@
     "browserify-ngmin": "^0.1.0",
     "casperjs": "^1.1.0-beta3",
     "chalk": "^0.4.0",
+    "gulp": "^3.8.10",
     "glob-stream": "^3.1.9",
     "gulp-base64": "~0.0.3",
     "gulp-clean": "~0.2.4",
@@ -62,9 +63,6 @@
     "uglifyify": "~2.1.1",
     "vinyl-source-stream": "~0.1.1",
     "watchify": "~0.10.0"
-  },
-  "peerDependencies": {
-    "gulp": "^3.8.0"
   },
   "main": "index.js",
   "scripts": {
