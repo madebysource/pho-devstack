@@ -59,7 +59,7 @@ module.exports = function(gulp, userConfig) {
 
   // start livereload server early
   if (isPluginEnabled('livereload'))
-    $.livereload.listen();
+    $.livereload.listen(config.livereload.port);
 
   var cdn = config.substituter.cdn || '';
   // setup gulp-substituter js and css keys
@@ -250,16 +250,21 @@ module.exports = function(gulp, userConfig) {
     ], ['index']);
 
     if (isPluginEnabled('livereload')) {
-      $.livereload.listen();
+      var server = $.livereload.listen(config.livereload.port);
 
-      gulp.watch(path.join(config.dist.markupDir, config.dist.markupFiles), $.livereload.changed);
+      var onChange = function(e) {
+        $.livereload.changed(e.path, server);
+      };
+
+      gulp.watch(path.join(config.dist.markupDir, config.dist.markupFiles))
+        .on("change", onChange);
 
       if (!isPluginEnabled('rename')) {
         // markup is not changed when rename is disabled, we can livereload
         gulp.watch([
           path.join(config.dist.scriptDir, config.dist.scriptFiles),
           path.join(config.dist.styleDir, config.dist.styleFiles)
-        ], $.livereload.changed);
+        ]).on("change", onChange);
       }
     }
   });
