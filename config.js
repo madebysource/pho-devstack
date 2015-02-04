@@ -47,8 +47,8 @@ module.exports = {
     transforms: {         // transforms can be used for tasks like minification
       // order matters (ngmin wouldn't work after minification)
       // transform-name: transform-is-enabled (true or false)
-      "browserify-ngmin": false, // rewrite AngularJS code to be minification-proof
-      uglifyify: false           // minifies module with UglifyJS
+      "browserify-ngmin": false, // DEPRECATED: rewrite AngularJS code to be minification-proof
+      uglifyify: false           // DEPRECATED: minifies module with UglifyJS
     }
   },
   clean: {
@@ -115,6 +115,9 @@ module.exports = {
     /* Process only changed files */
     enabled: true
   },
+  ngAnnotate: {
+    enabled: false
+  },
   plumber: {
     /* Handle errors in a way that Gulp doesn't crash */
     enabled: true,
@@ -140,6 +143,10 @@ module.exports = {
     /* Rename files (used for revisioning) */
     enabled: false
   },
+  sourcemaps: {
+    enabled: true,
+    loadMaps: true
+  },
   spritesPreprocessor: {
     /* Replace images in sprites folder with one image, and change css paths */
     enabled: false,
@@ -150,6 +157,10 @@ module.exports = {
   substituter: {
     /* Replace any text in markup with specified value */
     enabled: true
+  },
+  uglify: {
+    enabled: false,
+    compress: false
   },
   watch: {
     /* Run build each time file is changed */
