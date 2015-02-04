@@ -1,10 +1,10 @@
 'use strict';
 
-var chalk = require('chalk');
 var extend = require('node.extend');
 var mergeStream = require('merge-stream');
 var path = require('path');
 var through = require('through2');
+var vinylBuffer = require('vinyl-buffer');
 var vinylSourceStream = require('vinyl-source-stream');
 
 // we later iterate through this plugin object, plugin lazy loading has to be disabled
@@ -123,6 +123,13 @@ module.exports = function(gulp, userConfig) {
           })
           .pipe(vinylSourceStream(config.dist.scriptMain))
           .pipe($.plumber(config.plumber))
+          .pipe(vinylBuffer())
+          .pipe($.sourcemaps.init(config.sourcemaps))
+
+          .pipe($.ngAnnotate(config.ngAnnotate))
+          .pipe($.uglify(config.uglify))
+
+          .pipe($.sourcemaps.write('./'))
           .pipe($.rename({ suffix: '-' + Date.now().toString() }))
           .pipe(gulp.dest(config.dist.scriptDir))
           .on('end', cb);
