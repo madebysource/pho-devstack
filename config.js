@@ -51,10 +51,6 @@ module.exports = {
       uglifyify: false           // DEPRECATED: minifies module with UglifyJS
     }
   },
-  clean: {
-    /* Clean folder before generating build output (useful for folders with revisioned files) */
-    enabled: true
-  },
   copy: [
     /* List of folders that will be copied to dist folder */
     // example: 'images/sprites/**/*', 'humans.txt', 'bower_components/jquery/dist/jquery.js'

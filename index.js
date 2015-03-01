@@ -1,8 +1,10 @@
 'use strict';
 
+var del = require('del');
 var extend = require('node.extend');
 var mergeStream = require('merge-stream');
 var path = require('path');
+var stylish = require('jshint-stylish');
 var through = require('through2');
 var vinylBuffer = require('vinyl-buffer');
 var vinylSourceStream = require('vinyl-source-stream');
@@ -12,8 +14,6 @@ var $ = require('gulp-load-plugins')({
   config: require.resolve('./package.json'),
   lazy: false
 });
-
-var stylish = require('jshint-stylish');
 
 var defaultConfig = require('./config');
 var testRunner = require('./lib/test-runner');
@@ -113,27 +113,25 @@ module.exports = function(gulp, userConfig) {
     if (cache.isClean('scripts')) { return cb(); }
     cache.setClean('scripts');
 
-    gulp.src(path.join(config.dist.scriptDir, config.dist.scriptFiles), { read: false })
-      .pipe($.clean())
-      .on('end', function() {
-        bundler.bundle(config.browserify)
-          .on('error', function(err) {
-            handleError(err, 'browserify');
-            cb();
-          })
-          .pipe(vinylSourceStream(config.dist.scriptMain))
-          .pipe($.plumber(config.plumber))
-          .pipe(vinylBuffer())
-          .pipe($.sourcemaps.init(config.sourcemaps))
+    del(path.join(config.dist.scriptDir, config.dist.scriptFiles), function () {
+      bundler.bundle(config.browserify)
+        .on('error', function(err) {
+          handleError(err, 'browserify');
+          cb();
+        })
+        .pipe(vinylSourceStream(config.dist.scriptMain))
+        .pipe($.plumber(config.plumber))
+        .pipe(vinylBuffer())
+        .pipe($.sourcemaps.init(config.sourcemaps))
 
-          .pipe($.ngAnnotate(config.ngAnnotate))
-          .pipe($.uglify(config.uglify))
+        .pipe($.ngAnnotate(config.ngAnnotate))
+        .pipe($.uglify(config.uglify))
 
-          .pipe($.sourcemaps.write('./'))
-          .pipe($.rename({ suffix: '-' + Date.now().toString() }))
-          .pipe(gulp.dest(config.dist.scriptDir))
-          .on('end', cb);
-      });
+        .pipe($.sourcemaps.write('./'))
+        .pipe($.rename({ suffix: '-' + Date.now().toString() }))
+        .pipe(gulp.dest(config.dist.scriptDir))
+        .on('end', cb);
+    });
   });
 
   gulp.task('jshint', function() {
@@ -158,24 +156,22 @@ module.exports = function(gulp, userConfig) {
     var spriteFilter = $.filter('**/*.png');
     var cssFilter = $.filter('**/*.css');
 
-    gulp.src(path.join(config.dist.styleDir, config.dist.styleFiles), { read: false })
-      .pipe($.clean())
-      .on('end', function() {
-        gulp.src(path.join(config.src.styleDir, config.src.styleMain))
-          .pipe($.plumber(config.plumber))
-          .pipe($.less(config.less))
-          .pipe($.base64(config.base64))
+    del(path.join(config.dist.styleDir, config.dist.styleFiles), function () {
+      gulp.src(path.join(config.src.styleDir, config.src.styleMain))
+        .pipe($.plumber(config.plumber))
+        .pipe($.less(config.less))
+        .pipe($.base64(config.base64))
 
-          .pipe($.spritesPreprocessor(config.spritesPreprocessor))
-          .pipe(spriteFilter)
-          .pipe(gulp.dest(config.dist.spriteDir))
-          .pipe(spriteFilter.restore())
+        .pipe($.spritesPreprocessor(config.spritesPreprocessor))
+        .pipe(spriteFilter)
+        .pipe(gulp.dest(config.dist.spriteDir))
+        .pipe(spriteFilter.restore())
 
-          .pipe(cssFilter)
-          .pipe($.rename({ suffix: '-' + Date.now().toString() }))
-          .pipe(gulp.dest(config.dist.styleDir))
-          .on('end', cb);
-      });
+        .pipe(cssFilter)
+        .pipe($.rename({ suffix: '-' + Date.now().toString() }))
+        .pipe(gulp.dest(config.dist.styleDir))
+        .on('end', cb);
+    });
   });
 
   var indexDependencies = ['scripts', 'styles', 'images'].concat(config.indexDependencies);
