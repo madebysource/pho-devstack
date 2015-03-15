@@ -109,7 +109,8 @@ module.exports = function(gulp, userConfig) {
   if (isPluginEnabled('jscs'))
     scriptsDependencies.push('jscs');
 
-  gulp.task('scripts', scriptsDependencies, function(cb) {
+  // TODO: scriptsDependencies
+  gulp.task('scripts', function(cb) {
     if (cache.isClean('scripts')) { return cb(); }
     cache.setClean('scripts');
 
@@ -174,16 +175,14 @@ module.exports = function(gulp, userConfig) {
     });
   });
 
-  var indexDependencies = ['scripts', 'styles', 'images'].concat(config.indexDependencies);
-
-  gulp.task('index', indexDependencies, function() {
+  gulp.task('markups', function() {
     var streams = [];
 
     if (cache.isDirty('markups') || isPluginEnabled('rename')) {
       cache.setClean('markups');
 
       var markupStream = gulp.src(srcMarkupFiles)
-        .pipe($.plumber(config.plumber))
+        // .pipe($.plumber(config.plumber))
         .pipe($.substituter(config.substituter))
         .pipe($.htmlmin(config.htmlmin));
 
@@ -207,42 +206,34 @@ module.exports = function(gulp, userConfig) {
       .pipe(gulp.dest(config.dist.imageDir));
   });
 
-  gulp.task('test', ['index'], function() {
+  gulp.task('test', function() {
     testRunner.karma();
   });
 
-  gulp.task('testContinuous', ['index'], function() {
+  gulp.task('testContinuous', function() {
     testRunner.karmaWatch();
   });
 
-  gulp.task('e2e', ['index'], function() {
+  gulp.task('e2e', function() {
     if (isPluginEnabled('e2e')) {
       testRunner.casper(path.join(config.src.specDir, config.src.e2eDir));
     }
   });
 
-  var defaultDependencies = ['index'].concat(config.defaultDependencies);
-  if (isPluginEnabled('karma')) {
-    if (isPluginEnabled('watch'))
-      defaultDependencies.push('testContinuous');
-    else
-      defaultDependencies.push('test');
-  }
-  gulp.task('default', defaultDependencies, function() {
+  gulp.task('watch', function() {
     if (!isPluginEnabled('watch')) { return; }
 
-    // watchify has its own watcher
-    bundler.on('update', function() {
-      cache.setDirty('scripts');
-      gulp.start('index');
-    });
+    gulp.watch(path.join(config.src.scriptDir, config.src.scriptFiles), 'index')
+      .on('change', function() {
+        cache.setDirty('scripts');
+      });
 
-    gulp.watch(path.join(config.src.styleDir, config.src.styleFiles), ['index'])
+    gulp.watch(path.join(config.src.styleDir, config.src.styleFiles), 'index')
       .on('change', function() {
         cache.setDirty('styles');
       });
 
-    gulp.watch(srcMarkupFiles, ['index'])
+    gulp.watch(srcMarkupFiles, 'index')
       .on('change', function() {
         cache.setDirty('markups');
       });
@@ -250,22 +241,42 @@ module.exports = function(gulp, userConfig) {
     gulp.watch([
       path.join(config.src.specDir, config.src.specFiles),
       path.join(config.src.imageDir, '**/*')
-    ], ['index']);
+    ], 'index');
 
     if (isPluginEnabled('livereload')) {
       $.livereload.listen();
 
-      gulp.watch(path.join(config.dist.markupDir, config.dist.markupFiles), $.livereload.changed);
+      gulp.watch(path.join(config.dist.markupDir, config.dist.markupFiles))
+        .on('change', function livereload(changeObj) {
+          $.livereload.changed(changeObj.path);
+        });
 
       if (!isPluginEnabled('rename')) {
         // markup is not changed when rename is disabled, we can livereload
         gulp.watch([
           path.join(config.dist.scriptDir, config.dist.scriptFiles),
           path.join(config.dist.styleDir, config.dist.styleFiles)
-        ], $.livereload.changed);
+        ])
+          .on('change', function livereload(changeObj) {
+            $.livereload.changed(changeObj.path);
+          });
       }
     }
   });
+
+  var indexDependencies = ['scripts', 'styles', 'images', 'markups'].concat(config.indexDependencies);
+  gulp.task('index', gulp.series.apply(gulp, indexDependencies));
+
+  var defaultDependencies = config.defaultDependencies;
+  if (isPluginEnabled('karma')) {
+    if (isPluginEnabled('watch'))
+      defaultDependencies.push('testContinuous');
+    else
+      defaultDependencies.push('test');
+  }
+  defaultDependencies.push('index');
+  defaultDependencies.push('watch');
+  gulp.task('default', gulp.series.apply(gulp, defaultDependencies))
 
   return {
     $: $,
