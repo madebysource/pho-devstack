@@ -104,7 +104,8 @@ module.exports = {
   },
   livereload: {
     /* Reload page in browser when build is finished */
-    enabled: true
+    enabled: true,
+    port: 35729
   },
   newer: {
     /* Process only changed files */
