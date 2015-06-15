@@ -39,7 +39,6 @@
     "glob-stream": "^3.1.9",
     "gulp": "^3.8.10",
     "gulp-base64": "~0.0.3",
-    "gulp-clean": "~0.2.4",
     "gulp-filter": "^0.4.1",
     "gulp-htmlmin": "~0.1.2",
     "gulp-imagemin": "^0.1.5",
@@ -75,8 +74,5 @@
   },
   "engines": {
     "node": ">=0.10.0"
-  },
-  "devDependencies": {
-    "del": "^1.1.1"
   }
 }
