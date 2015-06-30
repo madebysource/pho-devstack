@@ -135,13 +135,13 @@ module.exports = function(gulp, userConfig) {
   });
 
   gulp.task('jshint', function() {
-    return gulp.src(path.join(config.src.scriptDir, config.src.scriptFiles))
+    return gulp.src(path.join(config.src.scriptDir, '**/*.js'))
       .pipe($.jshint(config.src.jshint))
       .pipe($.jshint.reporter(stylish));
   });
 
   gulp.task('jscs', function(cb) {
-    return gulp.src(path.join(config.src.scriptDir, config.src.scriptFiles))
+    return gulp.src(path.join(config.src.scriptDir, '**/*.js'))
       .pipe($.jscs())
       .on('error', function(err) {
         handleError(err);
