@@ -45,7 +45,7 @@ module.exports = {
     debug: true,          // enable source maps
     detectGlobals: false, // performance optimization
     transforms: {         // transforms can be used for tasks like minification
-      // order matters (ngmin wouldn't work after minification)
+      // order matters (first transform is applied first)
       // transform-name: transform-is-enabled (true or false)
       "browserify-ngmin": false, // DEPRECATED: rewrite AngularJS code to be minification-proof
       uglifyify: false           // DEPRECATED: minifies module with UglifyJS
@@ -112,6 +112,7 @@ module.exports = {
     enabled: true
   },
   ngAnnotate: {
+    /* Rewrites AngularJS code to be minification-proof */
     enabled: false
   },
   plumber: {
