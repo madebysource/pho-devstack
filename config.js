@@ -47,8 +47,6 @@ module.exports = {
     transforms: {         // transforms can be used for tasks like minification
       // order matters (first transform is applied first)
       // transform-name: transform-is-enabled (true or false)
-      "browserify-ngmin": false, // DEPRECATED: rewrite AngularJS code to be minification-proof
-      uglifyify: false           // DEPRECATED: minifies module with UglifyJS
     }
   },
   copy: [
