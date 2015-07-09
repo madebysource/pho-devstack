@@ -72,7 +72,7 @@ module.exports = {
   },
   imagemin: {
     /* Minify PNG, JPEG, GIF and SVG images */
-    enabled: false // temporarily disabled (unreliable plugin)
+    enabled: false // disabled (edit images task have this functionality)
   },
   indexDependencies: [
     /* Add custom tasks to run as dependencies to the `index` task */
