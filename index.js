@@ -132,7 +132,10 @@ module.exports = function(gulp, userConfig) {
         .pipe($.uglify(config.uglify))
 
         .pipe($.sourcemaps.write('./'))
-        .pipe($.rename({ suffix: '-' + Date.now().toString() }))
+        .pipe($.rename(isPluginEnabled('rename') && function (path) {
+          if (path.extname !== '.map')
+            path.basename += '-' + Date.now().toString();
+        }))
         .pipe(gulp.dest(config.dist.scriptDir))
         .on('end', cb);
     });
