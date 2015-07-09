@@ -26,7 +26,6 @@ module.exports = {
     styleDir: 'src/styles/',
     specDir: 'spec/',
     imageDir: 'src/images/',
-    e2eDir: 'e2e/',
     scriptMain: 'main.js',
     styleMain: 'main.less',
     markupFiles: '**/*.html',
@@ -83,11 +82,6 @@ module.exports = {
     enabled: false
   },
   jscs: {
-    enabled: false
-  },
-  karma: {
-    /* Test runner for JavaScript */
-    // configure it in karma.conf.js
     enabled: false
   },
   less: {

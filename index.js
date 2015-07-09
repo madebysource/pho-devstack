@@ -17,7 +17,6 @@ var $ = require('gulp-load-plugins')({
 });
 
 var defaultConfig = require('./config');
-var testRunner = require('./lib/test-runner');
 
 var Cache = require('./cache');
 var files = require('./lib/get-files');
@@ -213,27 +212,7 @@ module.exports = function(gulp, userConfig) {
       .pipe(gulp.dest(config.dist.imageDir));
   });
 
-  gulp.task('test', ['index'], function() {
-    testRunner.karma();
-  });
-
-  gulp.task('testContinuous', ['index'], function() {
-    testRunner.karmaWatch();
-  });
-
-  gulp.task('e2e', ['index'], function() {
-    if (isPluginEnabled('e2e')) {
-      testRunner.casper(path.join(config.src.specDir, config.src.e2eDir));
-    }
-  });
-
   var defaultDependencies = ['index'].concat(config.defaultDependencies);
-  if (isPluginEnabled('karma')) {
-    if (isPluginEnabled('watch'))
-      defaultDependencies.push('testContinuous');
-    else
-      defaultDependencies.push('test');
-  }
   gulp.task('default', defaultDependencies, function() {
     if (!isPluginEnabled('watch')) { return; }
 
