@@ -1,5 +1,6 @@
 'use strict';
 
+var browserify = require('browserify');
 var del = require('del');
 var extend = require('node.extend');
 var mergeStream = require('merge-stream');
@@ -90,9 +91,12 @@ module.exports = function(gulp, userConfig) {
     }
   }
 
-  var browserify = isPluginEnabled('watch') ? require('watchify') : require('browserify');
   config.browserify.entries = './' + path.join(config.src.scriptDir, config.src.scriptMain);
   var bundler = browserify(config.browserify);
+  if (isPluginEnabled('watch')) {
+    var watchify = require('watchify');
+    bundler = watchify(bundler);
+  }
 
   // apply browserify transforms from config
   // hack with Array.prototype.reverse() is used, because V8 iterates over objects in reversed order
@@ -114,7 +118,7 @@ module.exports = function(gulp, userConfig) {
     cache.setClean('scripts');
 
     del(path.join(config.dist.scriptDir, config.dist.scriptFiles), function () {
-      bundler.bundle(config.browserify)
+      bundler.bundle()
         .on('error', function(err) {
           handleError(err, 'browserify');
           cb();

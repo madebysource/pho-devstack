@@ -31,7 +31,7 @@
     "Jan Šedivý <jansedivy@abdoc.net>"
   ],
   "dependencies": {
-    "browserify": "^4.1.2",
+    "browserify": "^10.2.4",
     "casperjs": "^1.1.0-beta3",
     "chalk": "^1.0.0",
     "del": "^1.2.0",
@@ -65,7 +65,7 @@
     "through2": "^2.0.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
-    "watchify": "~0.10.0"
+    "watchify": "^3.2.3"
   },
   "main": "index.js",
   "scripts": {
