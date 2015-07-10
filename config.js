@@ -87,17 +87,22 @@ module.exports = {
   less: {
     /* Less style file compilation */
     enabled: true,
-    compress: true, // remove whitespace from CSS
+    compress: false, // remove whitespace from CSS
     paths: [        // directories for locating Less files
       'src/styles/',
       'src/bower_components/'
-    ],
-    sourceMap: true // enable source maps
+    ]
   },
   livereload: {
     /* Reload page in browser when build is finished */
     enabled: true,
     port: 35729
+  },
+  minifyCss: {
+    /* Minify CSS code */
+    // Option list: https://github.com/jakubpawlowicz/clean-css#how-to-use-clean-css-programmatically
+    enabled: true,
+    compatibility: 'ie8'
   },
   newer: {
     /* Process only changed files */
@@ -148,6 +153,7 @@ module.exports = {
     enabled: true
   },
   uglify: {
+    /* Minify JS code */
     enabled: false,
     compress: false
   },

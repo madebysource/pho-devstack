@@ -165,8 +165,10 @@ module.exports = function(gulp, userConfig) {
     del(path.join(config.dist.styleDir, config.dist.styleFiles), function () {
       gulp.src(path.join(config.src.styleDir, config.src.styleMain))
         .pipe($.plumber(config.plumber))
+        .pipe($.sourcemaps.init(config.sourcemaps))
         .pipe($.less(config.less))
         .pipe($.base64(config.base64))
+        .pipe($.minifyCss(config.minifyCss))
 
         .pipe($.spritesPreprocessor(config.spritesPreprocessor))
         .pipe(spriteFilter)
@@ -174,6 +176,7 @@ module.exports = function(gulp, userConfig) {
         .pipe(spriteFilter.restore())
 
         .pipe(cssFilter)
+        .pipe($.sourcemaps.write('./'))
         .pipe($.rename({ suffix: '-' + Date.now().toString() }))
         .pipe(gulp.dest(config.dist.styleDir))
         .on('end', cb);
