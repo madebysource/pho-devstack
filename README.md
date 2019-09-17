@@ -1,12 +1,12 @@
-<p align="center">
-  <a href="http://pho.madebysource.com">
-    <img width="314" height="252" src="http://pho.madebysource.com/images/logo-big.png?"/>
-  </a>
-</p>
-
 # Phở Devstack [![NPM version][npm-image]][npm-url]
 
 > Automated workflow for front-end developers in one tasty bowl of code.
+
+## Status
+
+This software is **ARCHIVED**. No new development is going on. Feel free to fork it. We've used this dev stack in [Source][Source] for all new landing pages and in [abdoc][Abdoc] for all new client projects since February 2014.
+
+As replacement you can use Webpack-based dev stack like [create-react-app](https://create-react-app.dev/). Webpack practically replaced Gulp-based dev stacks and offers more features (at cost of worse performance).
 
 ## Features
 
@@ -35,10 +35,6 @@ Run ```npm install -g gulp yo generator-pho```
 ## Documentation
 
 For a Getting Started guide, FAQ, etc. see [documentation](docs/README.md).
-
-## Status
-
-This software should be stable. We've used it in [Source][Source] for all new landing pages and in [abdoc][Abdoc] for all new client projects since February 2014. We're currently working mainly on documentation.
 
 ## Want to contribute?
 
